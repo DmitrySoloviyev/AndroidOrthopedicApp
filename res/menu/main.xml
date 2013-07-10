@@ -1,9 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+    <group android:id="@+id/main" android:visible="true">
+        <item android:id="@+id/MENU_NEW_ORDER" android:title="Новый заказ"></item>
+        <item android:id="@+id/MENU_SEARCH" android:title="Поиск"></item>
+        <item android:id="@+id/MENU_HISTORY" android:title="Все заказы"></item>
+        <item android:id="@+id/MENU_GALLERY" android:title="Галерея"></item>
+        <item android:id="@+id/MENU_DEFAULT_SCREEN" android:title="Экран по умолчанию" android:checkable="true"></item>
+        <item android:id="@+id/MENU_EXIT" android:title="Выход"></item>
+    </group>
 
 </menu>

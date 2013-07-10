@@ -2,7 +2,16 @@
 <resources>
 
     <string name="app_name">OrthopedicDB</string>
+    <string name="app_section_search">OrthopedicDB - Поиск</string>
+    <string name="app_section_new_order">OrthopedicDB - Новая запись</string>
+    <string name="app_section_all_orders">OrthopedicDB - Все записи</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="greeting">База данных ортопедической обуви</string>
+    
+    <!-- Меню -->
+    <string name="new_order">Новый заказ</string>
+    <string name="search">Поиск</string>
+    <string name="history">История заказов</string>
+    <string name="gallery">Галерея</string>
 
 </resources>

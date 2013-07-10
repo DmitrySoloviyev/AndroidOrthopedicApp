@@ -1,0 +1,359 @@
+package com.example.orthopedicdb;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class DB {
+
+	private static final String DB_NAME = "SHOES";
+	private static final int DATABASE_VERSION = 7;
+	private final Context mCtx;
+	private DBHelper mDBHelper;
+	public SQLiteDatabase mDB;
+
+	public DB(Context ctx) {
+		mCtx = ctx;
+	}
+
+	// открываем подключение
+	public void open() {
+		mDBHelper = new DBHelper(mCtx, DB_NAME, null, DATABASE_VERSION);
+		mDB = mDBHelper.getWritableDatabase();
+	}
+
+	// закрываем подключение
+	public void close() {
+		if (mDBHelper != null) mDBHelper.close();
+	}
+
+	// НОВЫЙ ЗАКАЗ
+	public void addNewOrder(String OrderID, String model_id,
+			String model_picture_src, int material, String size_left,
+			String size_right, String urk_left, String urk_right,
+			String height_left, String height_right, String top_volume_left,
+			String top_volume_right, String ankle_volume_left,
+			String ankle_volume_right, String kv_volume_left,
+			String kv_volume_right, String customerSN, String customerFN,
+			String customerP, long employee_id) {
+
+		ContentValues values_in_order = new ContentValues();
+		ContentValues values_in_model = new ContentValues();
+
+		values_in_model.put("_id", model_id);
+		values_in_model.put("ModelPictureSRC", model_picture_src);
+
+		values_in_order.put("OrderID", OrderID);
+		values_in_order.put("ModelID", model_id);
+		values_in_order.put("MaterialID", material);
+		values_in_order.put("SizeLEFT", size_left);
+		values_in_order.put("SizeRIGHT", size_right);
+		values_in_order.put("UrkLEFT", urk_left);
+		values_in_order.put("UrkRIGHT", urk_right);
+		values_in_order.put("HeightLEFT", height_left);
+		values_in_order.put("HeightRIGHT", height_right);
+		values_in_order.put("TopVolumeLEFT", top_volume_left);
+		values_in_order.put("TopVolumeRIGHT", top_volume_right);
+		values_in_order.put("AnkleVolumeLEFT", ankle_volume_left);
+		values_in_order.put("AnkleVolumeRIGHT", ankle_volume_right);
+		values_in_order.put("KvVolumeLEFT", kv_volume_left);
+		values_in_order.put("KvVolumeRIGHT", kv_volume_right);
+		values_in_order.put("CustomerSN", customerSN);
+		values_in_order.put("CustomerFN", customerFN);
+		values_in_order.put("CustomerP", customerP);
+		values_in_order.put("EmployeeID", employee_id);
+
+		mDB.beginTransaction();
+		try {
+			mDB.insert("Models", null, values_in_model);
+			mDB.insert("Orders", null, values_in_order);
+			mDB.setTransactionSuccessful();
+		} finally {
+			mDB.endTransaction();
+		}
+
+		//mDB.close();
+
+	}
+
+	// Количество заказов в базе
+	public int countOrders(){
+		Cursor orders  = mDB.rawQuery("SELECT OrderID FROM Orders", null);
+		return orders.getCount();
+	}
+	
+	// Количество модельеров в базе
+	public int countEmployees(){
+		Cursor employees = mDB.rawQuery("SELECT _id FROM Employees WHERE _id > 1", null);
+		return employees.getCount();
+	}
+	
+	// НОВЫЙ СОТРУДНИК
+	public long addNewEmployee(String surname, String firstname, String patronymic) {
+		ContentValues cv = new ContentValues();
+
+		cv.put("EmployeeSN", surname);
+		cv.put("EmployeeFN", firstname);
+		cv.put("EmployeeP", patronymic);
+
+		long id = mDB.insert("Employees", null, cv);
+		//mDB.close();
+		return id;
+	}
+
+	// НОВЫЙ МАТЕРИАЛ
+	public long addNewMaterial(String name) {
+		ContentValues cv = new ContentValues();
+
+		cv.put("MaterialValue", name);
+
+		long id = mDB.insert("Materials", null, cv);
+		//mDB.close();
+		return id;
+	}
+
+	// ВСЕ ЗАПИСИ (КРАТКО)
+	public Cursor getAllShortOrders() {
+		String sql = "SELECT o._id, o.OrderID AS OrderID, o.ModelID AS Model, mat.MaterialValue AS Material, " +
+					 "SUBSTR(CustomerSN, 1)||'.'||SUBSTR(CustomerFN, 1, 1)||'.'||SUBSTR(CustomerP, 1, 1) as Customer, " +
+					 "SUBSTR(emp.EmployeeSN, 1)||'.'||SUBSTR(emp.EmployeeFN, 1, 1)||'.'||SUBSTR(emp.EmployeeP, 1, 1) as Employee " +
+					 "FROM Orders AS o " +
+					 "INNER JOIN Models AS mod ON o.ModelID=mod._id " +
+					 "INNER JOIN Materials AS mat ON o.MaterialID=mat._id " +
+					 "INNER JOIN Employees AS emp ON o.EmployeeID=emp._id;";
+		return mDB.rawQuery(sql, null);
+	}
+
+	// ВСЕ ЗАПИСИ (ПОДРОБНО)
+	public Cursor getDetailedOrderById(long ID) {
+		
+		String sql = "SELECT o._id, " +
+							"o.OrderID AS OrderID, " +
+							"o.ModelID AS Model, " +
+							"mat.MaterialValue AS Material, " +
+							"o.SizeLEFT, " +
+							"o.SizeRIGHT, " +
+							"o.UrkLEFT, " +
+							"o.UrkRIGHT, " +
+							"o.HeightLEFT, " +
+							"o.HeightRIGHT, " +
+							"o.TopVolumeLEFT, " +
+							"o.TopVolumeRIGHT, " +
+							"o.AnkleVolumeLEFT, " +
+							"o.AnkleVolumeRIGHT, " +
+							"o.KvVolumeLEFT, " +
+							"o.KvVolumeRIGHT, " +
+							"o.CustomerSN, " +
+							"o.CustomerFN, " +
+							"o.CustomerP, " +
+							"emp.EmployeeSN, " +
+							"emp.EmployeeFN, " +
+							"emp.EmployeeP," +
+							"mod.ModelPictureSRC AS ModelIMG " +
+							"FROM Orders AS o " +
+							"INNER JOIN Models AS mod ON o.ModelID=mod._id " +
+							"INNER JOIN Materials AS mat ON o.MaterialID=mat._id " +
+							"INNER JOIN Employees AS emp ON o.EmployeeID=emp._id " +
+							"WHERE o._id=?;";
+		return mDB.rawQuery(sql, new String[]{ String.valueOf(ID) });
+	}
+
+	// Проверка уникальности ID //
+	public boolean checkID(String id) {
+		Cursor cursor = mDB.rawQuery("SELECT OrderID FROM Orders WHERE OrderID=?", new String[] { id });
+		if (cursor.getCount() == 0)
+			return true;
+		else
+			return false;
+	}
+
+	// Автозаполнение AutoCompleteTextView МОДЕЛЬ//
+	public List<String> getModelList() {
+		List<String> labels = new ArrayList<String>();
+
+		Cursor cursor = mDB.rawQuery("SELECT DISTINCT _id FROM Models", null);
+		if (cursor != null) {
+			if (cursor.moveToFirst()) {
+				String str;
+				do {
+					str = "";
+					// int modelid = cursor.getColumnIndex("MaterialValue"); = 0
+					str = cursor.getString(0);
+					labels.add(str);
+				} while (cursor.moveToNext());
+			}
+			cursor.close();
+		}
+		
+		return labels;
+	}
+
+	// Автозаполнение SPINNER МАТЕРИАЛЫ
+	public List<String> getMaterialList() throws SQLException {
+		List<String> labels = new ArrayList<String>();
+
+		Cursor cursor = mDB.rawQuery("SELECT DISTINCT MaterialValue FROM Materials", null);	
+		//Cursor cursor = mDB.query("Materials", new String[]{"MaterialValue"}, null, null, null, null, null);
+
+		if (cursor != null) {
+			if (cursor.moveToFirst()) {
+				String str;
+				do {
+					str = "";
+					str = cursor.getString(0);
+					labels.add(str);
+				} while (cursor.moveToNext());
+			}
+			cursor.close();
+		}
+
+		return labels;
+	}
+
+	// Автозаполнение SPINNER МОДЕЛЬЕРЫ//
+	public List<String> getEmployeeList() {
+		List<String> labels = new ArrayList<String>();
+		
+		Cursor cursor = mDB.rawQuery("SELECT EmployeeSN, EmployeeFN, EmployeeP FROM Employees", null);
+		//Cursor cursor = mDB.query("Employees", new String[]{"EmployeeSN", "EmployeeFN", "EmployeeP"}, null, null, null, null, null);
+
+		if (cursor != null) {
+			if (cursor.moveToFirst()) {
+				String str;
+				do {
+					str = "";
+					int employeesn = cursor.getColumnIndex("EmployeeSN");
+					int employeefn = cursor.getColumnIndex("EmployeeFN");
+					int employeep = cursor.getColumnIndex("EmployeeP");
+					str = cursor.getString(employeesn) + " "
+							+ cursor.getString(employeefn) + " "
+							+ cursor.getString(employeep);
+					labels.add(str);
+				} while (cursor.moveToNext());
+			}
+			cursor.close();
+		}
+		return labels;
+	}
+
+	// УДАЛЕНИЕ ЗАПИСИ
+	public void deleteOrderById(long id){
+		mDB.delete("Orders", "_id" + " = " + id, null);
+	}
+	
+	// РЕДАКТИРОВАНИЕ ЗАПИСИ
+	public void updateOrderById(long id){
+		
+	}
+	
+	
+	// ПОЛУЧЕНИЕ ЗАПИСИ ПО ID
+	public void findOrderById(long id){
+		
+	}
+	
+	
+	// ПОИСК
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// /////////////////////////////////////////////////////////////////////////////////////
+
+	private class DBHelper extends SQLiteOpenHelper {
+
+		ContentValues cv = new ContentValues();
+
+		public DBHelper(Context context, String name, CursorFactory factory, int version) {
+			super(context, name, factory, version);
+		}
+
+		@Override
+		public void onCreate(SQLiteDatabase db) {
+			// ТАБЛИЦА МАТЕРИАЛОВ
+			db.execSQL("CREATE TABLE Materials ( "
+					+ "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+					+ "MaterialValue TEXT NOT NULL);");
+
+			String[] materials = { " +++ новый материал +++", "К/П", "Траспира",
+					"Мех Натуральный", "Мех Искусственный", "Мех Полушерстяной" };
+
+			for (int i = 0; i < materials.length; i++) {
+				cv.clear();
+				cv.put("MaterialValue", materials[i]);
+				db.insert("Materials", null, cv);
+			}
+
+			// УСОВЕРШЕНСТВОВАТЬ!!!!!! ВПИСАТЬ ПОЛЬЗОВАТЕЛЯ ТЕЛЕФОНА!!!
+			// ТАБЛИЦА СОТРУДНИКОВ
+			db.execSQL("CREATE TABLE Employees ( "
+					+ "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+					+ "EmployeeSN TEXT NOT NULL," + "EmployeeFN TEXT NOT NULL,"
+					+ "EmployeeP TEXT NOT NULL);");
+			cv.clear();
+			cv.put("EmployeeSN", " +++ ");
+			cv.put("EmployeeFN", "новый модельер");
+			cv.put("EmployeeP", " +++ ");
+			db.insert("Employees", null, cv);
+
+			// ТАБЛИЦА МОДЕЛЕЙ
+			final String CREATE_DB_Model = "CREATE TABLE Models ( "
+					+ "_id TEXT NOT NULL PRIMARY KEY,"
+					+ "ModelPictureSRC TEXT NOT NULL DEFAULT 'no image');";
+			db.execSQL(CREATE_DB_Model); //// "ModelDescription TEXT NOT NULL DEFAULT 'no description',"
+
+			final String CREATE_TABLE_Orders = "CREATE TABLE Orders ( "
+					+ "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
+					+ "OrderID TEXT NOT NULL, "
+					+ "ModelID INTEGER NOT NULL, "
+					+ "MaterialID INTEGER NOT NULL, "
+					+ "SizeLEFT INTEGER NOT NULL, "
+					+ "SizeRIGHT INTEGER NOT NULL, "
+					+ "UrkLEFT INTEGER NOT NULL, "
+					+ "UrkRIGHT INTEGER NOT NULL, "
+					+ "HeightLEFT INTEGER NOT NULL, "
+					+ "HeightRIGHT INTEGER NOT NULL, "
+					+ "TopVolumeLEFT REAL NOT NULL, "
+					+ "TopVolumeRIGHT REAL NOT NULL, "
+					+ "AnkleVolumeLEFT REAL NOT NULL, "
+					+ "AnkleVolumeRIGHT REAL NOT NULL, "
+					+ "KvVolumeLEFT REAL NOT NULL, "
+					+ "KvVolumeRIGHT REAL NOT NULL, "
+					+ "CustomerSN TEXT NOT NULL, "
+					+ "CustomerFN TEXT NOT NULL, "
+					+ "CustomerP TEXT NOT NULL, "
+					+ "EmployeeID INTEGER NOT NULL, "
+					+ "FOREIGN KEY(ModelID) REFERENCES Models(_id) "
+					+ "FOREIGN KEY(EmployeeID) REFERENCES Employees(_id) "
+					+ "FOREIGN KEY(MaterialID) REFERENCES Materials(_id));";
+			db.execSQL(CREATE_TABLE_Orders);
+
+		}
+
+		@Override
+		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+			db.execSQL("DROP TABLE IF EXISTS Orders");
+			db.execSQL("DROP TABLE IF EXISTS Materials");
+			db.execSQL("DROP TABLE IF EXISTS Models");
+			db.execSQL("DROP TABLE IF EXISTS Employees");
+			onCreate(db);
+		}
+	}
+}
