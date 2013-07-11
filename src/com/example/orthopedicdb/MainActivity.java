@@ -59,7 +59,11 @@ public class MainActivity extends Activity{
 	    super.onStop();
 	    db.close();
 	}
-
+/*
+	public void onBackPressed() {
+		finish();
+	}
+*/
 	//меню
   	public boolean onCreateOptionsMenu(Menu menu){
   		MenuInflater menuInflater = getMenuInflater();

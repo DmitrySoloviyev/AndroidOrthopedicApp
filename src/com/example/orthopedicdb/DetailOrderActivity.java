@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -32,8 +31,6 @@ public class DetailOrderActivity extends Activity {
 	    
 	    Intent intent = getIntent();
 	    ID = intent.getLongExtra("ID", 1);
-	    
-	    Log.d(LOG_TAG, " " + ID);
 
 	 	cursor = db.getDetailedOrderById(ID);
 	 	startManagingCursor(cursor);
@@ -100,6 +97,12 @@ public class DetailOrderActivity extends Activity {
 	protected void onStop() {
 	    super.onStop();
 	    db.close();
+	}
+	
+	public void onBackPressed() {
+		Intent allOrdersIntent = new Intent(getApplicationContext(), AllOrdersActivityShort.class);
+		startActivity(allOrdersIntent);
+//		this.finish();
 	}
 	
 	// СОЗДАЕМ МЕНЮ

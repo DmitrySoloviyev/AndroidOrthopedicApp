@@ -55,13 +55,12 @@ public class AllOrdersActivityShort extends Activity{
 	}// ON CREATE
 	
 	public OnItemClickListener myOnClick = new OnItemClickListener() {
-
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View v, int arg2, long arg3) {
 			Intent detailedOrderIntent = new Intent(getApplicationContext(), DetailOrderActivity.class);
 			detailedOrderIntent.putExtra("ID", arg3);
 			startActivity(detailedOrderIntent);
-			AllOrdersActivityShort.this.finish();
+			finish();
 		}
 	};
 	
@@ -75,6 +74,11 @@ public class AllOrdersActivityShort extends Activity{
 	    db.close();
 	}
 
+	public void onBackPressed() {
+		Intent main = new Intent(getApplicationContext(), MainActivity.class);
+		startActivity(main);
+	}
+	
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		    super.onCreateContextMenu(menu, v, menuInfo);
 		    menu.add(0, 1, 0, "Редактировать");

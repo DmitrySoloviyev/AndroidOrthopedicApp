@@ -36,7 +36,7 @@ public class DB {
 
 	// НОВЫЙ ЗАКАЗ
 	public void addNewOrder(String OrderID, String model_id,
-			String model_picture_src, int material, String size_left,
+			String model_picture_src, long material, String size_left,
 			String size_right, String urk_left, String urk_right,
 			String height_left, String height_right, String top_volume_left,
 			String top_volume_right, String ankle_volume_left,
@@ -137,6 +137,7 @@ public class DB {
 		String sql = "SELECT o._id, " +
 							"o.OrderID AS OrderID, " +
 							"o.ModelID AS Model, " +
+							"mat._id AS MaterialID, " +
 							"mat.MaterialValue AS Material, " +
 							"o.SizeLEFT, " +
 							"o.SizeRIGHT, " +
@@ -153,6 +154,7 @@ public class DB {
 							"o.CustomerSN, " +
 							"o.CustomerFN, " +
 							"o.CustomerP, " +
+							"emp._id AS EmployeeID, " +
 							"emp.EmployeeSN, " +
 							"emp.EmployeeFN, " +
 							"emp.EmployeeP," +
@@ -164,6 +166,7 @@ public class DB {
 							"WHERE o._id=?;";
 		return mDB.rawQuery(sql, new String[]{ String.valueOf(ID) });
 	}
+
 
 	// Проверка уникальности ID //
 	public boolean checkID(String id) {
@@ -243,14 +246,40 @@ public class DB {
 		return labels;
 	}
 
+	public List<String> getEmployeeList(long id) {
+		List<String> labels = new ArrayList<String>();
+		
+		Cursor cursor = mDB.rawQuery("SELECT EmployeeSN, EmployeeFN, EmployeeP FROM Employees WHERE _id = " + id, null);
+		//Cursor cursor = mDB.query("Employees", new String[]{"EmployeeSN", "EmployeeFN", "EmployeeP"}, null, null, null, null, null);
+
+		if (cursor != null) {
+			if (cursor.moveToFirst()) {
+				String str;
+				do {
+					str = "";
+					int employeesn = cursor.getColumnIndex("EmployeeSN");
+					int employeefn = cursor.getColumnIndex("EmployeeFN");
+					int employeep = cursor.getColumnIndex("EmployeeP");
+					str = cursor.getString(employeesn) + " "
+							+ cursor.getString(employeefn) + " "
+							+ cursor.getString(employeep);
+					labels.add(str);
+				} while (cursor.moveToNext());
+			}
+			cursor.close();
+		}
+		return labels;
+	}
+	
 	// УДАЛЕНИЕ ЗАПИСИ
 	public void deleteOrderById(long id){
 		mDB.delete("Orders", "_id" + " = " + id, null);
 	}
 	
 	// РЕДАКТИРОВАНИЕ ЗАПИСИ
-	public void updateOrderById(long id){
-		
+	public void updateOrderById(long id, ContentValues cv){
+		String sql_update = "UPDATE ";
+		mDB.rawQuery(sql_update, new String[]{ String.valueOf(id) });
 	}
 	
 	

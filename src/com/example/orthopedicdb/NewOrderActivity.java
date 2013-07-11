@@ -22,7 +22,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class NewOrderActivity extends Activity implements OnClickListener{
@@ -30,7 +29,7 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 	Button submit_new_order;
 	ImageButton get_picture;
 
-    int choosed_material;
+    long choosed_material;
     long choosed_employee;
     String model_img_src = "no_image";
     
@@ -110,6 +109,7 @@ public class NewOrderActivity extends Activity implements OnClickListener{
         new_ankle_volume = (EditText)findViewById(R.id.new_AnkleVolume);
         new_kv_volume	 = (EditText)findViewById(R.id.new_KvVolume);
         new_customer	 = (EditText)findViewById(R.id.new_customer);
+        
 	}//END ON CREATE
 
 
@@ -154,7 +154,7 @@ public class NewOrderActivity extends Activity implements OnClickListener{
         		Intent intent = new Intent(getApplicationContext(), NewMaterial.class);
         	    startActivityForResult(intent, REQUEST_ADD_MATERIAL);
         	}else{
-        		choosed_material = position;
+        		choosed_material = id + 1;
         	}
         }
         public void onNothingSelected(AdapterView<?> arg0) {}
@@ -168,7 +168,7 @@ public class NewOrderActivity extends Activity implements OnClickListener{
           		Intent intent = new Intent(getApplicationContext(), NewEmployee.class);
           	    startActivityForResult(intent, REQUEST_ADD_EMPLOYEE);
           	}else{
-          		choosed_employee = position;
+          		choosed_employee = id + 1;
           	}
           }
           public void onNothingSelected(AdapterView<?> arg0) {}
@@ -223,11 +223,6 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 
     /* Результаты из активити*/
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	    /*
-		if (data == null) {
-	    	return;
-	    }
-	     */
 	    if (resultCode == RESULT_OK) {
 	        switch (requestCode) {
 	        
@@ -288,6 +283,16 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 			final String kv_volume_left;
 			final String kv_volume_right;
 			
+			
+			if(order_number.length() == 0){
+				new_order_number.setError("Введите номер заказа");
+				return;
+			}
+			
+			if(!db.checkID(order_number)){
+				new_order_number.setError("Такой заказ уже есть в базе");
+				return;
+			}
 			/*
 			Matcher match_new_size 			= Pattern.compile("(\\d\\d)|(\\d\\d \\d\\d)").matcher(size);
 	        Matcher match_new_urk 			= Pattern.compile("(\\d\\d\\d)|(\\d\\d \\d\\d\\d)").matcher(urk);
@@ -295,17 +300,9 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 	        Matcher match_new_top_volume 	= Pattern.compile("(\\d\\d\\.\\d)|(\\d\\d\\.\\d)").matcher(top_volume);
 	        Matcher match_new_ankle_volume  = Pattern.compile("(\\d\\d\\.\\d)|(\\d\\d\\.\\d)").matcher(ankle_volume);
 	        Matcher match_new_kv_volume 	= Pattern.compile("(\\d\\d\\.\\d)|(\\d\\d\\.\\d)").matcher(kv_volume);
-	       
+
 	        
-	        if(order_number.length() == 0){
-				new_order_number.setError("Введите номер заказа");
-				return;
-			}
 	        
-	        if(!mydb.checkID(order_number)){
-				new_order_number.setError("Такой заказ уже есть в базе");
-				return;
-			}
 			
 			if(model.length() == 0){
 				new_model.setError("Введите номер модели");

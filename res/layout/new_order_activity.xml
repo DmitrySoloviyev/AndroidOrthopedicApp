@@ -23,6 +23,7 @@
                 android:layout_marginRight="10dp"
                 android:ems="10"
                 android:hint="№ заказа"
+                android:inputType="number|text"
                 android:maxLength="10"
                 android:maxLines="1"
                 android:textSize="20sp"
@@ -30,7 +31,6 @@
 
                 <requestFocus />
             </EditText>
-
         </TableRow>
 
         <TableRow
@@ -57,7 +57,6 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center_vertical"
                 android:src="@android:drawable/ic_menu_camera" />
-
         </TableRow>
 
         <TableRow
@@ -74,6 +73,7 @@
                 android:layout_marginRight="10dp"
                 android:ems="10"
                 android:hint="Размер"
+                android:inputType="number|text"
                 android:maxLength="5"
                 android:maxLines="1"
                 android:textSize="20sp"
@@ -95,6 +95,7 @@
                 android:layout_marginRight="10dp"
                 android:ems="10"
                 android:hint="УРК"
+                android:inputType="number|text"
                 android:maxLength="7"
                 android:maxLines="1"
                 android:textSize="20sp"
@@ -116,6 +117,7 @@
                 android:layout_marginRight="10dp"
                 android:ems="10"
                 android:hint="Высота"
+                android:inputType="number|text"
                 android:maxLength="5"
                 android:maxLines="1"
                 android:textSize="20sp"
@@ -137,6 +139,7 @@
                 android:layout_marginRight="10dp"
                 android:ems="10"
                 android:hint="Объем верха"
+                android:inputType="number|text"
                 android:maxLength="9"
                 android:maxLines="1"
                 android:textSize="20sp"
@@ -158,28 +161,8 @@
                 android:layout_marginRight="10dp"
                 android:ems="10"
                 android:hint="Объем КВ"
+                android:inputType="number|text"
                 android:maxLength="9"
-                android:maxLines="1"
-                android:textSize="20sp"
-                android:textStyle="italic" />
-
-        </TableRow>
-        
-        <TableRow
-            android:id="@+id/tableRow8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginTop="10dp" >
-
-            <EditText
-                android:id="@+id/new_customer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:ems="10"
-                android:hint="Ф.И.О заказчика"
-                android:maxLength="20"
                 android:maxLines="1"
                 android:textSize="20sp"
                 android:textStyle="italic" />
@@ -200,36 +183,55 @@
                 android:layout_marginRight="10dp"
                 android:ems="10"
                 android:hint="Объем лодыжки"
+                android:inputType="number|text"
                 android:maxLength="9"
                 android:maxLines="1"
                 android:textSize="20sp"
                 android:textStyle="italic" />
 
-
         </TableRow>
-        
+
+        <TableRow
+            android:id="@+id/tableRow8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_marginTop="10dp" >
+
+            <EditText
+                android:id="@+id/new_customer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:ems="10"
+                android:hint="Ф.И.О заказчика"
+                android:maxLines="1"
+                android:textSize="20sp"
+                android:textStyle="italic" />
+        </TableRow>
+
         <Spinner
             android:id="@+id/new_employee"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp" />
-        
+
         <Spinner
             android:id="@+id/new_materials"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp" />
-            
-            <Button
-                android:id="@+id/submit_new_order"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="Записать!"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        
+
+        <Button
+            android:id="@+id/submit_new_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="Записать!"
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </TableLayout>
+
 </ScrollView>
