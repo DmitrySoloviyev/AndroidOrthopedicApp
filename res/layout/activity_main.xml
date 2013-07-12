@@ -23,60 +23,52 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/detailedOrderID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/greeting"
-        android:layout_below="@+id/greeting"
-        android:layout_marginTop="20dp"
-        android:text="Статус:"
-        android:textSize="15sp"
-        android:textStyle="italic" />
-
-    <TextView
-        android:id="@+id/Model"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/detailedOrderID"
-        android:layout_alignBottom="@+id/detailedOrderID"
-        android:layout_alignRight="@+id/greeting"
-        android:layout_marginTop="20dp"
-        android:text="OK"
-        android:textColor="#1c5823"
-        android:textSize="15sp" />
-
-    <TextView
         android:id="@+id/count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/Material"
         android:layout_alignBottom="@+id/Material"
-        android:layout_alignRight="@+id/Model"
+        android:layout_alignRight="@+id/greeting"
         android:layout_marginTop="10dp"
         android:text="0"
-        android:textSize="15sp"
+        android:textSize="20sp"
         android:textStyle="italic" />
 
     <TextView
         android:id="@+id/Material"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/detailedOrderID"
-        android:layout_below="@+id/detailedOrderID"
+        android:layout_alignLeft="@+id/greeting"
+        android:layout_below="@+id/greeting"
         android:layout_marginTop="15dp"
-        android:text="Всего записей:"
-        android:textSize="15sp"
+        android:text="Записей в базе:"
+        android:textSize="20sp"
         android:textStyle="italic" />
 
-    <TextView
-        android:id="@+id/textView5"
+    <EditText
+        android:id="@+id/quickly_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/Material"
-        android:layout_below="@+id/Material"
-        android:layout_marginTop="15dp"
-        android:text="Последний заказ:"
-        android:textSize="15sp"
-        android:textStyle="italic" />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/count"
+        android:layout_marginTop="55dp"
+        android:layout_toLeftOf="@+id/quickly_search_submit"
+        android:ems="10"
+        android:hint="Быстрый поиск"
+        android:maxLines="1"
+        android:textSize="20sp"
+        android:textStyle="italic" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/quickly_search_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/quickly_search"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/quickly_search"
+        android:text="Go!" />
 
 </RelativeLayout>

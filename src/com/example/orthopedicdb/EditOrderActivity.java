@@ -72,16 +72,14 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 	String model_img_src;
 	
 	int old_employee;
+	int old_material;
 	
-	int changed_material;
-	int changed_employee;
-	
-	final int DIALOG_SELECT_MATERIAL = 1;
-	final int DIALOG_SELECT_EMPLOYEE = 2;
+	long changed_material;
+	long changed_employee;
 	
 	final int REQUEST_ADD_MATERIAL = 1;
 	final int REQUEST_ADD_EMPLOYEE = 2;
-	final int REQUEST_ADD_FOTO = 3;
+	final int REQUEST_ADD_FOTO 	   = 3;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -97,6 +95,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 
 		cursor = db.getDetailedOrderById(ID);
 		cursor.moveToFirst();
+		
 		submit_update = (Button)findViewById(R.id.submit_update);
 		submit_update.setOnClickListener(this);
 		modelIMG = (ImageButton)findViewById(R.id.updateModelIMG);
@@ -156,7 +155,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 		update_customerP.setText(customerp);			
 
 		// узнаем каков у заказа МАТЕРИАЛ для вызова диалогового окна для его выбора
-		int old_material = cursor.getInt( cursor.getColumnIndex("MaterialID") ) - 1;
+		old_material = cursor.getInt( cursor.getColumnIndex("MaterialID") )-1;
 			spinner_update_material = (Spinner)findViewById(R.id.updateMaterial);
 	        List<String> materials = db.getMaterialList();
 	        ArrayAdapter<String> uddateMaterialAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, materials);
@@ -167,7 +166,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 	        spinner_update_material.setSelection(old_material);
 	        
 		// узнаем МОДЕЛЬЕР заказа для вызова диалогового окна для его выбора
-		old_employee = cursor.getInt( cursor.getColumnIndex("EmployeeID") ) - 1;
+		old_employee = cursor.getInt( cursor.getColumnIndex("EmployeeID") )-1;
 			spinner_update_employee = (Spinner)findViewById(R.id.updateEmployee);
 	        List<String> employees = db.getEmployeeList();
 	        ArrayAdapter<String> employeeAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, employees);
@@ -209,7 +208,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
         spinner_update_material.setAdapter(materialAdapter);
         spinner_update_material.setPrompt("Выберите материал");
         spinner_update_material.setOnItemSelectedListener(materialUpdated);
-        spinner_update_material.setSelection(1);
+        spinner_update_material.setSelection(old_material);
         
         // обновить список модельеров, при создании нового
         List<String> employees = db.getEmployeeList();
@@ -218,13 +217,13 @@ public class EditOrderActivity extends Activity implements OnClickListener {
         spinner_update_employee.setAdapter(employeeAdapter);
         spinner_update_employee.setPrompt("Выберите модельера");
         spinner_update_employee.setOnItemSelectedListener(employeeUpdated);
-        spinner_update_employee.setSelection(1);
+        spinner_update_employee.setSelection(old_employee);
 	}
 	
 	public void onBackPressed() {
-		Intent detailedOrderIntent = new Intent(getApplicationContext(), DetailOrderActivity.class);
-		startActivity(detailedOrderIntent);
-		this.finish();
+		Intent allOrdersIntent = new Intent(getApplicationContext(), AllOrdersActivityShort.class);
+		startActivity(allOrdersIntent);
+		finish();
 	}
 	
 	public OnItemSelectedListener employeeUpdated = new OnItemSelectedListener() {
@@ -234,7 +233,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
           		Intent intent = new Intent(getApplicationContext(), NewEmployee.class);
           	    startActivityForResult(intent, REQUEST_ADD_EMPLOYEE);
           	}else{
-          		changed_employee = (int) (id + 1);
+          		changed_employee = id + 1;
           	}
         }
         public void onNothingSelected(AdapterView<?> arg0) {}
@@ -247,7 +246,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
   					Intent intent = new Intent(getApplicationContext(), NewMaterial.class);
   					startActivityForResult(intent, REQUEST_ADD_MATERIAL);
         	}else{
-        		changed_employee = (int) (id + 1);
+        		changed_material = id + 1;
         	}
           }
           public void onNothingSelected(AdapterView<?> arg0) {}
@@ -291,6 +290,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 		case R.id.submit_update:
 			
 			String order_number_after = update_order_number.getText().toString().trim();
+			model 				= update_model.getText().toString().trim();
 			size_left 			= update_size_left.getText().toString().trim();
 			size_right 			= update_size_right.getText().toString().trim();
 			urk_left 			= update_urk_left.getText().toString().trim();
@@ -306,13 +306,36 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 			customersn 			= update_customerSN.getText().toString().trim();
 			customerfn 			= update_customerFN.getText().toString().trim();
 			customerp 			= update_customerP.getText().toString().trim();
-			/*
-			if(order_number_before != order_number_after){
+			
+			if(!order_number_before.equals(order_number_after)){
 				if(!db.checkID(order_number_after)){
 					update_order_number.setError("Такой заказ уже есть в базе");
 					return;
 				}
-			}*/
+			}
+			
+			
+			db.updateOrderById(ID, 
+							order_number_after, 
+							model,
+							model_img_src, 
+							changed_material,
+							size_left,
+							size_right, 
+							urk_left, 
+							urk_right,
+							height_left, 
+							height_right, 
+							top_volume_left,
+							top_volume_right, 
+							ankle_volume_left,
+							ankle_volume_right, 
+							kv_volume_left,
+							kv_volume_right, 
+							customersn, 
+							customerfn,
+							customerp, 
+							changed_employee);
 			
 			Toast.makeText(this, "Изменения сохранены!", Toast.LENGTH_LONG).show();
 			onBackPressed();

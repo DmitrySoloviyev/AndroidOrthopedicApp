@@ -90,13 +90,11 @@ public class AllOrdersActivityShort extends Activity{
 		switch (item.getItemId()) {
 		case 1:			// редактирование
 			AdapterContextMenuInfo acmi_edit = (AdapterContextMenuInfo) item.getMenuInfo();
-			Intent editOrderIntent = new Intent();
+			Intent editOrderIntent = new Intent(getApplicationContext(), EditOrderActivity.class);
 				editOrderIntent.putExtra("ID", acmi_edit.id);
-				setResult(RESULT_OK, editOrderIntent);
-				editOrderIntent.setClass(getApplicationContext(), EditOrderActivity.class);
-			startActivityForResult(editOrderIntent, 1);
+			startActivity(editOrderIntent);
 			// обновляем курсор
-		    cursor.requery();
+		    //cursor.requery();
 			return true;
 			//break;
 		case 2:			// удаление

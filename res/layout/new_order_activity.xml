@@ -3,47 +3,39 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <TableLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:background="@drawable/activity_bg"
-        android:stretchColumns="*" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/activity_bg" >
 
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/new_order_number"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginTop="5dp" >
+            android:layout_margin="10dp"
+            android:ems="10"
+            android:hint="№ заказа"
+            android:inputType="number|text"
+            android:maxLength="10"
+            android:maxLines="1"
+            android:textSize="20sp"
+            android:textStyle="italic" >
 
-            <EditText
-                android:id="@+id/new_order_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:ems="10"
-                android:hint="№ заказа"
-                android:inputType="number|text"
-                android:maxLength="10"
-                android:maxLines="1"
-                android:textSize="20sp"
-                android:textStyle="italic" >
+            <requestFocus />
+        </EditText>
 
-                <requestFocus />
-            </EditText>
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow2"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
             <AutoCompleteTextView
                 android:id="@+id/new_model"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginRight="10dp"
+                android:layout_margin="10dp"
+                android:layout_weight="0"
+                android:completionThreshold="1"
                 android:ems="10"
                 android:hint="Модель"
                 android:maxLength="6"
@@ -55,183 +47,145 @@
                 android:id="@+id/get_model_image"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
                 android:src="@android:drawable/ic_menu_camera" />
-        </TableRow>
 
-        <TableRow
-            android:id="@+id/tableRow3"
-            android:layout_width="wrap_content"
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/new_size"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginTop="10dp" >
+            android:layout_margin="10dp"
+            android:ems="10"
+            android:hint="Размер"
+            android:inputType="number|text"
+            android:maxLength="5"
+            android:maxLines="1"
+            android:textSize="20sp"
+            android:textStyle="italic" />
 
-            <EditText
-                android:id="@+id/new_size"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:ems="10"
-                android:hint="Размер"
-                android:inputType="number|text"
-                android:maxLength="5"
-                android:maxLines="1"
-                android:textSize="20sp"
-                android:textStyle="italic" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow4"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/new_urk"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginTop="10dp" >
+            android:layout_margin="10dp"
+            android:ems="10"
+            android:hint="УРК"
+            android:inputType="number|text"
+            android:maxLength="7"
+            android:maxLines="1"
+            android:textSize="20sp"
+            android:textStyle="italic" />
 
-            <EditText
-                android:id="@+id/new_urk"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:ems="10"
-                android:hint="УРК"
-                android:inputType="number|text"
-                android:maxLength="7"
-                android:maxLines="1"
-                android:textSize="20sp"
-                android:textStyle="italic" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow5"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/new_height"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginTop="10dp" >
+            android:layout_margin="10dp"
+            android:ems="10"
+            android:hint="Высота"
+            android:inputType="number|text"
+            android:maxLength="5"
+            android:maxLines="1"
+            android:textSize="20sp"
+            android:textStyle="italic" />
 
-            <EditText
-                android:id="@+id/new_height"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:ems="10"
-                android:hint="Высота"
-                android:inputType="number|text"
-                android:maxLength="5"
-                android:maxLines="1"
-                android:textSize="20sp"
-                android:textStyle="italic" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow6"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/new_TopVolume"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginTop="10dp" >
+            android:layout_margin="10dp"
+            android:ems="10"
+            android:hint="Объем верха"
+            android:inputType="number|text"
+            android:maxLength="9"
+            android:maxLines="1"
+            android:textSize="20sp"
+            android:textStyle="italic" />
 
-            <EditText
-                android:id="@+id/new_TopVolume"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:ems="10"
-                android:hint="Объем верха"
-                android:inputType="number|text"
-                android:maxLength="9"
-                android:maxLines="1"
-                android:textSize="20sp"
-                android:textStyle="italic" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow8"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/new_KvVolume"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginTop="10dp" >
+            android:layout_margin="10dp"
+            android:ems="10"
+            android:hint="Объем КВ"
+            android:inputType="number|text"
+            android:maxLength="9"
+            android:maxLines="1"
+            android:textSize="20sp"
+            android:textStyle="italic" />
 
-            <EditText
-                android:id="@+id/new_KvVolume"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:ems="10"
-                android:hint="Объем КВ"
-                android:inputType="number|text"
-                android:maxLength="9"
-                android:maxLines="1"
-                android:textSize="20sp"
-                android:textStyle="italic" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow7"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/new_AnkleVolume"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginTop="10dp" >
+            android:layout_margin="10dp"
+            android:ems="10"
+            android:hint="Объем лодыжки"
+            android:inputType="number|text"
+            android:maxLength="9"
+            android:maxLines="1"
+            android:textSize="20sp"
+            android:textStyle="italic" />
 
-            <EditText
-                android:id="@+id/new_AnkleVolume"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:ems="10"
-                android:hint="Объем лодыжки"
-                android:inputType="number|text"
-                android:maxLength="9"
-                android:maxLines="1"
-                android:textSize="20sp"
-                android:textStyle="italic" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow8"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/new_customerSN"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginTop="10dp" >
+            android:layout_margin="10dp"
+            android:ems="10"
+            android:hint="Фамилия заказчика"
+            android:maxLines="1"
+            android:textSize="20sp"
+            android:textStyle="italic" />
 
-            <EditText
-                android:id="@+id/new_customer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:ems="10"
-                android:hint="Ф.И.О заказчика"
-                android:maxLines="1"
-                android:textSize="20sp"
-                android:textStyle="italic" />
-        </TableRow>
+        <EditText
+            android:id="@+id/new_customerFN"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:ems="10"
+            android:hint="Имя заказчика"
+            android:maxLines="1"
+            android:textSize="20sp"
+            android:textStyle="italic" />
+
+        <EditText
+            android:id="@+id/new_customerP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:ems="10"
+            android:hint="Отчество заказчика"
+            android:maxLines="1"
+            android:textSize="20sp"
+            android:textStyle="italic" />
 
         <Spinner
             android:id="@+id/new_employee"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp" />
+            android:layout_margin="10dp" />
 
         <Spinner
             android:id="@+id/new_materials"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp" />
+            android:layout_margin="10dp" />
 
         <Button
             android:id="@+id/submit_new_order"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:text="Записать!"
             android:textSize="20sp"
             android:textStyle="bold" />
-    </TableLayout>
+
+    </LinearLayout>
 
 </ScrollView>

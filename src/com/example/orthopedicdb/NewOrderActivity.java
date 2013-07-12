@@ -42,7 +42,9 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 	EditText new_top_volume;
 	EditText new_ankle_volume;
 	EditText new_kv_volume;
-	EditText new_customer;
+	EditText new_customerSN;
+	EditText new_customerFN;
+	EditText new_customerP;
 	Spinner spinner_new_employee;
 	Spinner spinner_materials;
 	
@@ -108,7 +110,9 @@ public class NewOrderActivity extends Activity implements OnClickListener{
         new_top_volume	 = (EditText)findViewById(R.id.new_TopVolume);
         new_ankle_volume = (EditText)findViewById(R.id.new_AnkleVolume);
         new_kv_volume	 = (EditText)findViewById(R.id.new_KvVolume);
-        new_customer	 = (EditText)findViewById(R.id.new_customer);
+        new_customerSN	 = (EditText)findViewById(R.id.new_customerSN);
+        new_customerFN	 = (EditText)findViewById(R.id.new_customerFN);
+        new_customerP	 = (EditText)findViewById(R.id.new_customerP);
         
 	}//END ON CREATE
 
@@ -262,100 +266,114 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 			
 			final String order_number = new_order_number.getText().toString().trim();
 			String model 		  	  = new_model.getText().toString().trim();
-			final String size		  = new_size.getText().toString().trim();
-			final String urk 		  = new_urk.getText().toString().trim();
-			final String height 	  = new_height.getText().toString().trim();
-			final String top_volume   = new_top_volume.getText().toString().trim();
-			final String ankle_volume = new_ankle_volume.getText().toString().trim();
-			final String kv_volume 	  = new_kv_volume.getText().toString().trim();
-			final String customer 	  = new_customer.getText().toString().trim();
+			String size		  		= new_size.getText().toString().trim();
+			String urk 		  		= new_urk.getText().toString().trim();
+			String height 	  		= new_height.getText().toString().trim();
+			String top_volume   	= new_top_volume.getText().toString().trim();
+			String ankle_volume 	= new_ankle_volume.getText().toString().trim();
+			String kv_volume 	  	= new_kv_volume.getText().toString().trim();
+			String customersn 	  	= new_customerSN.getText().toString().trim();
+			String customerfn 	  	= new_customerFN.getText().toString().trim();
+			String customerp 	  	= new_customerP.getText().toString().trim();
 	  
-			final String size_left;
-			final String size_right;
-			final String urk_left;
-			final String urk_right;
-			final String height_left;
-			final String height_right;
-			final String top_volume_left;
-			final String top_volume_right;
-			final String ankle_volume_left;
-			final String ankle_volume_right;
-			final String kv_volume_left;
-			final String kv_volume_right;
-			
+			String size_left;
+			String size_right;
+			String urk_left;
+			String urk_right;
+			String height_left;
+			String height_right;
+			String top_volume_left;
+			String top_volume_right;
+			String ankle_volume_left;
+			String ankle_volume_right;
+			String kv_volume_left;
+			String kv_volume_right;
 			
 			if(order_number.length() == 0){
 				new_order_number.setError("Введите номер заказа");
 				return;
 			}
-			
 			if(!db.checkID(order_number)){
 				new_order_number.setError("Такой заказ уже есть в базе");
 				return;
 			}
-			/*
-			Matcher match_new_size 			= Pattern.compile("(\\d\\d)|(\\d\\d \\d\\d)").matcher(size);
-	        Matcher match_new_urk 			= Pattern.compile("(\\d\\d\\d)|(\\d\\d \\d\\d\\d)").matcher(urk);
-	        Matcher match_new_height 		= Pattern.compile("(\\d\\d\\.\\d)|(\\d\\d\\.\\d)").matcher(height);
-	        Matcher match_new_top_volume 	= Pattern.compile("(\\d\\d\\.\\d)|(\\d\\d\\.\\d)").matcher(top_volume);
-	        Matcher match_new_ankle_volume  = Pattern.compile("(\\d\\d\\.\\d)|(\\d\\d\\.\\d)").matcher(ankle_volume);
-	        Matcher match_new_kv_volume 	= Pattern.compile("(\\d\\d\\.\\d)|(\\d\\d\\.\\d)").matcher(kv_volume);
-
-	        
-	        
-			
 			if(model.length() == 0){
 				new_model.setError("Введите номер модели");
 				return;
 			}
-			
 			if(size.length() == 0){
-				new_size.setError("Введите размер");
+				new_size.setError("Введите размер(ы)");
 				return;
 			}
-			
 			if(urk.length() == 0){
-				new_urk.setError("Данные по УРК введены неверно");
+				new_urk.setError("Введите значение(я) УРК");
+				return;
+			}
+			if(height.length() == 0){
+				new_height.setError("Введите значение(я) высоты");
+				return;
+			}
+			if(top_volume.length() == 0){
+				new_top_volume.setError("Введите значение(я) объема верха");
+				return;
+			}
+			if(ankle_volume.length() == 0){
+				new_ankle_volume.setError("Введите значение(я) объема лодыжки");
+				return;
+			}
+			if(kv_volume.length() == 0){
+				new_kv_volume.setError("Введите значение(я) КВ");
+				return;
+			}
+			if(customersn.length() == 0){
+				new_customerSN.setError("Введите фамилию заказчика");
+				return;
+			}
+			if(customerfn.length() == 0){
+				new_customerFN.setError("Введите имя заказчика");
+				return;
+			}
+			if(customerp.length() == 0){
+				new_customerP.setError("Введите отчество заказчика");
+				return;
+			}
+
+			Matcher match_new_size = Pattern.compile("(^\\d\\d$)|(^\\d\\d \\d\\d$)").matcher(size);
+			if(!match_new_size.find()){
+				new_size.setError("Размер(ы): данные введены некорректно!");
 				return;
 			}
 			
-			if(!match_new_height.find()){
-				new_height.setError("Данные по высоте введены неверно");
+	        Matcher match_new_urk = Pattern.compile("(^\\d\\d\\d$)|(^\\d\\d\\d \\d\\d\\d$)").matcher(urk);
+	        if(!match_new_urk.find()){
+				new_urk.setError("УРК: данные введены некорректно!");
 				return;
 			}
-			
-			if(!match_new_top_volume.find()){
-				new_top_volume.setError("Объем верха введен неверно");
+
+	        Matcher match_new_height = Pattern.compile("(^\\d\\d$)|(^\\d\\d \\d\\d$)").matcher(height);
+	        if(!match_new_height.find()){
+				new_height.setError("Высота: данные введены некорректно!");
 				return;
 			}
-			
-			if(!match_new_ankle_volume.find()){
-				new_ankle_volume.setError("Объем лодыжки введен неверно");
+
+	        Matcher match_new_top_volume = Pattern.compile("(^\\d\\d(\\.\\d)?$)|(^\\d\\d(\\.\\d)?$)").matcher(top_volume);
+	        if(!match_new_top_volume.find()){
+				new_top_volume.setError("Объем верха: данные введены некорректно!");
 				return;
 			}
-			
-			if(!match_new_kv_volume.find()){
-				new_kv_volume.setError("Объем КВ введен неверно");
+
+	        Matcher match_new_ankle_volume  = Pattern.compile("(^\\d\\d(\\.\\d)?$)|(^\\d\\d(\\.\\d)?$)").matcher(ankle_volume);
+	        if(!match_new_ankle_volume.find()){
+				new_ankle_volume.setError("Объем лодыжки: данные введены некорректно!");
 				return;
 			}
-			
-			if(customer.isEmpty()){
-				new_customer.setError("Введите Ф.И.О заказчика");
+	        
+	        Matcher match_new_kv_volume 	= Pattern.compile("(^\\d\\d(\\.\\d)?$)|(^\\d\\d(\\.\\d)?$)").matcher(kv_volume);
+	        if(!match_new_kv_volume.find()){
+				new_kv_volume.setError("Объем КВ: данные введены некорректно!");
 				return;
 			}
-			
-			if(choosed_material == 0){
-				Toast.makeText(getApplicationContext(), "Выберите материал!", Toast.LENGTH_LONG).show();
-				return;
-			}
-		    if(choosed_employee == 0){
-				Toast.makeText(getApplicationContext(), "Выберите мадельера!", Toast.LENGTH_LONG).show();
-				return;
-			}
-			
-			*/
-			
-			
+
 		  if(size.length() > 2){
 		     	String[] arr_size = size.split(" ");
 		     	size_left  = arr_size[0];
@@ -365,7 +383,7 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 		  }
 		
 		  // УРК //
-		  if(urk.length() > 2){
+		  if(urk.length() > 3){
 		     	String[] arr_urk = urk.split(" ");
 		     	urk_left  = arr_urk[0];
 		     	urk_right = arr_urk[1];
@@ -409,36 +427,29 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 		  	kv_volume_left = kv_volume_right = kv_volume;
 		  }
 		  
-		  String[] customerFIO = customer.split(" ");
-		  String customerSN = customerFIO[0];
-		  String customerFN = customerFIO[1];
-		  String customerP  = customerFIO[2];
-		  
-			//Toast.makeText(getApplicationContext(), "Размер: " + order_number, Toast.LENGTH_LONG).show();
-		  
 			db.addNewOrder(order_number,
-						 model,
-						 model_img_src,
-						 choosed_material,
-						 size_left, 
-						 size_right, 
-						 urk_left, 
-						 urk_right, 
-						 height_left, 
-						 height_right, 
-						 top_volume_left, 
-						 top_volume_right, 
-						 ankle_volume_left, 
-						 ankle_volume_right, 
-						 kv_volume_left, 
-						 kv_volume_right,
-						 customerSN,
-						 customerFN,
-						 customerP,
-						 choosed_employee);
+							 model,
+							 model_img_src,
+							 choosed_material,
+							 size_left, 
+							 size_right, 
+							 urk_left, 
+							 urk_right, 
+							 height_left, 
+							 height_right, 
+							 top_volume_left, 
+							 top_volume_right, 
+							 ankle_volume_left, 
+							 ankle_volume_right, 
+							 kv_volume_left, 
+							 kv_volume_right,
+							 customersn,
+							 customerfn,
+							 customerp,
+							 choosed_employee);
 			
 			Toast.makeText(getApplicationContext(), "Запись успешно добавлена!", Toast.LENGTH_SHORT).show();
-			
+	
 			new_order_number.setText("");
 			new_model.setText("");
 			new_size.setText("");
@@ -447,8 +458,10 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 			new_top_volume.setText("");
 			new_ankle_volume.setText("");
 			new_kv_volume.setText("");
-			new_customer.setText("");
-			
+			new_customerSN.setText("");
+			new_customerFN.setText("");
+			new_customerP.setText("");
+
 			break;
 
 		case R.id.get_model_image:

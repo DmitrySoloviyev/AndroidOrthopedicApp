@@ -85,8 +85,9 @@ public class DialogScreen{
 	                
 	            case WHATSNEW: // alert dialog
 	                builder.setTitle("Что нового");
-	                builder.setMessage("Версия 0.0.4 Краткий просмотр заказов (beta), удаление заказа и детальный просмотр заказа\n\n" +
-	                		"0.0.3 Добавление нового заказа (beta)");
+	                builder.setMessage("Версия 0.0.5 Добавлена возможность редактирования заказа (beta).\n\n" +
+	                		"0.0.4 Краткий просмотр заказов (beta), удаление заказа и детальный просмотр заказа.\n" +
+	                		"0.0.3 Добавление нового заказа (beta).");
 	                builder.setCancelable(false);
 	                builder.setNeutralButton("OK", new DialogInterface.OnClickListener(){
 	                    @Override

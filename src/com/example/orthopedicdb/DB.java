@@ -14,7 +14,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DB {
 
 	private static final String DB_NAME = "SHOES";
-	private static final int DATABASE_VERSION = 7;
+	private static final int DATABASE_VERSION = 8;
 	private final Context mCtx;
 	private DBHelper mDBHelper;
 	public SQLiteDatabase mDB;
@@ -47,11 +47,10 @@ public class DB {
 		ContentValues values_in_order = new ContentValues();
 		ContentValues values_in_model = new ContentValues();
 
-		values_in_model.put("_id", model_id);
+		values_in_model.put("ModelID", model_id);
 		values_in_model.put("ModelPictureSRC", model_picture_src);
 
 		values_in_order.put("OrderID", OrderID);
-		values_in_order.put("ModelID", model_id);
 		values_in_order.put("MaterialID", material);
 		values_in_order.put("SizeLEFT", size_left);
 		values_in_order.put("SizeRIGHT", size_right);
@@ -72,15 +71,13 @@ public class DB {
 
 		mDB.beginTransaction();
 		try {
-			mDB.insert("Models", null, values_in_model);
+			long o_Orders_ModelID = mDB.insert("Models", null, values_in_model);
+			values_in_order.put("ModelID", o_Orders_ModelID);
 			mDB.insert("Orders", null, values_in_order);
 			mDB.setTransactionSuccessful();
 		} finally {
 			mDB.endTransaction();
 		}
-
-		//mDB.close();
-
 	}
 
 	// Количество заказов в базе
@@ -104,7 +101,6 @@ public class DB {
 		cv.put("EmployeeP", patronymic);
 
 		long id = mDB.insert("Employees", null, cv);
-		//mDB.close();
 		return id;
 	}
 
@@ -115,13 +111,12 @@ public class DB {
 		cv.put("MaterialValue", name);
 
 		long id = mDB.insert("Materials", null, cv);
-		//mDB.close();
 		return id;
 	}
 
 	// ВСЕ ЗАПИСИ (КРАТКО)
 	public Cursor getAllShortOrders() {
-		String sql = "SELECT o._id, o.OrderID AS OrderID, o.ModelID AS Model, mat.MaterialValue AS Material, " +
+		String sql = "SELECT o._id, o.OrderID AS OrderID, mod.ModelID AS Model, mat.MaterialValue AS Material, " +
 					 "SUBSTR(CustomerSN, 1)||'.'||SUBSTR(CustomerFN, 1, 1)||'.'||SUBSTR(CustomerP, 1, 1) as Customer, " +
 					 "SUBSTR(emp.EmployeeSN, 1)||'.'||SUBSTR(emp.EmployeeFN, 1, 1)||'.'||SUBSTR(emp.EmployeeP, 1, 1) as Employee " +
 					 "FROM Orders AS o " +
@@ -136,7 +131,7 @@ public class DB {
 		
 		String sql = "SELECT o._id, " +
 							"o.OrderID AS OrderID, " +
-							"o.ModelID AS Model, " +
+							"mod.ModelID AS Model, " +
 							"mat._id AS MaterialID, " +
 							"mat.MaterialValue AS Material, " +
 							"o.SizeLEFT, " +
@@ -181,7 +176,7 @@ public class DB {
 	public List<String> getModelList() {
 		List<String> labels = new ArrayList<String>();
 
-		Cursor cursor = mDB.rawQuery("SELECT DISTINCT _id FROM Models", null);
+		Cursor cursor = mDB.rawQuery("SELECT DISTINCT ModelID FROM Models", null);
 		if (cursor != null) {
 			if (cursor.moveToFirst()) {
 				String str;
@@ -245,31 +240,6 @@ public class DB {
 		}
 		return labels;
 	}
-
-	public List<String> getEmployeeList(long id) {
-		List<String> labels = new ArrayList<String>();
-		
-		Cursor cursor = mDB.rawQuery("SELECT EmployeeSN, EmployeeFN, EmployeeP FROM Employees WHERE _id = " + id, null);
-		//Cursor cursor = mDB.query("Employees", new String[]{"EmployeeSN", "EmployeeFN", "EmployeeP"}, null, null, null, null, null);
-
-		if (cursor != null) {
-			if (cursor.moveToFirst()) {
-				String str;
-				do {
-					str = "";
-					int employeesn = cursor.getColumnIndex("EmployeeSN");
-					int employeefn = cursor.getColumnIndex("EmployeeFN");
-					int employeep = cursor.getColumnIndex("EmployeeP");
-					str = cursor.getString(employeesn) + " "
-							+ cursor.getString(employeefn) + " "
-							+ cursor.getString(employeep);
-					labels.add(str);
-				} while (cursor.moveToNext());
-			}
-			cursor.close();
-		}
-		return labels;
-	}
 	
 	// УДАЛЕНИЕ ЗАПИСИ
 	public void deleteOrderById(long id){
@@ -277,9 +247,64 @@ public class DB {
 	}
 	
 	// РЕДАКТИРОВАНИЕ ЗАПИСИ
-	public void updateOrderById(long id, ContentValues cv){
-		String sql_update = "UPDATE ";
-		mDB.rawQuery(sql_update, new String[]{ String.valueOf(id) });
+	public void updateOrderById(long id, 
+								String OrderID, 
+								String model_id,
+								String model_picture_src, 
+								long material,
+								String size_left,
+								String size_right, 
+								String urk_left, 
+								String urk_right,
+								String height_left, 
+								String height_right, 
+								String top_volume_left,
+								String top_volume_right, 
+								String ankle_volume_left,
+								String ankle_volume_right, 
+								String kv_volume_left,
+								String kv_volume_right, 
+								String customerSN, 
+								String customerFN,
+								String customerP, 
+								long employee_id){
+		
+		
+		
+		String sql_update_models = "UPDATE Models " +
+								   "SET ModelID='"+model_id+"'," +
+								   	   "ModelPictureSRC='"+model_picture_src+"' " +
+								   	   "WHERE _id = (SELECT ModelID FROM Orders WHERE _id = "+id+");" ;
+
+		String sql_update_orders = "UPDATE Orders " +
+									"SET OrderID = "+OrderID+", " +
+										"MaterialID = "+material+", " +
+										"SizeLEFT = "+size_left+", " +
+										"SizeRIGHT = "+size_right+", " +
+										"UrkLEFT = "+urk_left+", " +
+										"UrkRIGHT = "+urk_right+", " +
+										"HeightLEFT = "+height_left+", " +
+										"HeightRIGHT = "+height_right+", " +
+										"TopVolumeLEFT = "+top_volume_left+", " +
+										"TopVolumeRIGHT = "+top_volume_right+", " +
+										"AnkleVolumeLEFT = "+ankle_volume_left+", " +
+										"AnkleVolumeRIGHT = "+ankle_volume_right+", " +
+										"KvVolumeLEFT = "+kv_volume_left+", " +
+										"KvVolumeRIGHT = "+kv_volume_right+", " +
+										"CustomerSN = '"+customerSN+"', " +
+										"CustomerFN = '"+customerFN+"', " +
+										"CustomerP = '"+customerP+"', " +
+										"EmployeeID = "+employee_id+" " +
+										"WHERE _id = "+id+";";
+		
+		mDB.beginTransaction();
+		try {
+			mDB.execSQL(sql_update_models);
+			mDB.execSQL(sql_update_orders);
+			mDB.setTransactionSuccessful();
+		} finally {
+			mDB.endTransaction();
+		}
 	}
 	
 	
@@ -290,7 +315,55 @@ public class DB {
 	
 	
 	// ПОИСК
-	
+	public Cursor quicklySearch(String query) {
+		String sql = "SELECT o._id, " +
+							"o.OrderID AS OrderID, " +
+							"mod.ModelID AS Model, " +
+							"mat._id AS MaterialID, " +
+							"mat.MaterialValue AS Material, " +
+							"o.SizeLEFT, " +
+							"o.SizeRIGHT, " +
+							"o.UrkLEFT, " +
+							"o.UrkRIGHT, " +
+							"o.HeightLEFT, " +
+							"o.HeightRIGHT, " +
+							"o.TopVolumeLEFT, " +
+							"o.TopVolumeRIGHT, " +
+							"o.AnkleVolumeLEFT, " +
+							"o.AnkleVolumeRIGHT, " +
+							"o.KvVolumeLEFT, " +
+							"o.KvVolumeRIGHT, " +
+							"o.CustomerSN, " +
+							"o.CustomerFN, " +
+							"o.CustomerP, " +
+							"emp._id AS EmployeeID, " +
+							"emp.EmployeeSN, " +
+							"emp.EmployeeFN, " +
+							"emp.EmployeeP," +
+							"mod.ModelPictureSRC AS ModelIMG " +
+					"FROM Orders AS o " +
+						"INNER JOIN Models AS mod ON o.ModelID=mod._id " +
+						"INNER JOIN Materials AS mat ON o.MaterialID=mat._id " +
+						"INNER JOIN Employees AS emp ON o.EmployeeID=emp._id " +
+					"WHERE OrderID LIKE '%"+query+"%' " +
+						"OR SizeLEFT LIKE '%"+query+"%' "+
+						"OR SizeRIGHT LIKE '%"+query+"%' "+
+						"OR UrkLEFT LIKE '%"+query+"%' "+
+						"OR UrkRIGHT LIKE '%"+query+"%' "+
+						"OR HeightLEFT LIKE '%"+query+"%' "+
+						"OR HeightRIGHT LIKE '%"+query+"%' "+
+						"OR TopVolumeLEFT LIKE '%"+query+"%' "+
+						"OR TopVolumeRIGHT LIKE '%"+query+"%' "+
+						"OR AnkleVolumeLEFT LIKE '%"+query+"%' "+
+						"OR AnkleVolumeRIGHT LIKE '%"+query+"%' "+
+						"OR KvVolumeLEFT LIKE '%"+query+"%' "+
+						"OR KvVolumeRIGHT LIKE '%"+query+"%' "+
+						"OR CustomerSN LIKE '%"+query+"%' "+
+						"OR CustomerFN LIKE '%"+query+"%' "+
+						"OR CustomerP LIKE '%"+query+"%' ;";
+		Cursor cursor = mDB.rawQuery(sql, null);
+		return cursor;
+	}
 	
 	
 	
@@ -344,7 +417,8 @@ public class DB {
 
 			// ТАБЛИЦА МОДЕЛЕЙ
 			final String CREATE_DB_Model = "CREATE TABLE Models ( "
-					+ "_id TEXT NOT NULL PRIMARY KEY,"
+					+ "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+					+ "ModelID TEXT NOT NULL,"
 					+ "ModelPictureSRC TEXT NOT NULL DEFAULT 'no image');";
 			db.execSQL(CREATE_DB_Model); //// "ModelDescription TEXT NOT NULL DEFAULT 'no description',"
 

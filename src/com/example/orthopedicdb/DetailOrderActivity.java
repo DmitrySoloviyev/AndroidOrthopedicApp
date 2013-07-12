@@ -102,7 +102,7 @@ public class DetailOrderActivity extends Activity {
 	public void onBackPressed() {
 		Intent allOrdersIntent = new Intent(getApplicationContext(), AllOrdersActivityShort.class);
 		startActivity(allOrdersIntent);
-//		this.finish();
+		finish();
 	}
 	
 	// СОЗДАЕМ МЕНЮ
@@ -118,7 +118,7 @@ public class DetailOrderActivity extends Activity {
     		case 1:
     			Intent editOrderIntent = new Intent(getApplicationContext(), EditOrderActivity.class);
 				editOrderIntent.putExtra("ID", ID);
-				startActivityForResult(editOrderIntent, 1);
+				startActivity(editOrderIntent);
 				finish();
     			break;
     		case 2:
@@ -132,12 +132,4 @@ public class DetailOrderActivity extends Activity {
     	}
     	return true;
     }
-	
-	/* Результаты из активити редактирования*/
-	@SuppressWarnings("deprecation")
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	    if (resultCode == RESULT_OK) {
-	    	cursor.requery();
-	    }
-	}
 }

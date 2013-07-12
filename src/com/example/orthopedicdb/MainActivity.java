@@ -4,21 +4,24 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity{
+public class MainActivity extends Activity implements OnClickListener{
 
 	TextView tv;
 	final String LOG_TAG = "myLogs";
 	DB db;
 	Intent intent;
+	EditText quickly_search;
+	Button quickly_search_submit;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,9 @@ public class MainActivity extends Activity{
 		AlertDialog dialog = DialogScreen.getDialog(this, DialogScreen.WHATSNEW);
         dialog.show();
         
+        quickly_search = (EditText)findViewById(R.id.quickly_search);
+        quickly_search_submit = (Button)findViewById(R.id.quickly_search_submit);
+        quickly_search_submit.setOnClickListener(this);
     }//END ONCREATE
 
 
@@ -126,6 +132,13 @@ public class MainActivity extends Activity{
 	    	Toast.makeText(this, "Модельер не добавлен! Добавьте модельера", Toast.LENGTH_LONG).show();
 	    	finish();
 	    }
+	}
+
+
+	@Override
+	public void onClick(View v) {
+		String query = quickly_search.getText().toString().trim();
+		db.quicklySearch(query);
 	}
     
   
