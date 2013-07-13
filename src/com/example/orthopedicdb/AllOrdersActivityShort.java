@@ -21,9 +21,10 @@ public class AllOrdersActivityShort extends Activity{
 	
 	ListView lv;
 	SimpleCursorAdapter scAdapter;
-	Cursor cursor;
+	Cursor cursor = null;
 	DB db;
 	final String LOG_TAG = "myLogs";
+	String quick_search_query;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -35,9 +36,16 @@ public class AllOrdersActivityShort extends Activity{
 	    db = new DB(this);
 	    db.open();
 		
-		// получаем курсор
-		cursor = db.getAllShortOrders();
-		startManagingCursor(cursor);
+//	    Intent intent = getIntent();
+        if( getIntent().hasExtra("QUICK_SEARCH_QUERY") ){
+        	quick_search_query = getIntent().getStringExtra("QUICK_SEARCH_QUERY");
+        	cursor = db.quicklySearch(quick_search_query);
+        	Toast.makeText(getApplicationContext(), "Найдено записей: "+cursor.getCount(), Toast.LENGTH_LONG).show();
+        }else{
+			cursor = db.getAllShortOrders();
+        }
+ 
+        startManagingCursor(cursor);
 
 		// формируем столбцы сопоставления
 	    String[] from = new String[] { "OrderID", "Model", "Material", "Customer", "Employee" };
@@ -77,8 +85,15 @@ public class AllOrdersActivityShort extends Activity{
 	public void onBackPressed() {
 		Intent main = new Intent(getApplicationContext(), MainActivity.class);
 		startActivity(main);
+		finish();
 	}
-	
+/*	
+	protected void onStart() {
+	    super.onStart();
+	    db = new DB(this);
+        db.open();
+	}
+	*/
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		    super.onCreateContextMenu(menu, v, menuInfo);
 		    menu.add(0, 1, 0, "Редактировать");

@@ -17,7 +17,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
         android:text="@string/greeting"
         android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/greeting"
         android:layout_below="@+id/greeting"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="25dp"
         android:text="Записей в базе:"
         android:textSize="20sp"
         android:textStyle="italic" />
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/count"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="40dp"
         android:layout_toLeftOf="@+id/quickly_search_submit"
         android:ems="10"
         android:hint="Быстрый поиск"
@@ -70,5 +70,15 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/quickly_search"
         android:text="Go!" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="Версия 0.0.6"
+        android:textColor="#808080"
+        android:textStyle="italic" />
 
 </RelativeLayout>

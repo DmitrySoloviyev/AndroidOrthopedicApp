@@ -34,6 +34,7 @@ public class DetailOrderActivity extends Activity {
 
 	 	cursor = db.getDetailedOrderById(ID);
 	 	startManagingCursor(cursor);
+//	 	cursor.moveToFirst();
 
  	    String[] from = new String[] { "OrderID", 
  	    								"Model", 

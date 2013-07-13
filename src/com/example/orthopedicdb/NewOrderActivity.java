@@ -1,13 +1,16 @@
 package com.example.orthopedicdb;
 
+import java.io.File;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -245,9 +248,15 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 	          break;
 	          
 	        case REQUEST_ADD_FOTO:
+	        	/*
 	                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-	                get_picture.setImageBitmap(thumbnail);
-	                model_img_src = data.getStringExtra("srс");
+	                get_picture.setImageBitmap(thumbnail);*/
+	                Uri pictureFile = null;
+	                Intent intent = getIntent();
+	                if (intent.hasExtra(MediaStore.EXTRA_OUTPUT))
+	                	pictureFile = (Uri)intent.getExtras().getParcelable(MediaStore.EXTRA_OUTPUT);
+
+	                Log.d(LOG_TAG, " "+pictureFile+" "+data.getExtras().getParcelable("data"));
 	                Toast.makeText(this, "Фотография закреплена за моделью!", Toast.LENGTH_SHORT).show();
 	        	break;
 	        }
@@ -465,8 +474,26 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 			break;
 
 		case R.id.get_model_image:
+			// проверяем доступность SD
+		    if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+		    	Toast.makeText(getApplicationContext(), "SD-карта не доступна: " + Environment.getExternalStorageState(), Toast.LENGTH_LONG).show();
+		    	return;
+		    }
+		    // получаем путь к SD
+		    File sdPath = Environment.getExternalStorageDirectory();
+		    // добавляем свой каталог к пути
+		    sdPath = new File(sdPath.getAbsolutePath() + "/OrthopedicGallery");
+		    // создаем каталог
+		    sdPath.mkdirs();
+		    // формируем объект File, который содержит путь к файлу
+		    String timeStamp = String.valueOf(System.currentTimeMillis());
+			String FILENAME_SD = "ORTHOIMG_" + timeStamp+".jpg";
+		    File sdFile = new File(sdPath, FILENAME_SD);
+
 			
 			Intent intentGetFoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			intentGetFoto.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, sdFile);
+			setResult(RESULT_OK, intentGetFoto);
 			startActivityForResult(intentGetFoto, REQUEST_ADD_FOTO);
 			break;
 		default:
@@ -474,4 +501,5 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 		}
 
 	}
+	
 }

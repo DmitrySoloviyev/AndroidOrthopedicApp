@@ -316,8 +316,8 @@ public class DB {
 	
 	// ПОИСК
 	public Cursor quicklySearch(String query) {
-		String sql = "SELECT o._id, " +
-							"o.OrderID AS OrderID, " +
+		String sql = "SELECT o._id, o.OrderID AS OrderID, mod.ModelID AS Model, mat.MaterialValue AS Material, " +
+/*						"o.OrderID AS OrderID, " +
 							"mod.ModelID AS Model, " +
 							"mat._id AS MaterialID, " +
 							"mat.MaterialValue AS Material, " +
@@ -333,19 +333,19 @@ public class DB {
 							"o.AnkleVolumeRIGHT, " +
 							"o.KvVolumeLEFT, " +
 							"o.KvVolumeRIGHT, " +
-							"o.CustomerSN, " +
-							"o.CustomerFN, " +
-							"o.CustomerP, " +
-							"emp._id AS EmployeeID, " +
+*/							"SUBSTR(o.CustomerSN, 1)||'.'||SUBSTR(o.CustomerFN, 1, 1)||'.'||SUBSTR(o.CustomerP, 1, 1) as Customer, " +
+							"SUBSTR(emp.EmployeeSN, 1)||'.'||SUBSTR(emp.EmployeeFN, 1, 1)||'.'||SUBSTR(emp.EmployeeP, 1, 1) as Employee " +
+/*							"emp._id AS EmployeeID, " +
 							"emp.EmployeeSN, " +
 							"emp.EmployeeFN, " +
 							"emp.EmployeeP," +
 							"mod.ModelPictureSRC AS ModelIMG " +
-					"FROM Orders AS o " +
+*/					"FROM Orders AS o " +
 						"INNER JOIN Models AS mod ON o.ModelID=mod._id " +
 						"INNER JOIN Materials AS mat ON o.MaterialID=mat._id " +
 						"INNER JOIN Employees AS emp ON o.EmployeeID=emp._id " +
 					"WHERE OrderID LIKE '%"+query+"%' " +
+						"OR MaterialValue LIKE '%"+query+"%' "+
 						"OR SizeLEFT LIKE '%"+query+"%' "+
 						"OR SizeRIGHT LIKE '%"+query+"%' "+
 						"OR UrkLEFT LIKE '%"+query+"%' "+
@@ -358,6 +358,9 @@ public class DB {
 						"OR AnkleVolumeRIGHT LIKE '%"+query+"%' "+
 						"OR KvVolumeLEFT LIKE '%"+query+"%' "+
 						"OR KvVolumeRIGHT LIKE '%"+query+"%' "+
+						"OR EmployeeSN LIKE '%"+query+"%' "+
+						"OR EmployeeFN LIKE '%"+query+"%' "+
+						"OR EmployeeP LIKE '%"+query+"%' "+
 						"OR CustomerSN LIKE '%"+query+"%' "+
 						"OR CustomerFN LIKE '%"+query+"%' "+
 						"OR CustomerP LIKE '%"+query+"%' ;";

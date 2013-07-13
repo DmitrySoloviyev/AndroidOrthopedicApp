@@ -2,7 +2,6 @@ package com.example.orthopedicdb;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,8 +37,8 @@ public class MainActivity extends Activity implements OnClickListener{
 			startActivityForResult(intent, 1);
 		}
 		
-		AlertDialog dialog = DialogScreen.getDialog(this, DialogScreen.WHATSNEW);
-        dialog.show();
+		//AlertDialog dialog = DialogScreen.getDialog(this, DialogScreen.WHATSNEW);
+        //dialog.show();
         
         quickly_search = (EditText)findViewById(R.id.quickly_search);
         quickly_search_submit = (Button)findViewById(R.id.quickly_search_submit);
@@ -65,11 +64,11 @@ public class MainActivity extends Activity implements OnClickListener{
 	    super.onStop();
 	    db.close();
 	}
-/*
+	
 	public void onBackPressed() {
 		finish();
 	}
-*/
+	
 	//меню
   	public boolean onCreateOptionsMenu(Menu menu){
   		MenuInflater menuInflater = getMenuInflater();
@@ -86,18 +85,21 @@ public class MainActivity extends Activity implements OnClickListener{
 				Intent newOrderIntent = new Intent();
 				newOrderIntent.setClass(getApplicationContext(), NewOrderActivity.class);
 				startActivity(newOrderIntent);
+				finish();
 				break;
 	
 			case R.id.MENU_SEARCH:
 				Intent searchIntent = new Intent();
 				searchIntent.setClass(getApplicationContext(), SearchActivity.class);
 				startActivity(searchIntent);
+				finish();
 				break;
 				
 			case R.id.MENU_HISTORY:
 				Intent allOrdersIntent = new Intent();
 				allOrdersIntent.setClass(getApplicationContext(), AllOrdersActivityShort.class);
 				startActivity(allOrdersIntent);
+				finish();
 				break;
 				
 			case R.id.MENU_GALLERY:
@@ -138,7 +140,10 @@ public class MainActivity extends Activity implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		String query = quickly_search.getText().toString().trim();
-		db.quicklySearch(query);
+		Intent quick_search_result = new Intent(this, AllOrdersActivityShort.class);
+		quick_search_result.putExtra("QUICK_SEARCH_QUERY", query);
+		startActivity(quick_search_result);
+		finish();
 	}
     
   
