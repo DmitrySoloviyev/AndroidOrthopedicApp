@@ -195,9 +195,6 @@ public class NewOrderActivity extends Activity implements OnClickListener{
     	switch (item.getItemId()) {
     	
 			case R.id.MENU_NEW_ORDER:
-				Intent newOrderIntent = new Intent();
-				newOrderIntent.setClass(getApplicationContext(), NewOrderActivity.class);
-				startActivity(newOrderIntent);
 				break;
 	
 			case R.id.MENU_SEARCH:

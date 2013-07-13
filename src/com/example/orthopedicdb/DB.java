@@ -272,29 +272,29 @@ public class DB {
 		
 		
 		String sql_update_models = "UPDATE Models " +
-								   "SET ModelID='"+model_id+"'," +
+								   "SET ModelID='"+model_id+"', " +
 								   	   "ModelPictureSRC='"+model_picture_src+"' " +
 								   	   "WHERE _id = (SELECT ModelID FROM Orders WHERE _id = "+id+");" ;
 
 		String sql_update_orders = "UPDATE Orders " +
-									"SET OrderID = "+OrderID+", " +
-										"MaterialID = "+material+", " +
-										"SizeLEFT = "+size_left+", " +
-										"SizeRIGHT = "+size_right+", " +
-										"UrkLEFT = "+urk_left+", " +
-										"UrkRIGHT = "+urk_right+", " +
-										"HeightLEFT = "+height_left+", " +
-										"HeightRIGHT = "+height_right+", " +
-										"TopVolumeLEFT = "+top_volume_left+", " +
-										"TopVolumeRIGHT = "+top_volume_right+", " +
-										"AnkleVolumeLEFT = "+ankle_volume_left+", " +
-										"AnkleVolumeRIGHT = "+ankle_volume_right+", " +
-										"KvVolumeLEFT = "+kv_volume_left+", " +
-										"KvVolumeRIGHT = "+kv_volume_right+", " +
+									"SET OrderID = '"+OrderID+"', " +
+										"MaterialID = '"+material+"', " +
+										"SizeLEFT = '"+size_left+"', " +
+										"SizeRIGHT = '"+size_right+"', " +
+										"UrkLEFT = '"+urk_left+"', " +
+										"UrkRIGHT = '"+urk_right+"', " +
+										"HeightLEFT = '"+height_left+"', " +
+										"HeightRIGHT = '"+height_right+"', " +
+										"TopVolumeLEFT = '"+top_volume_left+"', " +
+										"TopVolumeRIGHT = '"+top_volume_right+"', " +
+										"AnkleVolumeLEFT = '"+ankle_volume_left+"', " +
+										"AnkleVolumeRIGHT = '"+ankle_volume_right+"', " +
+										"KvVolumeLEFT = '"+kv_volume_left+"', " +
+										"KvVolumeRIGHT = '"+kv_volume_right+"', " +
 										"CustomerSN = '"+customerSN+"', " +
 										"CustomerFN = '"+customerFN+"', " +
 										"CustomerP = '"+customerP+"', " +
-										"EmployeeID = "+employee_id+" " +
+										"EmployeeID = '"+employee_id+"' " +
 										"WHERE _id = "+id+";";
 		
 		mDB.beginTransaction();

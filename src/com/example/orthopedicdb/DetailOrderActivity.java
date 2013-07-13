@@ -24,7 +24,7 @@ public class DetailOrderActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.all_orders);
-		
+		this.setTitle("Подробная информация");
 		// подключаемся к БД
 	    db = new DB(this);
 	    db.open();

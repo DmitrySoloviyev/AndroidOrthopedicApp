@@ -38,6 +38,7 @@ public class AllOrdersActivityShort extends Activity{
 		
 //	    Intent intent = getIntent();
         if( getIntent().hasExtra("QUICK_SEARCH_QUERY") ){
+        	this.setTitle("Результаты поиска");
         	quick_search_query = getIntent().getStringExtra("QUICK_SEARCH_QUERY");
         	cursor = db.quicklySearch(quick_search_query);
         	Toast.makeText(getApplicationContext(), "Найдено записей: "+cursor.getCount(), Toast.LENGTH_LONG).show();
@@ -108,8 +109,7 @@ public class AllOrdersActivityShort extends Activity{
 			Intent editOrderIntent = new Intent(getApplicationContext(), EditOrderActivity.class);
 				editOrderIntent.putExtra("ID", acmi_edit.id);
 			startActivity(editOrderIntent);
-			// обновляем курсор
-		    //cursor.requery();
+			finish();
 			return true;
 			//break;
 		case 2:			// удаление
@@ -136,7 +136,8 @@ public class AllOrdersActivityShort extends Activity{
 		}
 		
 		// ОТКЛИК НА МЕНЮ
-	    public boolean onOptionsItemSelected(MenuItem item){
+	    @SuppressWarnings("deprecation")
+		public boolean onOptionsItemSelected(MenuItem item){
 
 	    	switch (item.getItemId()) {
 	    	
@@ -144,18 +145,18 @@ public class AllOrdersActivityShort extends Activity{
 					Intent newOrderIntent = new Intent();
 					newOrderIntent.setClass(getApplicationContext(), NewOrderActivity.class);
 					startActivity(newOrderIntent);
+					finish();
 					break;
 		
 				case R.id.MENU_SEARCH:
 					Intent searchIntent = new Intent();
 					searchIntent.setClass(getApplicationContext(), SearchActivity.class);
 					startActivity(searchIntent);
+					finish();
 					break;
 					
 				case R.id.MENU_HISTORY:
-					Intent allOrdersIntent = new Intent();
-					allOrdersIntent.setClass(getApplicationContext(), AllOrdersActivityShort.class);
-					startActivity(allOrdersIntent);
+					cursor.requery();
 					break;
 					
 				case R.id.MENU_GALLERY:
