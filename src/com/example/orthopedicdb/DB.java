@@ -14,7 +14,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DB {
 
 	private static final String DB_NAME = "SHOES";
-	private static final int DATABASE_VERSION = 8;
+	private static final int DATABASE_VERSION = 9;
 	private final Context mCtx;
 	private DBHelper mDBHelper;
 	public SQLiteDatabase mDB;
@@ -214,12 +214,18 @@ public class DB {
 
 		return labels;
 	}
+	
+	
+	public Cursor getMaterialCursor() {
+		return mDB.rawQuery("SELECT _id, MaterialValue, MaterialChecked FROM Materials WHERE _id>1", null);
+	}
+	
 
 	// Автозаполнение SPINNER МОДЕЛЬЕРЫ//
 	public List<String> getEmployeeList() {
 		List<String> labels = new ArrayList<String>();
 		
-		Cursor cursor = mDB.rawQuery("SELECT EmployeeSN, EmployeeFN, EmployeeP FROM Employees", null);
+		Cursor cursor = mDB.rawQuery("SELECT EmployeeSN, EmployeeFN, EmployeeP, EmployeeChecked FROM Employees", null);
 		//Cursor cursor = mDB.query("Employees", new String[]{"EmployeeSN", "EmployeeFN", "EmployeeP"}, null, null, null, null, null);
 
 		if (cursor != null) {
@@ -239,6 +245,10 @@ public class DB {
 			cursor.close();
 		}
 		return labels;
+	}
+	
+	public Cursor getEmployeeCursor() {
+		return mDB.rawQuery("SELECT _id, SUBSTR(EmployeeSN, 1)||'.'||SUBSTR(EmployeeFN, 1, 1)||'.'||SUBSTR(EmployeeP, 1, 1) as Employee, EmployeeChecked FROM Employees WHERE _id>1", null);
 	}
 	
 	// УДАЛЕНИЕ ЗАПИСИ
@@ -307,78 +317,79 @@ public class DB {
 		}
 	}
 	
-	
-	// ПОЛУЧЕНИЕ ЗАПИСИ ПО ID
-	public void findOrderById(long id){
-		
-	}
-	
-	
-	// ПОИСК
+	// БЫСТРЫЙ ПОИСК
 	public Cursor quicklySearch(String query) {
 		String sql = "SELECT o._id, o.OrderID AS OrderID, mod.ModelID AS Model, mat.MaterialValue AS Material, " +
-/*						"o.OrderID AS OrderID, " +
-							"mod.ModelID AS Model, " +
-							"mat._id AS MaterialID, " +
-							"mat.MaterialValue AS Material, " +
-							"o.SizeLEFT, " +
-							"o.SizeRIGHT, " +
-							"o.UrkLEFT, " +
-							"o.UrkRIGHT, " +
-							"o.HeightLEFT, " +
-							"o.HeightRIGHT, " +
-							"o.TopVolumeLEFT, " +
-							"o.TopVolumeRIGHT, " +
-							"o.AnkleVolumeLEFT, " +
-							"o.AnkleVolumeRIGHT, " +
-							"o.KvVolumeLEFT, " +
-							"o.KvVolumeRIGHT, " +
-*/							"SUBSTR(o.CustomerSN, 1)||'.'||SUBSTR(o.CustomerFN, 1, 1)||'.'||SUBSTR(o.CustomerP, 1, 1) as Customer, " +
+							"SUBSTR(o.CustomerSN, 1)||'.'||SUBSTR(o.CustomerFN, 1, 1)||'.'||SUBSTR(o.CustomerP, 1, 1) as Customer, " +
 							"SUBSTR(emp.EmployeeSN, 1)||'.'||SUBSTR(emp.EmployeeFN, 1, 1)||'.'||SUBSTR(emp.EmployeeP, 1, 1) as Employee " +
-/*							"emp._id AS EmployeeID, " +
-							"emp.EmployeeSN, " +
-							"emp.EmployeeFN, " +
-							"emp.EmployeeP," +
-							"mod.ModelPictureSRC AS ModelIMG " +
-*/					"FROM Orders AS o " +
+				    "FROM Orders AS o " +
 						"INNER JOIN Models AS mod ON o.ModelID=mod._id " +
 						"INNER JOIN Materials AS mat ON o.MaterialID=mat._id " +
 						"INNER JOIN Employees AS emp ON o.EmployeeID=emp._id " +
-					"WHERE OrderID LIKE '%"+query+"%' " +
-						"OR MaterialValue LIKE '%"+query+"%' "+
-						"OR SizeLEFT LIKE '%"+query+"%' "+
-						"OR SizeRIGHT LIKE '%"+query+"%' "+
-						"OR UrkLEFT LIKE '%"+query+"%' "+
-						"OR UrkRIGHT LIKE '%"+query+"%' "+
-						"OR HeightLEFT LIKE '%"+query+"%' "+
-						"OR HeightRIGHT LIKE '%"+query+"%' "+
-						"OR TopVolumeLEFT LIKE '%"+query+"%' "+
-						"OR TopVolumeRIGHT LIKE '%"+query+"%' "+
-						"OR AnkleVolumeLEFT LIKE '%"+query+"%' "+
-						"OR AnkleVolumeRIGHT LIKE '%"+query+"%' "+
-						"OR KvVolumeLEFT LIKE '%"+query+"%' "+
-						"OR KvVolumeRIGHT LIKE '%"+query+"%' "+
-						"OR EmployeeSN LIKE '%"+query+"%' "+
-						"OR EmployeeFN LIKE '%"+query+"%' "+
-						"OR EmployeeP LIKE '%"+query+"%' "+
-						"OR CustomerSN LIKE '%"+query+"%' "+
-						"OR CustomerFN LIKE '%"+query+"%' "+
-						"OR CustomerP LIKE '%"+query+"%' ;";
+					"WHERE OrderID = '"+query+"' " +
+						"OR mod.ModelID = '"+query+"' "+
+						"OR MaterialValue = '"+query+"' "+
+						"OR SizeLEFT = '"+query+"' "+
+						"OR SizeRIGHT = '"+query+"' "+
+						"OR UrkLEFT = '"+query+"' "+
+						"OR UrkRIGHT = '"+query+"' "+
+						"OR HeightLEFT = '"+query+"' "+
+						"OR HeightRIGHT = '"+query+"' "+
+						"OR TopVolumeLEFT = '"+query+"' "+
+						"OR TopVolumeRIGHT = '"+query+"' "+
+						"OR AnkleVolumeLEFT = '"+query+"' "+
+						"OR AnkleVolumeRIGHT = '"+query+"' "+
+						"OR KvVolumeLEFT = '"+query+"' "+
+						"OR KvVolumeRIGHT = '"+query+"' "+
+						"OR EmployeeSN = '"+query+"' "+
+						"OR EmployeeFN = '"+query+"' "+
+						"OR EmployeeP = '"+query+"' "+
+						"OR CustomerSN = '"+query+"' "+
+						"OR CustomerFN = '"+query+"' "+
+						"OR CustomerP = '"+query+"' ;";
+		Cursor cursor = mDB.rawQuery(sql, null);
+		return cursor;
+	}
+	
+	// РАСШИРЕННЫЙ ПОИСК
+	public Cursor extendedSearch(String where) {
+		String sql = "SELECT o._id, o.OrderID AS OrderID, mod.ModelID AS Model, mat.MaterialValue AS Material, " +
+							"SUBSTR(o.CustomerSN, 1)||'.'||SUBSTR(o.CustomerFN, 1, 1)||'.'||SUBSTR(o.CustomerP, 1, 1) as Customer, " +
+							"SUBSTR(emp.EmployeeSN, 1)||'.'||SUBSTR(emp.EmployeeFN, 1, 1)||'.'||SUBSTR(emp.EmployeeP, 1, 1) as Employee " +
+				    "FROM Orders AS o " +
+						"INNER JOIN Models AS mod ON o.ModelID=mod._id " +
+						"INNER JOIN Materials AS mat ON o.MaterialID=mat._id " +
+						"INNER JOIN Employees AS emp ON o.EmployeeID=emp._id " +
+					"WHERE "+where;
 		Cursor cursor = mDB.rawQuery(sql, null);
 		return cursor;
 	}
 	
 	
+	public void changeMaterialFlag(int pos, boolean isChecked) {
+	      ContentValues cv = new ContentValues();
+	      cv.put("MaterialChecked", (isChecked) ? 1 : 0);
+	      mDB.update("Materials", cv, " _id = " + (pos+2), null);
+	}
+	
+	public void changeEmployeeFlag(int pos, boolean isChecked) {
+	      ContentValues cv = new ContentValues();
+	      cv.put("EmployeeChecked", (isChecked) ? 1 : 0);
+	      mDB.update("Employees", cv, " _id = " + (pos+2), null);
+	}
 	
 	
+	public void cleanMaterialChecked(){
+		ContentValues cv = new ContentValues();
+	    cv.put("MaterialChecked", 0);
+		mDB.update("Materials", cv, null, null);
+	}
 	
-	
-	
-	
-	
-	
-	
-	
+	public void cleanEmployeeChecked(){
+		ContentValues cv = new ContentValues();
+	    cv.put("EmployeeChecked", 0);
+		mDB.update("Employees", cv, null, null);
+	}
 	
 	// /////////////////////////////////////////////////////////////////////////////////////
 
@@ -394,8 +405,9 @@ public class DB {
 		public void onCreate(SQLiteDatabase db) {
 			// ТАБЛИЦА МАТЕРИАЛОВ
 			db.execSQL("CREATE TABLE Materials ( "
-					+ "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-					+ "MaterialValue TEXT NOT NULL);");
+					+ "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
+					+ "MaterialValue TEXT NOT NULL, "
+					+ "MaterialChecked INTEGER DEFAULT '0');");
 
 			String[] materials = { " +++ новый материал +++", "К/П", "Траспира",
 					"Мех Натуральный", "Мех Искусственный", "Мех Полушерстяной" };
@@ -411,7 +423,8 @@ public class DB {
 			db.execSQL("CREATE TABLE Employees ( "
 					+ "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 					+ "EmployeeSN TEXT NOT NULL," + "EmployeeFN TEXT NOT NULL,"
-					+ "EmployeeP TEXT NOT NULL);");
+					+ "EmployeeP TEXT NOT NULL, "
+					+ "EmployeeChecked INTEGER DEFAULT '0');");
 			cv.clear();
 			cv.put("EmployeeSN", " +++ ");
 			cv.put("EmployeeFN", "новый модельер");

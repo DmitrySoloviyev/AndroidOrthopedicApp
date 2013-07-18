@@ -72,13 +72,14 @@
         android:text="Go!" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/versionCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="Версия 0.0.6"
+        android:text="Version"
         android:textColor="#808080"
+        android:textSize="16sp"
         android:textStyle="italic" />
 
 </RelativeLayout>

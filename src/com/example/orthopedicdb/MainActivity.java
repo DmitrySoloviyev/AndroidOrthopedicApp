@@ -1,8 +1,14 @@
 package com.example.orthopedicdb;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,19 +21,41 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener{
 
-	TextView tv;
+	TextView countOrders;
 	final String LOG_TAG = "myLogs";
 	DB db;
 	Intent intent;
 	EditText quickly_search;
 	Button quickly_search_submit;
+	SharedPreferences sp;
+	PackageInfo packageInfo;
 	
+	
+	@SuppressLint("CommitPrefEdits")
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        // ВЫПОНЯТЬ В ДРУГОМ ПОТОКЕ!!!!!!!!!!!!!!!!!
+        PackageManager pm = getPackageManager();
+		try {
+			packageInfo = pm.getPackageInfo(this.getPackageName(), 0);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		String version = packageInfo.versionName;
+		
+		TextView tvversionCode = (TextView)findViewById(R.id.versionCode);
+		tvversionCode.setText("Version "+version);
+
+        sp = PreferenceManager.getDefaultSharedPreferences(this);
+        String flag = sp.getString("version", "0");
+        
+        if (!flag.equals(version)) {
+            Intent showNews = new Intent(getApplicationContext(), NewsActivity.class);
+            startActivity(showNews);
+        }
+        
         // подключаемся к БД
         db = new DB(this);
         db.open();
@@ -44,8 +72,7 @@ public class MainActivity extends Activity implements OnClickListener{
         quickly_search_submit = (Button)findViewById(R.id.quickly_search_submit);
         quickly_search_submit.setOnClickListener(this);
     }//END ONCREATE
-
-
+	
 	protected void onDestroy() {
 	    super.onDestroy();
 	    db.close();
@@ -56,8 +83,8 @@ public class MainActivity extends Activity implements OnClickListener{
 	    db = new DB(this);
         db.open();
 	    int cnt = db.countOrders();
-		tv = (TextView)findViewById(R.id.count);
-		tv.setText(" " + cnt);
+	    countOrders = (TextView)findViewById(R.id.count);
+	    countOrders.setText(" " + cnt);
 	}
 	
 	protected void onStop() {
@@ -75,7 +102,7 @@ public class MainActivity extends Activity implements OnClickListener{
   		menuInflater.inflate(R.menu.main, menu);
   		return true;
   	}
-	
+  	
 	// обработка нажатия пункта меню
     public boolean onOptionsItemSelected(MenuItem item){
 
@@ -109,10 +136,6 @@ public class MainActivity extends Activity implements OnClickListener{
 			case R.id.MENU_EXIT:
 				finish();
 				break;
-			
-			case R.id.MENU_DEFAULT_SCREEN:
-				
-				break;
 		}
 		return true;
     }
@@ -140,6 +163,9 @@ public class MainActivity extends Activity implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		String query = quickly_search.getText().toString().trim();
+		if(query.length() == 0){
+			return;
+		}
 		Intent quick_search_result = new Intent(this, AllOrdersActivityShort.class);
 		quick_search_result.putExtra("QUICK_SEARCH_QUERY", query);
 		startActivity(quick_search_result);

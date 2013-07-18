@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -34,7 +35,7 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 
     long choosed_material;
     long choosed_employee;
-    String model_img_src = "no_image";
+    String model_img_src = null;
     
 	EditText new_order_number;
 	AutoCompleteTextView new_model;
@@ -138,7 +139,7 @@ public class NewOrderActivity extends Activity implements OnClickListener{
         // обновить списов материалов, при добавлении нового материала
         List<String> materials = db.getMaterialList();
         ArrayAdapter<String> materialAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, materials);
-        materialAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        materialAdapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
         spinner_materials.setAdapter(materialAdapter);
         spinner_materials.setPrompt("Выберите материал");
         spinner_materials.setOnItemSelectedListener(materialSelected);
@@ -147,7 +148,7 @@ public class NewOrderActivity extends Activity implements OnClickListener{
         // обновить список модельеров, при создании нового
         List<String> employees = db.getEmployeeList();
         ArrayAdapter<String> employeeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, employees);
-        employeeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        employeeAdapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
         spinner_new_employee.setAdapter(employeeAdapter);
         spinner_new_employee.setPrompt("Выберите модельера");
         spinner_new_employee.setOnItemSelectedListener(employeeSelected);
@@ -216,10 +217,6 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 			case R.id.MENU_EXIT:
 				finish();
 				break;
-			
-			case R.id.MENU_DEFAULT_SCREEN:
-				
-				break;
 		}
 		return true;
     }
@@ -245,16 +242,17 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 	          break;
 	          
 	        case REQUEST_ADD_FOTO:
-	        	/*
 	                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-	                get_picture.setImageBitmap(thumbnail);*/
-	                Uri pictureFile = null;
-	                Intent intent = getIntent();
-	                if (intent.hasExtra(MediaStore.EXTRA_OUTPUT))
-	                	pictureFile = (Uri)intent.getExtras().getParcelable(MediaStore.EXTRA_OUTPUT);
-
-	                Log.d(LOG_TAG, " "+pictureFile+" "+data.getExtras().getParcelable("data"));
-	                Toast.makeText(this, "Фотография закреплена за моделью!", Toast.LENGTH_SHORT).show();
+	                get_picture.setImageBitmap(thumbnail);
+//	                Uri pictureFile = null;
+//	                Intent intent = getIntent();
+//	                if (intent.hasExtra(MediaStore.EXTRA_OUTPUT)){
+//	                	pictureFile = (Uri)intent.getExtras().getParcelable(MediaStore.EXTRA_OUTPUT);
+//	                	model_img_src = pictureFile.toString();
+//	                }
+//	                Log.d(LOG_TAG, "Фотография "+model_img_src+ " "+ pictureFile);
+//	                Toast.makeText(this, "Фотография "+model_img_src+ " "+ pictureFile, Toast.LENGTH_LONG).show();
+                	Toast.makeText(this, "Фотография закреплена за моделью!", Toast.LENGTH_SHORT).show();
 	        	break;
 	        }
 	      // если вернулось не ОК
