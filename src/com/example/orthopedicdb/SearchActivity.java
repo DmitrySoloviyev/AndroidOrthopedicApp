@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 
 public class SearchActivity extends Activity implements OnClickListener {
 
@@ -114,6 +112,13 @@ public class SearchActivity extends Activity implements OnClickListener {
 		return adb.create();
 	}
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	public void onBackPressed() {
+		Intent main = new Intent(getApplicationContext(), MainActivity.class);
+		startActivity(main);
+		finish();
+	}
+	
 	// меню
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
@@ -122,26 +127,27 @@ public class SearchActivity extends Activity implements OnClickListener {
 
 	// обработка нажатия пункта меню
 	public boolean onOptionsItemSelected(MenuItem item) {
-
+		Intent intent = new Intent();
 		switch (item.getItemId()) {
 
 		case R.id.MENU_NEW_ORDER:
-			Intent newOrderIntent = new Intent();
-			newOrderIntent.setClass(getApplicationContext(), NewOrderActivity.class);
-			startActivity(newOrderIntent);
+			intent.setClass(getApplicationContext(), NewOrderActivity.class);
+			startActivity(intent);
 			break;
 
 		case R.id.MENU_SEARCH:
 			break;
 
 		case R.id.MENU_HISTORY:
-			Intent allOrdersIntent = new Intent();
-			allOrdersIntent.setClass(getApplicationContext(), AllOrdersActivityShort.class);
-			startActivity(allOrdersIntent);
+			intent.setClass(getApplicationContext(), AllOrdersActivityShort.class);
+			startActivity(intent);
 			break;
 
 		case R.id.MENU_GALLERY:
-
+			intent.setClass(getApplicationContext(), GalleryView.class);
+			startActivity(intent);
+			overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+			finish();
 			break;
 
 		case R.id.MENU_EXIT:
@@ -659,8 +665,8 @@ public class SearchActivity extends Activity implements OnClickListener {
 				db.cleanMaterialChecked();
 				db.cleanEmployeeChecked();
 				
-				Log.d(LOG_TAG, WHERE);
-				Toast.makeText(getApplicationContext(), " "+WHERE, Toast.LENGTH_LONG).show();
+//				Log.d(LOG_TAG, WHERE);
+//				Toast.makeText(getApplicationContext(), " "+WHERE, Toast.LENGTH_LONG).show();
 				
 				Intent ext_search_result = new Intent(this, AllOrdersActivityShort.class);
 				ext_search_result.putExtra("EXT_SEARCH_WHERE", WHERE);

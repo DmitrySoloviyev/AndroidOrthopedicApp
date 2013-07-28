@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,7 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
@@ -50,7 +51,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 	EditText update_customerP;
 	Spinner spinner_update_employee;
 	Button submit_update;
-	ImageButton modelIMG;
+	ImageView modelIMG;
 	
 	String order_number_before;
 	String model;
@@ -98,7 +99,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 		
 		submit_update = (Button)findViewById(R.id.submit_update);
 		submit_update.setOnClickListener(this);
-		modelIMG = (ImageButton)findViewById(R.id.updateModelIMG);
+		modelIMG = (ImageView)findViewById(R.id.updateModelIMG);
 		modelIMG.setOnClickListener(this);
 		
 		update_order_number 		= (EditText)findViewById(R.id.updateOrderID);
@@ -152,14 +153,18 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 		update_kv_volume_RIGHT.setText(kv_volume_right);	
 		update_customerSN.setText(customersn);	
 		update_customerFN.setText(customerfn);	
-		update_customerP.setText(customerp);			
+		update_customerP.setText(customerp);
+		if(model_img_src.equals(""))
+			modelIMG.setImageResource(R.drawable.ic_launcher);
+		else
+			modelIMG.setImageURI(Uri.parse(model_img_src));
 
 		// узнаем каков у заказа МАТЕРИАЛ для вызова диалогового окна для его выбора
 		old_material = cursor.getInt( cursor.getColumnIndex("MaterialID") )-1;
 			spinner_update_material = (Spinner)findViewById(R.id.updateMaterial);
 	        List<String> materials = db.getMaterialList();
 	        ArrayAdapter<String> uddateMaterialAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, materials);
-	        uddateMaterialAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	        uddateMaterialAdapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
 	        spinner_update_material.setAdapter(uddateMaterialAdapter);
 	        spinner_update_material.setPrompt("Выберите материал");
 	        spinner_update_material.setOnItemSelectedListener(materialUpdated);
@@ -170,7 +175,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 			spinner_update_employee = (Spinner)findViewById(R.id.updateEmployee);
 	        List<String> employees = db.getEmployeeList();
 	        ArrayAdapter<String> employeeAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, employees);
-	        employeeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	        employeeAdapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
 	        spinner_update_employee.setAdapter(employeeAdapter);
 	        spinner_update_employee.setPrompt("Выберите модельера");
 	        spinner_update_employee.setOnItemSelectedListener(employeeUpdated);
@@ -221,8 +226,9 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 	}
 	
 	public void onBackPressed() {
-		Intent allOrdersIntent = new Intent(getApplicationContext(), AllOrdersActivityShort.class);
-		startActivity(allOrdersIntent);
+		Intent intent = new Intent(getApplicationContext(), DetailOrderActivity.class);
+		intent.putExtra("ID", ID);
+		startActivity(intent);
 		finish();
 	}
 	

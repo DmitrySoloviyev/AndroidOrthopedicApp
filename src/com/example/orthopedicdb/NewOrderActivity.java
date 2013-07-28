@@ -6,12 +6,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,7 +22,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -35,7 +32,7 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 
     long choosed_material;
     long choosed_employee;
-    String model_img_src = null;
+    String model_img_src = "";
     
 	EditText new_order_number;
 	AutoCompleteTextView new_model;
@@ -51,9 +48,6 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 	EditText new_customerP;
 	Spinner spinner_new_employee;
 	Spinner spinner_materials;
-	
-	// метки корректности
-	ImageView imgID;
 	
 	DB db;
 	
@@ -73,14 +67,9 @@ public class NewOrderActivity extends Activity implements OnClickListener{
         // инициализируем КНОПКИ и прикрепляем к ним слушателя
         submit_new_order = (Button)findViewById(R.id.submit_new_order);
         submit_new_order.setOnClickListener(this);
-//        submit_new_order.setEnabled(false);
-        
         get_picture = (ImageButton)findViewById(R.id.get_model_image);
         get_picture.setOnClickListener(this);
-        
-        /********
-         **ПОЛЯ**
-         ********/
+
         // Материалы - SPINNER
         spinner_materials = (Spinner)findViewById(R.id.new_materials);
         List<String> materials = db.getMaterialList();
@@ -182,7 +171,13 @@ public class NewOrderActivity extends Activity implements OnClickListener{
           public void onNothingSelected(AdapterView<?> arg0) {}
         };
 	
-	
+    public void onBackPressed() {
+    	Intent main = new Intent(getApplicationContext(), MainActivity.class);
+    	startActivity(main);
+    	finish();
+    }
+        
+        
 	// СОЗДАЕМ МЕНЮ
 	public boolean onCreateOptionsMenu(Menu menu){
 		MenuInflater menuInflater = getMenuInflater();
@@ -192,26 +187,27 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 	
 	// ОТКЛИК НА МЕНЮ
     public boolean onOptionsItemSelected(MenuItem item){
-
+    	Intent intent = new Intent();
     	switch (item.getItemId()) {
     	
 			case R.id.MENU_NEW_ORDER:
 				break;
 	
 			case R.id.MENU_SEARCH:
-				Intent searchIntent = new Intent();
-				searchIntent.setClass(getApplicationContext(), SearchActivity.class);
-				startActivity(searchIntent);
+				intent.setClass(getApplicationContext(), SearchActivity.class);
+				startActivity(intent);
 				break;
 				
 			case R.id.MENU_HISTORY:
-				Intent allOrdersIntent = new Intent();
-				allOrdersIntent.setClass(getApplicationContext(), AllOrdersActivityShort.class);
-				startActivity(allOrdersIntent);
+				intent.setClass(getApplicationContext(), AllOrdersActivityShort.class);
+				startActivity(intent);
 				break;
 				
 			case R.id.MENU_GALLERY:
-	
+				intent.setClass(getApplicationContext(), GalleryView.class);
+				startActivity(intent);
+				overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+				finish();
 				break;
 				
 			case R.id.MENU_EXIT:
@@ -224,50 +220,58 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 
     /* Результаты из активити*/
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	    if (resultCode == RESULT_OK) {
+		super.onActivityResult(requestCode, resultCode, data);
 	        switch (requestCode) {
-	        
-	        case REQUEST_ADD_MATERIAL:	
-	        	String material = data.getStringExtra("material");
-	        	db.addNewMaterial(material);
-	        	Toast.makeText(this, "Добавлен новый материал: " + material, Toast.LENGTH_SHORT).show();
-	          break;
-	          
-	        case REQUEST_ADD_EMPLOYEE:
-	        	String surname 		= data.getStringExtra("surname");
-	    	    String firstname 	= data.getStringExtra("firstname");
-	    	    String patronymic 	= data.getStringExtra("patronymic");
-	    	    choosed_employee = db.addNewEmployee(surname, firstname, patronymic);
-	    	    Toast.makeText(this, "Модельер "+surname +" "+firstname+" "+patronymic+" добавлен!", Toast.LENGTH_SHORT).show();
-	          break;
-	          
-	        case REQUEST_ADD_FOTO:
-	                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-	                get_picture.setImageBitmap(thumbnail);
-//	                Uri pictureFile = null;
-//	                Intent intent = getIntent();
-//	                if (intent.hasExtra(MediaStore.EXTRA_OUTPUT)){
-//	                	pictureFile = (Uri)intent.getExtras().getParcelable(MediaStore.EXTRA_OUTPUT);
-//	                	model_img_src = pictureFile.toString();
-//	                }
-//	                Log.d(LOG_TAG, "Фотография "+model_img_src+ " "+ pictureFile);
-//	                Toast.makeText(this, "Фотография "+model_img_src+ " "+ pictureFile, Toast.LENGTH_LONG).show();
-                	Toast.makeText(this, "Фотография закреплена за моделью!", Toast.LENGTH_SHORT).show();
-	        	break;
+		        case REQUEST_ADD_MATERIAL:	
+		        	if (resultCode == RESULT_OK) {
+			        	String material = data.getStringExtra("material");
+			        	db.addNewMaterial(material);
+			        	Toast.makeText(this, "Добавлен новый материал: " + material, Toast.LENGTH_SHORT).show();
+		        	}else{
+		        		Toast.makeText(this, "Новый материал не был добавлен", Toast.LENGTH_SHORT).show();
+		        	}
+		          break;
+		          
+		        case REQUEST_ADD_EMPLOYEE:
+		        	if (resultCode == RESULT_OK) {
+			        	String surname 		= data.getStringExtra("surname");
+			    	    String firstname 	= data.getStringExtra("firstname");
+			    	    String patronymic 	= data.getStringExtra("patronymic");
+			    	    choosed_employee = db.addNewEmployee(surname, firstname, patronymic);
+			    	    Toast.makeText(this, "Модельер "+surname +" "+firstname+" "+patronymic+" добавлен!", Toast.LENGTH_SHORT).show();
+		        	}else{
+		        		Toast.makeText(this, "Новый модельер не был добавлен", Toast.LENGTH_SHORT).show();
+		        	}
+		          break;
+		          
+		        case REQUEST_ADD_FOTO:
+		        	if (resultCode == RESULT_OK) {
+		        		Toast.makeText(this, "Фотография закреплена за моделью!", Toast.LENGTH_SHORT).show();
+		        	}else{
+		        		model_img_src = "";
+		        		Toast.makeText(this, "Фотография можели не сохранена!", Toast.LENGTH_SHORT).show();
+		        	}
+		        	break;
 	        }
-	      // если вернулось не ОК
-	    } else {
-	    	Toast.makeText(this, "Ничего не добавлено", Toast.LENGTH_SHORT).show();
-	    }
 	}
-    
+	
+	protected void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
+	    outState.putString("src", model_img_src);
+	}
+	
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+	    super.onRestoreInstanceState(savedInstanceState);
+	    model_img_src = savedInstanceState.getString("src");
+	    if(!model_img_src.equals(""))
+	    	Toast.makeText(this, "Фотография закреплена за моделью!", Toast.LENGTH_SHORT).show();
+	}
 	
 	// КНОПКА ОТПРАВИТЬ
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.submit_new_order:
-			
 			final String order_number = new_order_number.getText().toString().trim();
 			String model 		  	  = new_model.getText().toString().trim();
 			String size		  		= new_size.getText().toString().trim();
@@ -471,7 +475,7 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 		case R.id.get_model_image:
 			// проверяем доступность SD
 		    if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-		    	Toast.makeText(getApplicationContext(), "SD-карта не доступна: " + Environment.getExternalStorageState(), Toast.LENGTH_LONG).show();
+		    	Toast.makeText(getApplicationContext(), "Ошибка! SD-карта не доступна: " + Environment.getExternalStorageState(), Toast.LENGTH_LONG).show();
 		    	return;
 		    }
 		    // получаем путь к SD
@@ -479,16 +483,25 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 		    // добавляем свой каталог к пути
 		    sdPath = new File(sdPath.getAbsolutePath() + "/OrthopedicGallery");
 		    // создаем каталог
-		    sdPath.mkdirs();
+		    if (!sdPath.exists()) {
+		    	sdPath.mkdirs();
+		    }
 		    // формируем объект File, который содержит путь к файлу
 		    String timeStamp = String.valueOf(System.currentTimeMillis());
 			String FILENAME_SD = "ORTHOIMG_" + timeStamp+".jpg";
 		    File sdFile = new File(sdPath, FILENAME_SD);
-
-			
+		    
+			// проверяем, была ли уже сделана фотография, если да, то удаляем предыдущую фотографию
+		    if(!model_img_src.equals("")){
+		    	File old_img = new File(model_img_src);
+		    	old_img.delete();
+		    }
+		    	
+		    // сохраняем путь к фотографии
+		    model_img_src = sdFile.toString();
+		    
 			Intent intentGetFoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			intentGetFoto.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, sdFile);
-			setResult(RESULT_OK, intentGetFoto);
+			intentGetFoto.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(sdFile));
 			startActivityForResult(intentGetFoto, REQUEST_ADD_FOTO);
 			break;
 		default:

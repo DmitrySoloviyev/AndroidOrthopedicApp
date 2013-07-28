@@ -32,15 +32,15 @@ public class AllOrdersActivityShort extends Activity{
 	Cursor cursor;
 	DB db;
 	final String LOG_TAG = "myLogs";
-	String quick_search_query;
-	String ext_search_query;
 	final int SHOW_PROGRESS = 0;
 	final int CLOSE_PROGRESS = 1;
 	AlertDialog dialog;
 	MyAsyncTask mt;
-
+	String extraType="";
+	String extraQuery="";
 	public final int ALLORDERS = 1;
 	public final int QUICK_SEARCH = 2;
+	public final int EXT_SEARCH = 3;
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -55,30 +55,32 @@ public class AllOrdersActivityShort extends Activity{
 	    
 	    dialog = DialogScreen.getDialog(this, DialogScreen.PROGRESS);
         
-        if( getIntent().hasExtra("QUICK_SEARCH_QUERY") ){
+        if( extraType.equals("QUICK_SEARCH_QUERY") || getIntent().hasExtra("QUICK_SEARCH_QUERY") ){
+        	extraType = "QUICK_SEARCH_QUERY";
         	this.setTitle("Результаты поиска");
-        	quick_search_query = getIntent().getStringExtra("QUICK_SEARCH_QUERY");
-//        	mt.execute(QUICK_SEARCH);
-           	cursor = db.quicklySearch(quick_search_query);
+        	extraQuery = getIntent().getStringExtra("QUICK_SEARCH_QUERY");
+        	cursor = db.quicklySearch(extraQuery);
         	Toast.makeText(getApplicationContext(), "Найдено записей: "+cursor.getCount(), Toast.LENGTH_LONG).show();
-        }else if(getIntent().hasExtra("EXT_SEARCH_WHERE")){
+//        	mt.execute(QUICK_SEARCH);
+        }else if(getIntent().hasExtra("EXT_SEARCH_WHERE") || extraType.equals("EXT_SEARCH_WHERE") ){
+        	extraType = "EXT_SEARCH_WHERE";
         	this.setTitle("Результаты поиска");
-        	ext_search_query = getIntent().getStringExtra("EXT_SEARCH_WHERE");
-        	if(ext_search_query.length() == 0){
+        	extraQuery = getIntent().getStringExtra("EXT_SEARCH_WHERE");
+        	if(extraQuery.length() == 0){
         		Toast.makeText(getApplicationContext(), "Ничего не найдено. Ваш запрос пуст.", Toast.LENGTH_LONG).show();
         		return;
         	}
-        	cursor = db.extendedSearch(ext_search_query);
+        	cursor = db.extendedSearch(extraQuery);
         	Toast.makeText(getApplicationContext(), "Найдено записей: "+cursor.getCount(), Toast.LENGTH_LONG).show();
+//        	mt.execute(EXT_SEARCH);
         }else{
 //        	mt.execute(ALLORDERS);
-			cursor = db.getAllShortOrders();
-			Toast.makeText(getApplicationContext(), "Всего записей: "+cursor.getCount(), Toast.LENGTH_LONG).show();
-//			Log.d(LOG_TAG, "ALL ORDERS = " + cursor);
+        	cursor = db.getAllShortOrders();
+        	Toast.makeText(getApplicationContext(), "Всего записей: "+cursor.getCount(), Toast.LENGTH_LONG).show();
         }
- 
-        
+
         startManagingCursor(cursor);
+        
 		// формируем столбцы сопоставления
 	    String[] from = new String[] { "OrderID", "Model", "Material", "Customer", "Employee" };
 	    int[] to = new int[] { R.id.detailedOrderID, R.id.Model, R.id.Material, R.id.Customer, R.id.Employee };
@@ -92,59 +94,20 @@ public class AllOrdersActivityShort extends Activity{
 	    // добавляем контекстное меню к списку
 	    registerForContextMenu(lv);
 	    lv.setOnItemClickListener(myOnClick);
-/*	    lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-	    lv.setMultiChoiceModeListener(new MultiChoiceModeListener() {
-
-	        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-	          mode.getMenuInflater().inflate(R.menu.context, menu);
-	          return true;
-	        }
-
-	        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-	          return false;
-	        }
-
-	        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-	        	
-	        	SparseBooleanArray sbArray = lv.getCheckedItemPositions();
-		          for (int i = 0; i < sbArray.size(); i++) {
-		            int key = sbArray.keyAt(i);
-		            if (sbArray.get(key))
-		            	switch (item.getItemId()) {
-				    		case R.id.edit:
-				    			AdapterContextMenuInfo acmi_edit = (AdapterContextMenuInfo) item.getMenuInfo();
-				    			Intent editOrderIntent = new Intent(getApplicationContext(), EditOrderActivity.class);
-				    				editOrderIntent.putExtra("ID", acmi_edit.id);
-				    			startActivity(editOrderIntent);
-				    			finish();
-				    			return true;
-				    			//break;
-				    		case R.id.delete:
-				    			// получаем из пункта контекстного меню данные по пункту списка 
-				    		    AdapterContextMenuInfo acmi_delete = (AdapterContextMenuInfo) item.getMenuInfo();
-				    		    // извлекаем id записи и удаляем соответствующую запись в БД
-				    		    db.deleteOrderById(acmi_delete.id);
-				    		    Toast.makeText(getApplicationContext(), "Запись успешно удалена!", Toast.LENGTH_LONG).show();
-				    		    // обновляем курсор
-				    		    cursor.requery();
-				    		    return true;
-				    			//break;
-				    		default:
-				    			break;
-			    		}
-		          }
-	          return false;
-	        }
-
-	        public void onDestroyActionMode(ActionMode mode) {
-	        }
-
-	        public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-	          Log.d(LOG_TAG, "position = " + position + ", checked = " + checked);
-	        }
-	      });*/
 	}// ON CREATE
 
+	@SuppressWarnings("deprecation")
+	public void getContent(Cursor c){
+		startManagingCursor(c);
+	    String[] from = new String[] { "OrderID", "Model", "Material", "Customer", "Employee" };
+	    int[] to = new int[] { R.id.detailedOrderID, R.id.Model, R.id.Material, R.id.Customer, R.id.Employee };
+	    scAdapter = new SimpleCursorAdapter(getApplicationContext(), R.layout.short_item, c, from, to);
+		lv = (ListView)findViewById(R.id.orders_list); 
+		lv.setAdapter(scAdapter);
+	    registerForContextMenu(lv);
+	    lv.setOnItemClickListener(myOnClick);
+	}
+	
 	public OnItemClickListener myOnClick = new OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View v, int arg2, long arg3) {
@@ -155,6 +118,17 @@ public class AllOrdersActivityShort extends Activity{
 		}
 	};
 
+	protected void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
+	    outState.putString("extraType", extraType);
+	    outState.putString("extraQuery", extraQuery);
+	}
+	
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+	    super.onRestoreInstanceState(savedInstanceState);
+	    extraType = savedInstanceState.getString("extraType");
+	    extraQuery = savedInstanceState.getString("extraQuery");
+	}
 	
 	protected void onDestroy() {
 	    super.onDestroy();
@@ -221,20 +195,18 @@ public class AllOrdersActivityShort extends Activity{
 		// ОТКЛИК НА МЕНЮ
 	    @SuppressWarnings("deprecation")
 		public boolean onOptionsItemSelected(MenuItem item){
-
+	    	Intent intent = new Intent();
 	    	switch (item.getItemId()) {
 	    	
 				case R.id.MENU_NEW_ORDER:
-					Intent newOrderIntent = new Intent();
-					newOrderIntent.setClass(getApplicationContext(), NewOrderActivity.class);
-					startActivity(newOrderIntent);
+					intent.setClass(getApplicationContext(), NewOrderActivity.class);
+					startActivity(intent);
 					finish();
 					break;
 		
 				case R.id.MENU_SEARCH:
-					Intent searchIntent = new Intent();
-					searchIntent.setClass(getApplicationContext(), SearchActivity.class);
-					startActivity(searchIntent);
+					intent.setClass(getApplicationContext(), SearchActivity.class);
+					startActivity(intent);
 					finish();
 					break;
 					
@@ -243,7 +215,10 @@ public class AllOrdersActivityShort extends Activity{
 					break;
 					
 				case R.id.MENU_GALLERY:
-		
+					intent.setClass(getApplicationContext(), GalleryView.class);
+					startActivity(intent);
+					overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+					finish();
 					break;
 					
 				case R.id.MENU_EXIT:
@@ -256,14 +231,14 @@ public class AllOrdersActivityShort extends Activity{
 	    /************************************************************************/
 	    public class MyAsyncTask extends AsyncTask<Integer, Void, Cursor> {
 	    	Cursor taskcursor;
-	    	
+   	
 	    	@Override
 	        protected void onPreExecute() {
 	          super.onPreExecute();
 	          dialog.show();
 	        }
 	    	
-	    	@Override
+			@Override
 	    	protected Cursor doInBackground(Integer... params) {
 	    		switch (params[0]) {
 		    		case ALLORDERS:
@@ -271,20 +246,28 @@ public class AllOrdersActivityShort extends Activity{
 		    			break;
 		    			
 		    		case QUICK_SEARCH:
-		    			taskcursor = db.quicklySearch(quick_search_query);
+		    			taskcursor = db.quicklySearch(extraQuery);
+		    			break;
+		    		case EXT_SEARCH:
+		    			taskcursor = db.extendedSearch(extraQuery);
 		    			break;
 					default:
 		    			break;
 	    		}
+	    		
+	    		
+	    		
 	    		return taskcursor;
 	    	}
-	    	
-	    	@Override
+
+			@Override
 	    	protected void onPostExecute(Cursor result) {
 	    		super.onPostExecute(cursor);
-	    		dialog.dismiss();
-	    		Toast.makeText(getApplicationContext(), "Найдено записей: "+result.getCount(), Toast.LENGTH_LONG).show();
-	    		cursor = result;
+	    	    dialog.dismiss();
+	    	    getContent(result);
+//	    		Toast.makeText(getApplicationContext(), "Найдено записей: "+result.getCount(), Toast.LENGTH_LONG).show();
+//	    	    scAdapter.changeCursor(result);
+//	    	    startManagingCursor(result);
 	        }
 
 	    }

@@ -10,6 +10,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 
 public class DB {
 
@@ -48,7 +49,7 @@ public class DB {
 		ContentValues values_in_model = new ContentValues();
 
 		values_in_model.put("ModelID", model_id);
-		values_in_model.put("ModelPictureSRC", model_picture_src);
+		values_in_model.put("ModelPictureSRC", Uri.parse(model_picture_src).toString());
 
 		values_in_order.put("OrderID", OrderID);
 		values_in_order.put("MaterialID", material);
@@ -83,6 +84,7 @@ public class DB {
 	// Количество заказов в базе
 	public int countOrders(){
 		Cursor orders  = mDB.rawQuery("SELECT OrderID FROM Orders", null);
+		orders.moveToFirst();
 		return orders.getCount();
 	}
 	
@@ -389,6 +391,26 @@ public class DB {
 		ContentValues cv = new ContentValues();
 	    cv.put("EmployeeChecked", 0);
 		mDB.update("Employees", cv, null, null);
+	}
+	
+	public List<String> getModelsGallery(){
+		List<String> labels = new ArrayList<String>();
+
+		Cursor cursor = mDB.rawQuery("SELECT ModelPictureSRC FROM Models", null);
+		if (cursor != null) {
+			if (cursor.moveToFirst()) {
+				String str;
+				do {
+					str = "";
+					// int modelid = cursor.getColumnIndex("MaterialValue"); = 0
+					str = cursor.getString(0);
+					labels.add(str);
+				} while (cursor.moveToNext());
+			}
+			cursor.close();
+		}
+		
+		return labels;
 	}
 	
 	// /////////////////////////////////////////////////////////////////////////////////////

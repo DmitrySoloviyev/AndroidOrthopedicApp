@@ -92,7 +92,8 @@ public class DetailOrderActivity extends Activity {
 	
 	protected void onDestroy() {
 	    super.onDestroy();
-	    db.close();
+	    if(db!=null)
+	    	db.close();
 	}
 	
 	protected void onStop() {

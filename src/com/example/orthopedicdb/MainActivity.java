@@ -1,7 +1,8 @@
 package com.example.orthopedicdb;
 
-import android.os.Bundle;
-import android.preference.PreferenceManager;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -9,17 +10,22 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnClickListener{
+public class MainActivity extends Activity implements OnClickListener {
 
 	TextView countOrders;
 	final String LOG_TAG = "myLogs";
@@ -29,13 +35,28 @@ public class MainActivity extends Activity implements OnClickListener{
 	Button quickly_search_submit;
 	SharedPreferences sp;
 	PackageInfo packageInfo;
-	
+	View page1, page2;
 	
 	@SuppressLint("CommitPrefEdits")
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        // левое меню
+        List<View> pages = new ArrayList<View>();
+        page1 = getLayoutInflater().inflate(R.layout.left_menu, null); 
+        pages.add(page1);
+        
+        page2 = getLayoutInflater().inflate(R.layout.activity_main, null); 
+        pages.add(page2);
+        
+        SamplePagerAdapter pagerAdapter = new SamplePagerAdapter(pages);
+        ViewPager viewPager = new ViewPager(this);
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.setPageTransformer(true, new DepthPageTransformer());
+        viewPager.setCurrentItem(1);   
+        setContentView(viewPager);
         
         PackageManager pm = getPackageManager();
 		try {
@@ -44,9 +65,10 @@ public class MainActivity extends Activity implements OnClickListener{
 			e.printStackTrace();
 		}
 		String version = packageInfo.versionName;
-		
-		TextView tvversionCode = (TextView)findViewById(R.id.versionCode);
+		TextView tvversionCode = (TextView)page2.findViewById(R.id.versionCode);
 		tvversionCode.setText("Version "+version);
+		Animation anim = AnimationUtils.loadAnimation(this, R.anim.leafanim);
+		tvversionCode.startAnimation(anim);
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         String flag = sp.getString("version", "0");
@@ -64,14 +86,49 @@ public class MainActivity extends Activity implements OnClickListener{
 			intent = new Intent(getApplicationContext(), NewEmployee.class);
 			startActivityForResult(intent, 1);
 		}
-		
-		//AlertDialog dialog = DialogScreen.getDialog(this, DialogScreen.WHATSNEW);
-        //dialog.show();
-        
-        quickly_search = (EditText)findViewById(R.id.quickly_search);
-        quickly_search_submit = (Button)findViewById(R.id.quickly_search_submit);
+        quickly_search = (EditText)page2.findViewById(R.id.quickly_search);
+        quickly_search_submit = (Button)page2.findViewById(R.id.quickly_search_submit);
         quickly_search_submit.setOnClickListener(this);
     }//END ONCREATE
+
+	
+	public class DepthPageTransformer implements ViewPager.PageTransformer {
+	    private static final float MIN_SCALE = 0.75f;
+
+	    public void transformPage(View view, float position) {
+	        int pageWidth = view.getWidth();
+
+	        if (position < -1) { // [-Infinity,-1)
+	            // This page is way off-screen to the left.
+	            view.setAlpha(0);
+
+	        } else if (position <= 0) { // [-1,0]
+	            // Use the default slide transition when moving to the left page
+	            view.setAlpha(1);
+	            view.setTranslationX(0);
+	            view.setScaleX(1);
+	            view.setScaleY(1);
+
+	        } else if (position <= 1) { // (0,1]
+	            // Fade the page out.
+	            view.setAlpha(1 - position);
+
+	            // Counteract the default slide transition
+	            view.setTranslationX(pageWidth * -position);
+
+	            // Scale the page down (between MIN_SCALE and 1)
+	            float scaleFactor = MIN_SCALE
+	                    + (1 - MIN_SCALE) * (1 - Math.abs(position));
+	            view.setScaleX(scaleFactor);
+	            view.setScaleY(scaleFactor);
+
+	        } else { // (1,+Infinity]
+	            // This page is way off-screen to the right.
+	            view.setAlpha(0);
+	        }
+	    }
+	}
+	
 	
 	protected void onDestroy() {
 	    super.onDestroy();
@@ -82,8 +139,8 @@ public class MainActivity extends Activity implements OnClickListener{
 	    super.onStart();
 	    db = new DB(this);
         db.open();
-	    int cnt = db.countOrders();
-	    countOrders = (TextView)findViewById(R.id.count);
+        int cnt = db.countOrders();
+	    countOrders = (TextView)page2.findViewById(R.id.count);
 	    countOrders.setText(" " + cnt);
 	}
 	
@@ -105,32 +162,35 @@ public class MainActivity extends Activity implements OnClickListener{
   	
 	// обработка нажатия пункта меню
     public boolean onOptionsItemSelected(MenuItem item){
-
+    	Intent intent = new Intent();
     	switch (item.getItemId()) {
     	
 			case R.id.MENU_NEW_ORDER:
-				Intent newOrderIntent = new Intent();
-				newOrderIntent.setClass(getApplicationContext(), NewOrderActivity.class);
-				startActivity(newOrderIntent);
+				intent.setClass(getApplicationContext(), NewOrderActivity.class);
+				startActivity(intent);
+				overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 				finish();
 				break;
 	
 			case R.id.MENU_SEARCH:
-				Intent searchIntent = new Intent();
-				searchIntent.setClass(getApplicationContext(), SearchActivity.class);
-				startActivity(searchIntent);
+				intent.setClass(getApplicationContext(), SearchActivity.class);
+				startActivity(intent);
+				overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 				finish();
 				break;
 				
 			case R.id.MENU_HISTORY:
-				Intent allOrdersIntent = new Intent();
-				allOrdersIntent.setClass(getApplicationContext(), AllOrdersActivityShort.class);
-				startActivity(allOrdersIntent);
+				intent.setClass(getApplicationContext(), AllOrdersActivityShort.class);
+				startActivity(intent);
+				overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 				finish();
 				break;
 				
 			case R.id.MENU_GALLERY:
-	
+				intent.setClass(getApplicationContext(), GalleryView.class);
+				startActivity(intent);
+				overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+				finish();
 				break;
 				
 			case R.id.MENU_EXIT:
