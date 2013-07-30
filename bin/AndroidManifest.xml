@@ -6,7 +6,7 @@
     android:versionName="0.0.7" >
 
     <uses-sdk
-        android:minSdkVersion="9"
+        android:minSdkVersion="10"
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.orthopedicdb.SearchActivity"
+            android:name="com.example.orthopedicdb.FragmentSearchActivity"
             android:label="@string/app_section_search"
             android:theme="@style/AppTheme" >
         </activity>
@@ -53,6 +53,7 @@
         <activity android:name="com.example.orthopedicdb.DetailOrderActivity" android:theme="@style/AppTheme"></activity>
         <activity android:name="EditOrderActivity" android:label="Редактирование" android:theme="@style/AppTheme"></activity>
         <activity android:label="Что нового" android:name="NewsActivity" android:theme="@android:style/Theme.Holo.Light.Dialog"></activity>
+        <activity android:name="GalleryView" android:label="Галерея моделей" android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

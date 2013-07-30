@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -154,10 +155,11 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 		update_customerSN.setText(customersn);	
 		update_customerFN.setText(customerfn);	
 		update_customerP.setText(customerp);
-		if(model_img_src.equals(""))
-			modelIMG.setImageResource(R.drawable.ic_launcher);
-		else
-			modelIMG.setImageURI(Uri.parse(model_img_src));
+//		if(model_img_src.equals(""))
+//			modelIMG.setImageResource(R.drawable.ic_launcher);
+//		else
+//			modelIMG.setImageURI(Uri.parse(model_img_src));
+			setPic(model_img_src);
 
 		// узнаем каков у заказа МАТЕРИАЛ для вызова диалогового окна для его выбора
 		old_material = cursor.getInt( cursor.getColumnIndex("MaterialID") )-1;
@@ -289,7 +291,31 @@ public class EditOrderActivity extends Activity implements OnClickListener {
   	    }
   	}
 
-
+   // Декодирование масштабированого изображения
+  	private void setPic(String photoPath) {
+  	    // Get the dimensions of the View
+  	    int targetW = modelIMG.getWidth();
+  	    int targetH = modelIMG.getHeight();
+  	 
+  	    // Get the dimensions of the bitmap
+  	    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+  	    bmOptions.inJustDecodeBounds = true;
+  	    BitmapFactory.decodeFile(photoPath, bmOptions);
+  	    int photoW = bmOptions.outWidth;
+  	    int photoH = bmOptions.outHeight;
+  	 
+  	    // Determine how much to scale down the image
+  	    int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+  	 
+  	    // Decode the image file into a Bitmap sized to fill the View
+  	    bmOptions.inJustDecodeBounds = true;
+  	    bmOptions.inSampleSize = scaleFactor;
+  	    bmOptions.inPurgeable = true;
+  	 
+  	    Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
+  	    modelIMG.setImageBitmap(bitmap);
+  	}
+      
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {

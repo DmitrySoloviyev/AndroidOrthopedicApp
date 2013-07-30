@@ -1,31 +1,31 @@
 package com.example.orthopedicdb;
 
-import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Vector;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnClickListener {
+import com.example.orthopedicdb.FragmentMenu.OnLeftMenuItemListener;
+
+public class MainActivity extends FragmentActivity implements OnLeftMenuItemListener {
 
 	TextView countOrders;
 	final String LOG_TAG = "myLogs";
@@ -37,12 +37,17 @@ public class MainActivity extends Activity implements OnClickListener {
 	PackageInfo packageInfo;
 	View page1, page2;
 	
+	
+	ViewPager pager;
+	PagerAdapter pagerAdapter;
+	Vector<Fragment> fragments;
+	
 	@SuppressLint("CommitPrefEdits")
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        
+        setContentView(R.layout.main);
+/*        
         // левое меню
         List<View> pages = new ArrayList<View>();
         page1 = getLayoutInflater().inflate(R.layout.left_menu, null); 
@@ -86,12 +91,154 @@ public class MainActivity extends Activity implements OnClickListener {
 			intent = new Intent(getApplicationContext(), NewEmployee.class);
 			startActivityForResult(intent, 1);
 		}
+		
+		
+		
         quickly_search = (EditText)page2.findViewById(R.id.quickly_search);
         quickly_search_submit = (Button)page2.findViewById(R.id.quickly_search_submit);
-        quickly_search_submit.setOnClickListener(this);
-    }//END ONCREATE
+        quickly_search_submit.setOnClickListener(this);*/
+        
+/*        
+        Fragment frag = new FragmentMenu();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.frg, frag);
+        ft.commit();
+*/        
+        getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
+        if (isLarge()) {
+        	FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        	
+        	Fragment frag1 = new FragmentMenu();
+            ft.add(R.id.fragment1, frag1);
+            
+            Fragment frag2 = new FragmentNewOrderActivity();
+            ft.add(R.id.fragment2, frag2);
+            
+            ft.commit();
+        }else{
+        	fragments = new Vector<Fragment>();
+            fragments.add(Fragment.instantiate(this, FragmentMenu.class.getName()));
+            fragments.add(Fragment.instantiate(this, FragmentNewOrderActivity.class.getName()));
+            
+            pager = (ViewPager) findViewById(R.id.pager);
+            pagerAdapter = new PagerAdapter(super.getSupportFragmentManager(), fragments);
+            pager.setAdapter(pagerAdapter);
+            pager.setCurrentItem(1);
+            pager.setOnPageChangeListener(new OnPageChangeListener() {
+
+                @Override
+                public void onPageSelected(int position) {
+					switch (position) {
+						case 0:
+							getActionBar().setTitle("Меню");
+							break;
+						case 1:
+							getActionBar().setTitle("Новая запись");
+							break;
+						default:
+							break;
+					}
+                }
+
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                }
+            });
+        }
+        
+        
+        
+        
+    }//END ONCREATE
 	
+	boolean isLarge() {
+	    return (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+	}
+	
+	@Override
+	public void callFragmentByPosition(int item) {
+		if (isLarge()) {
+			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+			switch (item) {
+				case 0:// НОВЫЙ ЗАКАЗ
+					Fragment fragmentNewOrder = new FragmentNewOrderActivity();
+		            ft.add(R.id.fragment2, fragmentNewOrder);
+		            ft.commit();
+					break;
+				case 1: // ПОИСК
+					Fragment fragmentSearch = new FragmentSearchActivity();
+					ft.replace(R.id.fragment2, fragmentSearch);
+					ft.commit();
+					break;
+				case 2:// ВСЕ ЗАПИСИ
+//					Fragment fragmentAllOrders = new FragmentAllOrdersActivity();
+//					ft.replace(R.id.fragment2, fragmentSearch);
+					break;
+				case 3:// ГАЛЕРЕЯ
+//					Fragment fragmentGallery = new FragmentGalleryActivity();
+//					ft.replace(R.id.fragment2, fragmentSearch);
+					break;
+				default:
+					break;
+			}
+		}else{
+			switch (item) {
+				case 0:// НОВЫЙ ЗАКАЗ
+					fragments.remove(1);
+					fragments.add(Fragment.instantiate(this, FragmentNewOrderActivity.class.getName()));
+					pagerAdapter.notifyDataSetChanged();
+					pager.setCurrentItem(1);
+					break;
+				case 1: // ПОИСК
+					fragments.add(Fragment.instantiate(this, FragmentSearchActivity.class.getName()));
+					
+//					fragments.remove(1);
+					pagerAdapter.notifyDataSetChanged();
+					pager.setCurrentItem(2);
+					break;
+				case 2:// ВСЕ ЗАПИСИ
+//					fragments.remove(1);
+//					fragments.add(Fragment.instantiate(this, FragmentAllOrdersActivity.class.getName()));
+//					pager.setCurrentItem(1);
+					break;
+				case 3:// ГАЛЕРЕЯ
+//					fragments.remove(1);
+//					fragments.add(Fragment.instantiate(this, FragmentGalleryActivity.class.getName()));
+//					pager.setCurrentItem(1);
+					break;
+				default:
+					break;
+			}
+		}
+	}
+	
+	class PagerAdapter extends FragmentPagerAdapter {
+
+        private List<Fragment> fragments;
+
+        public PagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+            super(fm);
+            this.fragments = fragments;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return this.fragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return this.fragments.size();
+        }
+
+    }
+/*	
 	public class DepthPageTransformer implements ViewPager.PageTransformer {
 	    private static final float MIN_SCALE = 0.75f;
 
@@ -152,7 +299,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onBackPressed() {
 		finish();
 	}
-	
+*/	
 	//меню
   	public boolean onCreateOptionsMenu(Menu menu){
   		MenuInflater menuInflater = getMenuInflater();
@@ -173,7 +320,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				break;
 	
 			case R.id.MENU_SEARCH:
-				intent.setClass(getApplicationContext(), SearchActivity.class);
+				intent.setClass(getApplicationContext(), FragmentSearchActivity.class);
 				startActivity(intent);
 				overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 				finish();
@@ -200,7 +347,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		return true;
     }
     
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+/*    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    if (data == null) {
 	    	Toast.makeText(this, "Модельер не добавлен! Добавьте модельера", Toast.LENGTH_LONG).show();
 	    	finish();
@@ -231,6 +378,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		startActivity(quick_search_result);
 		finish();
 	}
-    
+*/    
   
 }// end MainActivity

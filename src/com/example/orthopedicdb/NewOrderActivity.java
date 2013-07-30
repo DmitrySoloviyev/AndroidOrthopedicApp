@@ -194,7 +194,7 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 				break;
 	
 			case R.id.MENU_SEARCH:
-				intent.setClass(getApplicationContext(), SearchActivity.class);
+				intent.setClass(getApplicationContext(), FragmentSearchActivity.class);
 				startActivity(intent);
 				break;
 				
@@ -267,7 +267,7 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 	    	Toast.makeText(this, "Фотография закреплена за моделью!", Toast.LENGTH_SHORT).show();
 	}
 	
-	// КНОПКА ОТПРАВИТЬ
+
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {

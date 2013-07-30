@@ -14,28 +14,45 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.2.1\t Добавлена функция резервирования БД и ее восстановления." />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="\t0.2\t Прекращена поддержка версий андроида меньше 4.0.1. Внешний вид построен на фрагментах." />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="\t0.1\t Stable release." />
+                android:text="\t1.0\t Stable release." />
 
 			<TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.0.8\t Обращение к БД осуществляется в отдельном потоке. Налажена работа с камерой для создания и сохранения изображения модели в БД." /> -->
+                android:text="\t0.5\t Добавлена функция резервирования БД и ее восстановления." />
+
+			<TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.4\t Обращение к БД осуществляется в отдельном потоке." />
+                
+           <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.3\t Теперь возможно прикреплять фотографию модели к заказу. Доступна 'Галерея'." />
+                
+           <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.2\t Реализован ActionMode в качестве замены контектстному меню. Upstream changes." />
+                
+           <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.1\t Прекращена поддержка версий андроида меньше 3. Внешний вид построен на фрагментах. Полностью переделана 
+                реализация интерфейса пользователя: за основу взяты вышеупомянутые фрагменты. Сдвиньте экран вправо для доступа к главному меню. Обычные меню больше не доступно." />
+                
+                 -->
 
             <TextView
                 android:id="@+id/textView4"

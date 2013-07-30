@@ -47,7 +47,10 @@ public class AllOrdersActivityShort extends Activity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.all_orders);
-
+		if (savedInstanceState != null){
+			extraType = savedInstanceState.getString("extraType");
+			extraQuery = savedInstanceState.getString("extraQuery");
+		}
 		// подключаемся к БД
 	    db = new DB(this);
 	    db.open();
@@ -205,7 +208,7 @@ public class AllOrdersActivityShort extends Activity{
 					break;
 		
 				case R.id.MENU_SEARCH:
-					intent.setClass(getApplicationContext(), SearchActivity.class);
+					intent.setClass(getApplicationContext(), FragmentSearchActivity.class);
 					startActivity(intent);
 					finish();
 					break;
