@@ -3,16 +3,14 @@ package com.example.orthopedicdb;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 
 public class DetailOrderActivity extends Activity {
-
+// TODO НАПИСАТЬ СВОЙ АДАПТЕР ДЛЯ ОБРАБОТКИ И УСТАНОВКИ ФОТОГРАФИИ МОДЕЛИ И 
+//	ДЛЯ ВЫВОДА ПОЛЕЙ ФИО МОДЕЛЬЕРА И ЗАКАЗЧИКА В ВИДЕ БУГУЩЕЙ СТРОКИ, ИСПОЛЬЗОВАВ android:ellipsize="marquee"	 android:marqueeRepeatLimit="marquee_forever" 	text.setSelected(true);
+	
 	long ID;
 	ListView lv;
 	SimpleCursorAdapter scAdapter;
@@ -99,15 +97,10 @@ public class DetailOrderActivity extends Activity {
 	
 	protected void onStop() {
 	    super.onStop();
-	    db.close();
+	    if(db!=null)
+	    	db.close();
 	}
-	
-	public void onBackPressed() {
-		Intent allOrdersIntent = new Intent(getApplicationContext(), AllOrdersActivityShort.class);
-		startActivity(allOrdersIntent);
-		finish();
-	}
-	
+/*	
 	// СОЗДАЕМ МЕНЮ
 	public boolean onCreateOptionsMenu(Menu menu){
 		menu.add(0, 1, 0, "Редактировать");
@@ -128,11 +121,11 @@ public class DetailOrderActivity extends Activity {
     			db.deleteOrderById(ID);
     		    Toast.makeText(getApplicationContext(), "Запись успешно удалена!", Toast.LENGTH_LONG).show();
     		    Intent allOrdersIntent = new Intent();
-				allOrdersIntent.setClass(getApplicationContext(), AllOrdersActivityShort.class);
+				allOrdersIntent.setClass(getApplicationContext(), FragmentAllOrdersActivity.class);
 				startActivity(allOrdersIntent);
 				finish();
     			break;
     	}
     	return true;
-    }
+    }*/
 }

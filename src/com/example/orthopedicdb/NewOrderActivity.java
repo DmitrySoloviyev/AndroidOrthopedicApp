@@ -199,12 +199,12 @@ public class NewOrderActivity extends Activity implements OnClickListener{
 				break;
 				
 			case R.id.MENU_HISTORY:
-				intent.setClass(getApplicationContext(), AllOrdersActivityShort.class);
+				intent.setClass(getApplicationContext(), FragmentAllOrdersActivity.class);
 				startActivity(intent);
 				break;
 				
 			case R.id.MENU_GALLERY:
-				intent.setClass(getApplicationContext(), GalleryView.class);
+				intent.setClass(getApplicationContext(), FragmentGalleryActivity.class);
 				startActivity(intent);
 				overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 				finish();

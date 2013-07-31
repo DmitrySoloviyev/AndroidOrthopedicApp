@@ -84,7 +84,6 @@ public class DB {
 	// Количество заказов в базе
 	public int countOrders(){
 		Cursor orders  = mDB.rawQuery("SELECT OrderID FROM Orders", null);
-		orders.moveToFirst();
 		return orders.getCount();
 	}
 	

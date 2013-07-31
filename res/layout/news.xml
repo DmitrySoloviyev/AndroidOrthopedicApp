@@ -14,28 +14,56 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t1.0\t Stable release." />
+                android:text="\t1.0\t Stable release. " /> УБРАТЬ ВСЕ ЛОГИ И Debuggable ИЗ МАНИФЕСТА
 
 			<TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.5\t Добавлена функция резервирования БД и ее восстановления." />
+                android:text="\t0.9\t Внешний вид приложения оптимизирован под планшеты." />
 
 			<TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.4\t Обращение к БД осуществляется в отдельном потоке." />
+                android:text="\t0.8\t Виджет, с возможностью быстро попасть на нужную страницу приложения прямо с рабочего стола." />
+
+			<TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.7\t Добавлена функция резервирования БД и ее восстановления." />
+
+			<TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.6\t Обращение к БД осуществляется в отдельном потоке." />
                 
            <TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.3\t Теперь возможно прикреплять фотографию модели к заказу. Доступна 'Галерея'." />
+                android:text="\t0.5\t Теперь возможно прикреплять фотографию модели к заказу. Доступна 'Галерея'." />
+                
+           <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.4\t Добавлены настройки приложения. Пока доступен только один пункт, позволяющий выбрать какой экран будет запускаться при запуске приложения." />     
+                
+           <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.3\t Вновь доступен быстрый поиск." />
                 
            <TextView
                 android:id="@+id/textView4"
@@ -43,16 +71,24 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.2\t Реализован ActionMode в качестве замены контектстному меню. Upstream changes." />
-                
+                                 -->
            <TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.1\t Прекращена поддержка версий андроида меньше 3. Внешний вид построен на фрагментах. Полностью переделана 
-                реализация интерфейса пользователя: за основу взяты вышеупомянутые фрагменты. Сдвиньте экран вправо для доступа к главному меню. Обычные меню больше не доступно." />
+                android:text="\t0.1.1\t Результаты поиска корректно отображаются при повороте экрана или при переходе с другого экрана." />
+           
+           <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.1\t Прекращена поддержка версий Android меньше 3.x. Полностью переделан интерфейс: основан на фрагментах. Сдвиньте экран вправо или нажмите на иконку приложения для доступа 
+                к главному меню. Обычное меню больше не доступно. Переписаны диалоговые окна. Множество существенных улучшений и исправлений, удалено все лишнее. Временно удален быстрый поиск. 
+                Подкорректирована реализация поиска." />
                 
-                 -->
+
 
             <TextView
                 android:id="@+id/textView4"

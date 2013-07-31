@@ -1,11 +1,9 @@
 package com.example.orthopedicdb;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +21,11 @@ public class FragmentSearchActivity extends Fragment {
 	Button search_material;
 	String WHERE = "";
 	DB db;
-
-	Cursor materialsCursor;
-	Cursor employeeCursor;
+	DialogFragment materialDialog;
+	DialogFragment employeeDialog;
+	
+	public static Cursor materialsCursor;
+	public static Cursor employeeCursor;
 	SimpleCursorAdapter scAdapter;
 
 	EditText edit_order_number;
@@ -37,9 +37,6 @@ public class FragmentSearchActivity extends Fragment {
 	EditText edit_ankle_volume;
 	EditText edit_kv_volume;
 	EditText edit_customer;
-
-	final int DIALOG_MATERIALS = 1;
-	final int DIALOG_EMPLOYEES = 2;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -565,24 +562,23 @@ public class FragmentSearchActivity extends Fragment {
 				db.cleanMaterialChecked();
 				db.cleanEmployeeChecked();
 
-				Intent ext_search_result = new Intent(getActivity(),AllOrdersActivityShort.class);
-				ext_search_result.putExtra("EXT_SEARCH_WHERE", WHERE);
-				startActivity(ext_search_result);
+				extlistener.getExtWhere(WHERE);
+			}
+		});////////////***ОТПРАВКА ПОИСКОВОГО ЗАПРОСА***//////////////
 
-			}
-		});
-		search_employee.setOnClickListener(new OnClickListener() {
-			@SuppressWarnings("deprecation")
-			@Override
-			public void onClick(View v) {
-				getActivity().showDialog(DIALOG_EMPLOYEES);
-			}
-		});
 		search_material.setOnClickListener(new OnClickListener() {
-			@SuppressWarnings("deprecation")
 			@Override
 			public void onClick(View v) {
-				getActivity().showDialog(DIALOG_MATERIALS);
+				materialDialog = FragmentDialogScreen.newInstance(FragmentDialogScreen.DIALOG_MATERIALS);
+				materialDialog.show(getFragmentManager(), "mdlg");
+			}
+		});
+		
+		search_employee.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				employeeDialog = FragmentDialogScreen.newInstance(FragmentDialogScreen.DIALOG_EMPLOYEES);
+				employeeDialog.show(getFragmentManager(), "edlg");
 			}
 		});
 
@@ -606,54 +602,19 @@ public class FragmentSearchActivity extends Fragment {
 		return view;
 	} // end OnCreate
 
-	// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	protected Dialog onCreateDialog(int id) {
-		AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
-		switch (id) {
-		case DIALOG_MATERIALS:
-			adb.setTitle("Выберите материал");
-			adb.setMultiChoiceItems(materialsCursor, "MaterialChecked",
-					"MaterialValue",
-					new DialogInterface.OnMultiChoiceClickListener() {
-						@SuppressWarnings("deprecation")
-						@Override
-						public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-							db.changeMaterialFlag(which, isChecked);
-							materialsCursor.requery();
-						}
-					});
-			break;
-
-		case DIALOG_EMPLOYEES:
-			adb.setTitle("Выберите модельера");
-			adb.setMultiChoiceItems(employeeCursor, "EmployeeChecked",
-					"Employee",
-					new DialogInterface.OnMultiChoiceClickListener() {
-						@SuppressWarnings("deprecation")
-						@Override
-						public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-							db.changeEmployeeFlag(which, isChecked);
-							employeeCursor.requery();
-						}
-					});
-
-			break;
-		}
-
-		adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-			}
-		});
-		return adb.create();
+	public interface OnExtendedSearchClickListener {
+	    public void getExtWhere(String where);
 	}
-	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	/*
-	 * public void onBackPressed() { Intent main = new Intent(getActivity(),
-	 * MainActivity.class); startActivity(main); finish(); }
-	 */
-
+	OnExtendedSearchClickListener extlistener;
+	
+	
+	@Override
+	public void onAttach(Activity activity) {
+	    super.onAttach(activity);
+	    extlistener = (OnExtendedSearchClickListener) activity;
+	}
+	
 	/*
 	 * public void createWere(String query_string, String valueLEFT, String
 	 * valueRIGHT, String WHERE){ }//end create where

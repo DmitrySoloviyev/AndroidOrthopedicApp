@@ -5,10 +5,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.animation.ArgbEvaluator;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,7 +24,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class FragmentNewOrderActivity extends Fragment {
@@ -257,10 +254,7 @@ public class FragmentNewOrderActivity extends Fragment {
     							 choosed_employee);
     			
     			Toast.makeText(getActivity(), "Запись успешно добавлена!", Toast.LENGTH_SHORT).show();
-    			if(isLarge()){
-    				Fragment frag1 = getFragmentManager().findFragmentByTag("FragmentMenu");
-    			    ((TextView) frag1.getView().findViewById(R.id.count)).setText("Заказов в базе: "+db.countOrders());
-    			}
+    			getActivity().getActionBar().setSubtitle("Записей в базе: "+db.countOrders());
     			new_order_number.setText("");
     			new_model.setText("");
     			new_size.setText("");
@@ -383,10 +377,6 @@ public class FragmentNewOrderActivity extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    getActivity().setTitle("Новая запись");
-	}
-	
-	boolean isLarge() {
-	    return (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
 	}
 	
 	public void onDestroy() {
