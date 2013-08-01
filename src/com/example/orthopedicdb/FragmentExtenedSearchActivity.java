@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -54,6 +55,14 @@ public class FragmentExtenedSearchActivity extends Fragment {
 		}
 	};
 	
+	public OnLongClickListener myOnLongClick = new OnLongClickListener() {
+		@Override
+		public boolean onLongClick(View v) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+	};
+	
 	public void onStart() {
 	    super.onStart();
 	    db = new DB(getActivity());
@@ -90,6 +99,7 @@ public class FragmentExtenedSearchActivity extends Fragment {
 
 	    	    registerForContextMenu(lv);
 	    	    lv.setOnItemClickListener(myOnClick);
+	    	    lv.setOnLongClickListener(myOnLongClick);
 	    	    progressDialog.dismiss();
 	        }
 	    }.execute();

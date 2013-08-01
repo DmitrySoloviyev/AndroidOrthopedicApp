@@ -1,7 +1,5 @@
 package com.example.orthopedicdb;
 
-import com.example.orthopedicdb.FragmentSearchActivity.OnExtendedSearchClickListener;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,6 +23,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.orthopedicdb.FragmentSearchActivity.OnExtendedSearchClickListener;
+
 public class MainActivity extends FragmentActivity implements OnExtendedSearchClickListener{
 
 	DB db;
@@ -40,7 +40,7 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
     private CharSequence mTitle;
 	ListView mDrawerList;
 	DialogFragment progressDialog;
-	String[] items = new String[] {"Новый заказ", "Поиск", "Все заказы", "Галерея"};
+	String[] items = new String[] {"Новый заказ", "Поиск", "Все заказы", "Галерея", "Настройки"};
 	
 	private ActionBarDrawerToggle mDrawerToggle;
 	
@@ -76,18 +76,16 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setSubtitle("Записей в базе: "+db.countOrders());
 
-	
      	mDrawerLayout  = (DrawerLayout)findViewById(R.id.drawer_layout);
      	mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
      	mDrawerList  = (ListView) findViewById(R.id.left_drawer);
      	MenuAdapter menuAdapter = new MenuAdapter(this, items);
-
      	mDrawerList.setAdapter(menuAdapter);
      	mDrawerList.setOnItemClickListener(new OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				selectItem(position);
+				selectMenuItem(position);
 			}
 		});
 
@@ -107,16 +105,14 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-       
-        // TODO тут ориентируемся по настройкам:
-        // ОБЯЗАТЕЛЬНО ВЕСТИ ПРОВЕКУ НА НАЛИЧИЕ ХОТЯ БЫ ОДНОГО МОДЕЛЬЕРА ЕСЛИ В selectItem() ПЕРЕДАЕТСЯ 0
         
         if (savedInstanceState != null){
         	WHERE = savedInstanceState.getString("WHERE");
         	whichSearch = savedInstanceState.getInt("SEARCHID");
         	showSearchResults(whichSearch);
-        }else
-        	selectItem(1);
+        }else{
+        	selectMenuItem(Integer.valueOf(sp.getString("activityList", "1")));
+        }
 	}// END ONCREATE
 	
 
@@ -135,19 +131,16 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
         if (mDrawerToggle.onOptionsItemSelected(item)) {
           return true;
         }
-        // Handle your other action bar items...
         return super.onOptionsItemSelected(item);
     }
 	
-
+    
 	/** ЗАГРУЖАЕМ ОСНОВНЫЕ ФРАГМЕНТЫ */
-    private void selectItem(final int position) {
-    	
+    private void selectMenuItem(final int position) {
+
     	new AsyncTask<Integer, Void, Fragment>() {
     		@Override
 	        protected void onPreExecute() {
@@ -160,10 +153,11 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 	        }
 			@Override
 			protected Fragment doInBackground(Integer... params) {
-				Fragment fragment = new Fragment();
+				Fragment fragment = null;
+
 				switch (params[0]) {
 					case 0:// НОВЫЙ ЗАКАЗ
-						fragment = new FragmentNewOrderActivity();
+						fragment = (Fragment) new FragmentNewOrderActivity();
 						break;
 					case 1: // ПОИСК
 						fragment = new FragmentSearchActivity();
@@ -177,18 +171,23 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 					default:
 						break;
 				}
-				return fragment;
+					return fragment;
 			}
 			@Override
 	    	protected void onPostExecute(Fragment result) {
 	    		super.onPostExecute(result);
-	    		FragmentManager fragmentManager = getSupportFragmentManager();
-	    		fragmentManager.beginTransaction().replace(R.id.content_frame, result).commit();
+	    		if(result==null){
+	    			getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new Fragment()).commit();//удаляем фрагмент
+			        getFragmentManager().beginTransaction().replace(R.id.content_frame, new FragmentPreferencesActivity()).commit();//добавляем фрагмент с настройками
+	    		}else{
+	    			FragmentManager fragmentManager = getSupportFragmentManager();
+	    			fragmentManager.beginTransaction().replace(R.id.content_frame, result).commit();
+	    		}
 	    		progressDialog.dismiss();
 			}
 		}.execute(position);
     	
-    	
+
     	/*
         mDrawerList.setItemChecked(position, true);
     	FragmentManager fragmentManager = getSupportFragmentManager();

@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 public class DetailOrderActivity extends Activity {
 // TODO НАПИСАТЬ СВОЙ АДАПТЕР ДЛЯ ОБРАБОТКИ И УСТАНОВКИ ФОТОГРАФИИ МОДЕЛИ И 
 //	ДЛЯ ВЫВОДА ПОЛЕЙ ФИО МОДЕЛЬЕРА И ЗАКАЗЧИКА В ВИДЕ БУГУЩЕЙ СТРОКИ, ИСПОЛЬЗОВАВ android:ellipsize="marquee"	 android:marqueeRepeatLimit="marquee_forever" 	text.setSelected(true);
+// Bitmap image = BitmapFactory.decodeFile(fileName);
 	
 	long ID;
 	ListView lv;
@@ -81,51 +85,30 @@ public class DetailOrderActivity extends Activity {
  	    					   R.id.updateModelIMG };
  		
  	    scAdapter = new SimpleCursorAdapter(this, R.layout.detailed_item, cursor, from, to);
-	    
-	    
-	    
 	    lv = (ListView)findViewById(R.id.orders_list);
 		// устанавливаем режим выбора пунктов списка 
 		lv.setAdapter(scAdapter);
 	}
 	
-	protected void onDestroy() {
-	    super.onDestroy();
-	    if(db!=null)
-	    	db.close();
-	}
-	
-	protected void onStop() {
-	    super.onStop();
-	    if(db!=null)
-	    	db.close();
-	}
-/*	
-	// СОЗДАЕМ МЕНЮ
-	public boolean onCreateOptionsMenu(Menu menu){
-		menu.add(0, 1, 0, "Редактировать");
-		menu.add(0, 2, 0, "Удалить");
-		return true;
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    getMenuInflater().inflate(R.menu.context, menu);
+	    return true;
 	}
 	
 	public boolean onOptionsItemSelected(MenuItem item){
-
     	switch (item.getItemId()) {
-    		case 1:
-    			Intent editOrderIntent = new Intent(getApplicationContext(), EditOrderActivity.class);
+    		case R.id.edit:
+    			Intent editOrderIntent = new Intent(this, EditOrderActivity.class);
 				editOrderIntent.putExtra("ID", ID);
 				startActivity(editOrderIntent);
-				finish();
     			break;
-    		case 2:
+    		case R.id.delete:
     			db.deleteOrderById(ID);
     		    Toast.makeText(getApplicationContext(), "Запись успешно удалена!", Toast.LENGTH_LONG).show();
-    		    Intent allOrdersIntent = new Intent();
-				allOrdersIntent.setClass(getApplicationContext(), FragmentAllOrdersActivity.class);
-				startActivity(allOrdersIntent);
-				finish();
+    		    onBackPressed();
     			break;
     	}
     	return true;
-    }*/
+    }
 }

@@ -4,13 +4,13 @@
     <item
         android:id="@+id/edit"
         android:icon="@android:drawable/ic_menu_edit"
-        android:showAsAction="always"
+        android:showAsAction="always|withText"
         android:title="Правка">
     </item>
     <item
         android:id="@+id/delete"
         android:icon="@android:drawable/ic_menu_delete"
-        android:showAsAction="always"
+        android:showAsAction="always|withText"
         android:title="Удалить">
     </item>
 

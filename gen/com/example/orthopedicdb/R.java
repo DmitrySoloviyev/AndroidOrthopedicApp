@@ -14,6 +14,10 @@ public final class R {
         public static final int layoutanim=0x7f040002;
         public static final int leafanim=0x7f040003;
     }
+    public static final class array {
+        public static final int entries=0x7f060000;
+        public static final int entry_values=0x7f060001;
+    }
     public static final class attr {
     }
     public static final class dimen {
@@ -23,8 +27,8 @@ public final class R {
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
          */
-        public static final int activity_horizontal_margin=0x7f060000;
-        public static final int activity_vertical_margin=0x7f060001;
+        public static final int activity_horizontal_margin=0x7f070000;
+        public static final int activity_vertical_margin=0x7f070001;
     }
     public static final class drawable {
         public static final int activity_bg=0x7f020000;
@@ -37,137 +41,137 @@ public final class R {
         public static final int shoes=0x7f020007;
     }
     public static final class id {
-        public static final int Customer=0x7f0a0077;
-        public static final int Employee=0x7f0a0079;
-        public static final int MENU_EXIT=0x7f0a0082;
-        public static final int MENU_GALLERY=0x7f0a0081;
-        public static final int MENU_HISTORY=0x7f0a0080;
-        public static final int MENU_NEW_ORDER=0x7f0a007e;
-        public static final int MENU_SEARCH=0x7f0a007f;
-        public static final int Material=0x7f0a007a;
-        public static final int Model=0x7f0a0078;
-        public static final int button1=0x7f0a006a;
-        public static final int checkBox1=0x7f0a0075;
-        public static final int checked_choice=0x7f0a0076;
-        public static final int content_frame=0x7f0a0056;
-        public static final int create_new_employee=0x7f0a0003;
-        public static final int create_new_material=0x7f0a0005;
-        public static final int delete=0x7f0a007c;
-        public static final int detailedAnkleVolumeLeft=0x7f0a002c;
-        public static final int detailedAnkleVolumeRight=0x7f0a002d;
-        public static final int detailedCustomerFN=0x7f0a0037;
-        public static final int detailedCustomerP=0x7f0a0038;
-        public static final int detailedCustomerSN=0x7f0a0036;
-        public static final int detailedEmployeeFN=0x7f0a003c;
-        public static final int detailedEmployeeP=0x7f0a003d;
-        public static final int detailedEmployeeSN=0x7f0a003b;
-        public static final int detailedHeightLeft=0x7f0a0020;
-        public static final int detailedHeightRight=0x7f0a0021;
-        public static final int detailedKvVolumeLeft=0x7f0a0032;
-        public static final int detailedKvVolumeRight=0x7f0a0033;
-        public static final int detailedMaterial=0x7f0a000f;
-        public static final int detailedModel=0x7f0a000c;
-        public static final int detailedOrderID=0x7f0a0009;
-        public static final int detailedSizeLeft=0x7f0a0014;
-        public static final int detailedSizeRight=0x7f0a0015;
-        public static final int detailedTopVolumeLeft=0x7f0a0026;
-        public static final int detailedTopVolumeRight=0x7f0a0027;
-        public static final int detailedUrkLeft=0x7f0a001a;
-        public static final int detailedUrkRight=0x7f0a001b;
-        public static final int drawer_layout=0x7f0a0055;
-        public static final int edit=0x7f0a007b;
-        public static final int gallery1=0x7f0a0054;
-        public static final int get_model_image=0x7f0a005d;
-        public static final int image_menu=0x7f0a0058;
-        public static final int left_drawer=0x7f0a0057;
-        public static final int main=0x7f0a007d;
-        public static final int menu_text=0x7f0a0059;
-        public static final int new_AnkleVolume=0x7f0a0062;
-        public static final int new_KvVolume=0x7f0a0063;
-        public static final int new_TopVolume=0x7f0a0061;
-        public static final int new_added_material=0x7f0a0004;
-        public static final int new_customerFN=0x7f0a0065;
-        public static final int new_customerP=0x7f0a0066;
-        public static final int new_customerSN=0x7f0a0064;
-        public static final int new_employee=0x7f0a0067;
-        public static final int new_employeeFN=0x7f0a0001;
-        public static final int new_employeeP=0x7f0a0002;
-        public static final int new_employeeSN=0x7f0a0000;
-        public static final int new_height=0x7f0a0060;
-        public static final int new_materials=0x7f0a0068;
-        public static final int new_model=0x7f0a005c;
-        public static final int new_order_number=0x7f0a005b;
-        public static final int new_size=0x7f0a005e;
-        public static final int new_urk=0x7f0a005f;
-        public static final int orders_list=0x7f0a0006;
-        public static final int scrollView1=0x7f0a005a;
-        public static final int search_AnkleVolume=0x7f0a0071;
-        public static final int search_KvVolume=0x7f0a0072;
-        public static final int search_TopVolume=0x7f0a0070;
-        public static final int search_customer=0x7f0a0073;
-        public static final int search_employee=0x7f0a000b;
-        public static final int search_height=0x7f0a006f;
-        public static final int search_model=0x7f0a006c;
-        public static final int search_order_number=0x7f0a006b;
-        public static final int search_size=0x7f0a006d;
-        public static final int search_urk=0x7f0a006e;
-        public static final int submit_new_order=0x7f0a0069;
-        public static final int submit_search=0x7f0a0074;
-        public static final int submit_update=0x7f0a0053;
-        public static final int tableRow1=0x7f0a0007;
-        public static final int tableRow10=0x7f0a0034;
-        public static final int tableRow11=0x7f0a0039;
-        public static final int tableRow2=0x7f0a000a;
-        public static final int tableRow3=0x7f0a000d;
-        public static final int tableRow4=0x7f0a0010;
-        public static final int tableRow5=0x7f0a0016;
-        public static final int tableRow6=0x7f0a001c;
-        public static final int tableRow7=0x7f0a0022;
-        public static final int tableRow8=0x7f0a0028;
-        public static final int tableRow9=0x7f0a002e;
-        public static final int textView10=0x7f0a001d;
-        public static final int textView11=0x7f0a001e;
-        public static final int textView12=0x7f0a001f;
-        public static final int textView13=0x7f0a0023;
-        public static final int textView14=0x7f0a0024;
-        public static final int textView15=0x7f0a0025;
-        public static final int textView16=0x7f0a0029;
-        public static final int textView17=0x7f0a002a;
-        public static final int textView18=0x7f0a002b;
-        public static final int textView19=0x7f0a002f;
-        public static final int textView2=0x7f0a0008;
-        public static final int textView20=0x7f0a0030;
-        public static final int textView21=0x7f0a0031;
-        public static final int textView22=0x7f0a0035;
-        public static final int textView26=0x7f0a003a;
-        public static final int textView3=0x7f0a000e;
-        public static final int textView4=0x7f0a0011;
-        public static final int textView5=0x7f0a0012;
-        public static final int textView6=0x7f0a0013;
-        public static final int textView7=0x7f0a0017;
-        public static final int textView8=0x7f0a0018;
-        public static final int textView9=0x7f0a0019;
-        public static final int updateAnkleVolumeLeft=0x7f0a004b;
-        public static final int updateAnkleVolumeRight=0x7f0a004c;
-        public static final int updateCustomerFN=0x7f0a0050;
-        public static final int updateCustomerP=0x7f0a0051;
-        public static final int updateCustomerSN=0x7f0a004f;
-        public static final int updateEmployee=0x7f0a0052;
-        public static final int updateHeightLeft=0x7f0a0047;
-        public static final int updateHeightRight=0x7f0a0048;
-        public static final int updateKvVolumeLeft=0x7f0a004d;
-        public static final int updateKvVolumeRight=0x7f0a004e;
-        public static final int updateMaterial=0x7f0a0042;
-        public static final int updateModel=0x7f0a0041;
-        public static final int updateModelIMG=0x7f0a003e;
-        public static final int updateOrderID=0x7f0a0040;
-        public static final int updateSizeLeft=0x7f0a0043;
-        public static final int updateSizeRight=0x7f0a0044;
-        public static final int updateTopVolumeLeft=0x7f0a0049;
-        public static final int updateTopVolumeRight=0x7f0a004a;
-        public static final int updateUrkLeft=0x7f0a0045;
-        public static final int updateUrkRight=0x7f0a0046;
-        public static final int versionCode=0x7f0a003f;
+        public static final int Customer=0x7f0b0077;
+        public static final int Employee=0x7f0b0079;
+        public static final int MENU_EXIT=0x7f0b0082;
+        public static final int MENU_GALLERY=0x7f0b0081;
+        public static final int MENU_HISTORY=0x7f0b0080;
+        public static final int MENU_NEW_ORDER=0x7f0b007e;
+        public static final int MENU_SEARCH=0x7f0b007f;
+        public static final int Material=0x7f0b007a;
+        public static final int Model=0x7f0b0078;
+        public static final int button1=0x7f0b006a;
+        public static final int checkBox1=0x7f0b0075;
+        public static final int checked_choice=0x7f0b0076;
+        public static final int content_frame=0x7f0b0056;
+        public static final int create_new_employee=0x7f0b0003;
+        public static final int create_new_material=0x7f0b0005;
+        public static final int delete=0x7f0b007c;
+        public static final int detailedAnkleVolumeLeft=0x7f0b002c;
+        public static final int detailedAnkleVolumeRight=0x7f0b002d;
+        public static final int detailedCustomerFN=0x7f0b0037;
+        public static final int detailedCustomerP=0x7f0b0038;
+        public static final int detailedCustomerSN=0x7f0b0036;
+        public static final int detailedEmployeeFN=0x7f0b003c;
+        public static final int detailedEmployeeP=0x7f0b003d;
+        public static final int detailedEmployeeSN=0x7f0b003b;
+        public static final int detailedHeightLeft=0x7f0b0020;
+        public static final int detailedHeightRight=0x7f0b0021;
+        public static final int detailedKvVolumeLeft=0x7f0b0032;
+        public static final int detailedKvVolumeRight=0x7f0b0033;
+        public static final int detailedMaterial=0x7f0b000f;
+        public static final int detailedModel=0x7f0b000c;
+        public static final int detailedOrderID=0x7f0b0009;
+        public static final int detailedSizeLeft=0x7f0b0014;
+        public static final int detailedSizeRight=0x7f0b0015;
+        public static final int detailedTopVolumeLeft=0x7f0b0026;
+        public static final int detailedTopVolumeRight=0x7f0b0027;
+        public static final int detailedUrkLeft=0x7f0b001a;
+        public static final int detailedUrkRight=0x7f0b001b;
+        public static final int drawer_layout=0x7f0b0055;
+        public static final int edit=0x7f0b007b;
+        public static final int gallery1=0x7f0b0054;
+        public static final int get_model_image=0x7f0b005d;
+        public static final int image_menu=0x7f0b0058;
+        public static final int left_drawer=0x7f0b0057;
+        public static final int main=0x7f0b007d;
+        public static final int menu_text=0x7f0b0059;
+        public static final int new_AnkleVolume=0x7f0b0062;
+        public static final int new_KvVolume=0x7f0b0063;
+        public static final int new_TopVolume=0x7f0b0061;
+        public static final int new_added_material=0x7f0b0004;
+        public static final int new_customerFN=0x7f0b0065;
+        public static final int new_customerP=0x7f0b0066;
+        public static final int new_customerSN=0x7f0b0064;
+        public static final int new_employee=0x7f0b0067;
+        public static final int new_employeeFN=0x7f0b0001;
+        public static final int new_employeeP=0x7f0b0002;
+        public static final int new_employeeSN=0x7f0b0000;
+        public static final int new_height=0x7f0b0060;
+        public static final int new_materials=0x7f0b0068;
+        public static final int new_model=0x7f0b005c;
+        public static final int new_order_number=0x7f0b005b;
+        public static final int new_size=0x7f0b005e;
+        public static final int new_urk=0x7f0b005f;
+        public static final int orders_list=0x7f0b0006;
+        public static final int scrollView1=0x7f0b005a;
+        public static final int search_AnkleVolume=0x7f0b0071;
+        public static final int search_KvVolume=0x7f0b0072;
+        public static final int search_TopVolume=0x7f0b0070;
+        public static final int search_customer=0x7f0b0073;
+        public static final int search_employee=0x7f0b000b;
+        public static final int search_height=0x7f0b006f;
+        public static final int search_model=0x7f0b006c;
+        public static final int search_order_number=0x7f0b006b;
+        public static final int search_size=0x7f0b006d;
+        public static final int search_urk=0x7f0b006e;
+        public static final int submit_new_order=0x7f0b0069;
+        public static final int submit_search=0x7f0b0074;
+        public static final int submit_update=0x7f0b0053;
+        public static final int tableRow1=0x7f0b0007;
+        public static final int tableRow10=0x7f0b0034;
+        public static final int tableRow11=0x7f0b0039;
+        public static final int tableRow2=0x7f0b000a;
+        public static final int tableRow3=0x7f0b000d;
+        public static final int tableRow4=0x7f0b0010;
+        public static final int tableRow5=0x7f0b0016;
+        public static final int tableRow6=0x7f0b001c;
+        public static final int tableRow7=0x7f0b0022;
+        public static final int tableRow8=0x7f0b0028;
+        public static final int tableRow9=0x7f0b002e;
+        public static final int textView10=0x7f0b001d;
+        public static final int textView11=0x7f0b001e;
+        public static final int textView12=0x7f0b001f;
+        public static final int textView13=0x7f0b0023;
+        public static final int textView14=0x7f0b0024;
+        public static final int textView15=0x7f0b0025;
+        public static final int textView16=0x7f0b0029;
+        public static final int textView17=0x7f0b002a;
+        public static final int textView18=0x7f0b002b;
+        public static final int textView19=0x7f0b002f;
+        public static final int textView2=0x7f0b0008;
+        public static final int textView20=0x7f0b0030;
+        public static final int textView21=0x7f0b0031;
+        public static final int textView22=0x7f0b0035;
+        public static final int textView26=0x7f0b003a;
+        public static final int textView3=0x7f0b000e;
+        public static final int textView4=0x7f0b0011;
+        public static final int textView5=0x7f0b0012;
+        public static final int textView6=0x7f0b0013;
+        public static final int textView7=0x7f0b0017;
+        public static final int textView8=0x7f0b0018;
+        public static final int textView9=0x7f0b0019;
+        public static final int updateAnkleVolumeLeft=0x7f0b004b;
+        public static final int updateAnkleVolumeRight=0x7f0b004c;
+        public static final int updateCustomerFN=0x7f0b0050;
+        public static final int updateCustomerP=0x7f0b0051;
+        public static final int updateCustomerSN=0x7f0b004f;
+        public static final int updateEmployee=0x7f0b0052;
+        public static final int updateHeightLeft=0x7f0b0047;
+        public static final int updateHeightRight=0x7f0b0048;
+        public static final int updateKvVolumeLeft=0x7f0b004d;
+        public static final int updateKvVolumeRight=0x7f0b004e;
+        public static final int updateMaterial=0x7f0b0042;
+        public static final int updateModel=0x7f0b0041;
+        public static final int updateModelIMG=0x7f0b003e;
+        public static final int updateOrderID=0x7f0b0040;
+        public static final int updateSizeLeft=0x7f0b0043;
+        public static final int updateSizeRight=0x7f0b0044;
+        public static final int updateTopVolumeLeft=0x7f0b0049;
+        public static final int updateTopVolumeRight=0x7f0b004a;
+        public static final int updateUrkLeft=0x7f0b0045;
+        public static final int updateUrkRight=0x7f0b0046;
+        public static final int versionCode=0x7f0b003f;
     }
     public static final class layout {
         public static final int add_new_employee_dialog=0x7f030000;
@@ -185,24 +189,24 @@ public final class R {
         public static final int short_item=0x7f03000c;
     }
     public static final class menu {
-        public static final int context=0x7f090000;
-        public static final int main=0x7f090001;
+        public static final int context=0x7f0a0000;
+        public static final int main=0x7f0a0001;
     }
     public static final class string {
-        public static final int action_settings=0x7f070004;
-        public static final int app_name=0x7f070000;
-        public static final int app_section_all_orders=0x7f070003;
-        public static final int app_section_new_order=0x7f070002;
-        public static final int app_section_search=0x7f070001;
-        public static final int drawer_close=0x7f07000b;
-        public static final int drawer_open=0x7f07000a;
-        public static final int gallery=0x7f070009;
-        public static final int greeting=0x7f070005;
-        public static final int history=0x7f070008;
+        public static final int action_settings=0x7f080004;
+        public static final int app_name=0x7f080000;
+        public static final int app_section_all_orders=0x7f080003;
+        public static final int app_section_new_order=0x7f080002;
+        public static final int app_section_search=0x7f080001;
+        public static final int drawer_close=0x7f08000b;
+        public static final int drawer_open=0x7f08000a;
+        public static final int gallery=0x7f080009;
+        public static final int greeting=0x7f080005;
+        public static final int history=0x7f080008;
         /**  Меню 
          */
-        public static final int new_order=0x7f070006;
-        public static final int search=0x7f070007;
+        public static final int new_order=0x7f080006;
+        public static final int search=0x7f080007;
     }
     public static final class style {
         /** 
@@ -228,13 +232,14 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f080000;
+        public static final int AppBaseTheme=0x7f090000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f080001;
+        public static final int AppTheme=0x7f090001;
     }
     public static final class xml {
         public static final int mypref=0x7f050000;
+        public static final int preferences=0x7f050001;
     }
 }

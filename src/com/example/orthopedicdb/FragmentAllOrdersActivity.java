@@ -14,12 +14,13 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 public class FragmentAllOrdersActivity extends Fragment{
-	
+	final String LOG_TAG = "myLogs";
 	ActionMode actionMode;
 	ListView lv;
 	SimpleCursorAdapter scAdapter;
@@ -38,21 +39,12 @@ public class FragmentAllOrdersActivity extends Fragment{
 		//Toast.makeText(getActivity(), "Всего записей: "+cursor.getCount(), Toast.LENGTH_LONG).show();
 	    return view;
 	}// ON CREATE
-
-	public OnItemClickListener myOnClick = new OnItemClickListener() {
-		@Override
-		public void onItemClick(AdapterView<?> arg0, View v, int arg2, long arg3) {
-			Intent detailedOrderIntent = new Intent(getActivity(), DetailOrderActivity.class);
-			detailedOrderIntent.putExtra("ID", arg3);
-			startActivity(detailedOrderIntent);
-		}
-	};
 	
 	public void onStart() {
 	    super.onStart();
 	    db = new DB(getActivity());
         db.open();
-
+        
 	    new AsyncTask<Void, Void, Cursor>() {
 	    	Cursor taskcursor;
 	    	@Override
@@ -71,7 +63,8 @@ public class FragmentAllOrdersActivity extends Fragment{
 	    	protected void onPostExecute(Cursor cursor) {
 	    		super.onPostExecute(cursor);
 	    		FragmentAllOrdersActivity.this.cursor = cursor;
-	    		Toast.makeText(getActivity(), "Всего записей: "+cursor.getCount(), Toast.LENGTH_LONG).show();
+	    		Toast.makeText(getActivity(), "Записей в базе: "+cursor.getCount(), Toast.LENGTH_LONG).show();
+	    		getActivity().getActionBar().setSubtitle("Записей в базе: "+db.countOrders());
 	    		getActivity().startManagingCursor(cursor);
 	            
 	    	    String[] from = new String[] { "OrderID", "Model", "Material", "Customer", "Employee" };
@@ -82,12 +75,28 @@ public class FragmentAllOrdersActivity extends Fragment{
 	    		lv = (ListView)view.findViewById(R.id.orders_list);
 	    		lv.setAdapter(scAdapter);
 
-	    	    registerForContextMenu(lv);
-	    	    lv.setOnItemClickListener(myOnClick);
+	    	    lv.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+						Intent detailedOrderIntent = new Intent(getActivity(), DetailOrderActivity.class);
+						detailedOrderIntent.putExtra("ID", arg3);
+						startActivity(detailedOrderIntent);
+					}
+				});
+	    	    
+	    	    lv.setLongClickable(true);
+	    	    lv.setOnItemLongClickListener(new OnItemLongClickListener() {
+					@Override
+					public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+
+						return true;
+					}
+				});
 	    	    progressDialog.dismiss();
 	        }
 	    }.execute();
 	}
+	
 /*
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		    super.onCreateContextMenu(menu, v, menuInfo);

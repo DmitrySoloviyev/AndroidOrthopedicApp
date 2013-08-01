@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <ListPreference
+        android:dialogTitle="Выберите стартовый экран"
+        android:entries="@array/entries"
+        android:entryValues="@array/entry_values"
+        android:key="activityList"
+        android:summary="Выберите стартовый экран"
+        android:title="Главный экран"/>
+
+</PreferenceScreen>

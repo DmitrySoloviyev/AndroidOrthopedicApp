@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,7 +15,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -25,7 +23,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 public class EditOrderActivity extends Activity implements OnClickListener {
 
 	long ID;
-	ListView lv;
 	SimpleCursorAdapter scAdapter;
 	Cursor cursor;
 	DB db;
@@ -158,7 +155,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 //			modelIMG.setImageResource(R.drawable.ic_launcher);
 //		else
 //			modelIMG.setImageURI(Uri.parse(model_img_src));
-			setPic(model_img_src);
+//			setPic(model_img_src);
 
 		// узнаем каков у заказа МАТЕРИАЛ для вызова диалогового окна для его выбора
 		old_material = cursor.getInt( cursor.getColumnIndex("MaterialID") )-1;
@@ -194,12 +191,14 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 
 	protected void onDestroy() {
 	    super.onDestroy();
-	    db.close();
+	    if(db!=null)
+	    	db.close();
 	}
 	
 	protected void onStop() {
 	    super.onStop();
-	    db.close();
+	    if(db!=null)
+	    	db.close();
 	}
 	
 	protected void onResume() {
@@ -225,13 +224,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
         spinner_update_employee.setOnItemSelectedListener(employeeUpdated);
         spinner_update_employee.setSelection(old_employee);
 	}
-	
-	public void onBackPressed() {
-		Intent intent = new Intent(getApplicationContext(), DetailOrderActivity.class);
-		intent.putExtra("ID", ID);
-		startActivity(intent);
-		finish();
-	}
+
 	
 	public OnItemSelectedListener employeeUpdated = new OnItemSelectedListener() {
 		@Override
@@ -290,7 +283,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
   	    }
   	}
 
-   // Декодирование масштабированого изображения
+/*   // Декодирование масштабированого изображения
   	private void setPic(String photoPath) {
   	    // Get the dimensions of the View
   	    int targetW = modelIMG.getWidth();
@@ -314,12 +307,11 @@ public class EditOrderActivity extends Activity implements OnClickListener {
   	    Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
   	    modelIMG.setImageBitmap(bitmap);
   	}
-      
+*/      
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.submit_update:
-			
 			String order_number_after = update_order_number.getText().toString().trim();
 			model 				= update_model.getText().toString().trim();
 			size_left 			= update_size_left.getText().toString().trim();
@@ -345,7 +337,6 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 				}
 			}
 			
-			
 			db.updateOrderById(ID, 
 							order_number_after, 
 							model,
@@ -367,12 +358,10 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 							customerfn,
 							customerp, 
 							changed_employee);
-			
 			Toast.makeText(this, "Изменения сохранены!", Toast.LENGTH_LONG).show();
 			onBackPressed();
 			break;
 		case R.id.updateModelIMG:
-			
 			Toast.makeText(this, "Обновляем фотку", Toast.LENGTH_SHORT).show();
 			break;
 		default:

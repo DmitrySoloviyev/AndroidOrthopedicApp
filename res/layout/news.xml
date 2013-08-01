@@ -36,42 +36,42 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.7\t Добавлена функция резервирования БД и ее восстановления." />
+                
+           <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.6\t Теперь возможно прикреплять фотографию модели к заказу. Доступна 'Галерея'." />
+                
+           <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.5\t Все ресурсоемкие процессы, везде где это необходимо, осуществляются в отдельном потоке. Реализован собственный адаптер данных для вывода информации о заказе." />          
+                
+           <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.4\t Вновь доступен быстрый поиск." />
+                
+           <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.3\t Реализован ActionMode в качестве замены контектстному меню. Upstream changes." />
+                                 -->                
+           <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.2\t Добавлены настройки приложения. Пока доступен только один пункт, позволяющий выбрать какой экран будет запускаться при запуске приложения." />
 
-			<TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="\t0.6\t Обращение к БД осуществляется в отдельном потоке." />
-                
-           <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="\t0.5\t Теперь возможно прикреплять фотографию модели к заказу. Доступна 'Галерея'." />
-                
-           <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="\t0.4\t Добавлены настройки приложения. Пока доступен только один пункт, позволяющий выбрать какой экран будет запускаться при запуске приложения." />     
-                
-           <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="\t0.3\t Вновь доступен быстрый поиск." />
-                
-           <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="\t0.2\t Реализован ActionMode в качестве замены контектстному меню. Upstream changes." />
-                                 -->
            <TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"

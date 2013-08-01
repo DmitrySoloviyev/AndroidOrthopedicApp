@@ -55,7 +55,7 @@ public class MenuAdapter extends ArrayAdapter<String> {
 		ImageView img = (ImageView)rowView.findViewById(R.id.image_menu);	*/
 		switch (position) {
 		case 0:
-			holder.imageView.setImageResource(android.R.drawable.ic_menu_add);
+			holder.imageView.setImageResource(android.R.drawable.ic_menu_edit);
 //			img.setImageResource(android.R.drawable.ic_menu_add);
 			break;
 		case 1:
@@ -69,6 +69,9 @@ public class MenuAdapter extends ArrayAdapter<String> {
 		case 3:
 			holder.imageView.setImageResource(android.R.drawable.ic_menu_gallery);
 //			img.setImageResource(android.R.drawable.ic_menu_gallery);
+			break;
+		case 4:
+			holder.imageView.setImageResource(android.R.drawable.ic_menu_preferences);
 			break;
 		default:
 			break;
