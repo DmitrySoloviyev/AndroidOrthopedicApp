@@ -58,14 +58,14 @@
                 android:layout_margin="5dp"
                 android:text="\t0.5\t Все ресурсоемкие процессы, везде где это необходимо, осуществляются в отдельном потоке. Реализован собственный адаптер
                 данных для вывода информации о заказе." />          
-                
+            -->                
            <TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.4\t Вновь доступен быстрый поиск." />
-            -->
+                android:text="\t0.4\t Вновь доступен быстрый поиск. Подкорректирован внешний вид приложения." />
+
 
             <TextView
                 android:id="@+id/textView4"

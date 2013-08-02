@@ -2,6 +2,7 @@ package com.example.orthopedicdb;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,25 +17,35 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
+import android.widget.AbsListView.MultiChoiceModeListener;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class FragmentAllOrdersActivity extends Fragment{
-
-	ListView lv;
-	SimpleCursorAdapter scAdapter;
-	DialogFragment progressDialog;
-	Cursor cursor;
+public class FragmentExtenedRESULTSearchActivity extends Fragment {
+	
 	DB db;
 	View view;
+	ListView lv;
+	Cursor cursor;
+	String WHERE;
+	DialogFragment progressDialog;
+	SimpleCursorAdapter scAdapter;
+	
+	public static FragmentExtenedRESULTSearchActivity newInstance(String where) {
+		FragmentExtenedRESULTSearchActivity ext_search = new FragmentExtenedRESULTSearchActivity();
+	    Bundle arguments = new Bundle();
+	    arguments.putString("EXT_SEARCH_WHERE", where);
+	    ext_search.setArguments(arguments);
+	    return ext_search;
+	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.all_orders, null);
+		WHERE = getArguments().getString("EXT_SEARCH_WHERE");
 		InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
 	    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 	    return view;
@@ -44,7 +55,7 @@ public class FragmentAllOrdersActivity extends Fragment{
 	    super.onStart();
 	    db = new DB(getActivity());
         db.open();
-        
+
 	    new AsyncTask<Void, Void, Cursor>() {
 	    	Cursor taskcursor;
 	    	@Override
@@ -55,16 +66,15 @@ public class FragmentAllOrdersActivity extends Fragment{
 	        }
 			@Override
 	    	protected Cursor doInBackground(Void... params) {
-		    	taskcursor = db.getAllShortOrders();
+		    	taskcursor = db.extendedSearch(WHERE);
 	    		return taskcursor;
 	    	}
 			@SuppressWarnings("deprecation")
 			@Override
 	    	protected void onPostExecute(final Cursor cursor) {
 	    		super.onPostExecute(cursor);
-	    		FragmentAllOrdersActivity.this.cursor = cursor;
-	    		Toast.makeText(getActivity(), "Записей в базе: "+cursor.getCount(), Toast.LENGTH_LONG).show();
-	    		getActivity().getActionBar().setSubtitle("Записей в базе: "+db.countOrders());
+	    		FragmentExtenedRESULTSearchActivity.this.cursor = cursor;
+	    		Toast.makeText(getActivity(), "Найдено записей: "+cursor.getCount(), Toast.LENGTH_LONG).show();
 	    		getActivity().startManagingCursor(cursor);
 	            
 	    	    String[] from = new String[] { "OrderID", "Model", "Material", "Customer", "Employee" };
@@ -153,4 +163,4 @@ public class FragmentAllOrdersActivity extends Fragment{
 	        }
 	    }.execute();
 	}
-}// END ACTIVITY
+}

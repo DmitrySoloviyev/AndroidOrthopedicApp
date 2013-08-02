@@ -32,30 +32,26 @@ public final class R {
     }
     public static final class drawable {
         public static final int activity_bg=0x7f020000;
-        public static final int button_ok=0x7f020001;
-        public static final int drawer_shadow=0x7f020002;
-        public static final int error=0x7f020003;
-        public static final int ic_drawer=0x7f020004;
-        public static final int ic_launcher=0x7f020005;
-        public static final int menu_bg=0x7f020006;
-        public static final int shoes=0x7f020007;
+        public static final int drawer_shadow=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int menu_bg=0x7f020003;
+        public static final int shoes=0x7f020004;
     }
     public static final class id {
-        public static final int Customer=0x7f0b0077;
-        public static final int Employee=0x7f0b0079;
-        public static final int MENU_EXIT=0x7f0b0082;
-        public static final int MENU_GALLERY=0x7f0b0081;
-        public static final int MENU_HISTORY=0x7f0b0080;
-        public static final int MENU_NEW_ORDER=0x7f0b007e;
-        public static final int MENU_SEARCH=0x7f0b007f;
-        public static final int Material=0x7f0b007a;
-        public static final int Model=0x7f0b0078;
-        public static final int checkBox1=0x7f0b0075;
-        public static final int checked_choice=0x7f0b0076;
+        public static final int Customer=0x7f0b0078;
+        public static final int Employee=0x7f0b007a;
+        public static final int MENU_EXIT=0x7f0b0083;
+        public static final int MENU_GALLERY=0x7f0b0082;
+        public static final int MENU_HISTORY=0x7f0b0081;
+        public static final int MENU_NEW_ORDER=0x7f0b007f;
+        public static final int MENU_SEARCH=0x7f0b0080;
+        public static final int Material=0x7f0b007b;
+        public static final int Model=0x7f0b0079;
+        public static final int checked_choice=0x7f0b0077;
         public static final int content_frame=0x7f0b0056;
         public static final int create_new_employee=0x7f0b0003;
         public static final int create_new_material=0x7f0b0005;
-        public static final int delete=0x7f0b007c;
+        public static final int delete=0x7f0b007d;
         public static final int detailedAnkleVolumeLeft=0x7f0b002c;
         public static final int detailedAnkleVolumeRight=0x7f0b002d;
         public static final int detailedCustomerFN=0x7f0b0037;
@@ -78,12 +74,12 @@ public final class R {
         public static final int detailedUrkLeft=0x7f0b001a;
         public static final int detailedUrkRight=0x7f0b001b;
         public static final int drawer_layout=0x7f0b0055;
-        public static final int edit=0x7f0b007b;
+        public static final int edit=0x7f0b007c;
         public static final int gallery1=0x7f0b0054;
         public static final int get_model_image=0x7f0b005d;
         public static final int image_menu=0x7f0b0058;
         public static final int left_drawer=0x7f0b0057;
-        public static final int main=0x7f0b007d;
+        public static final int main=0x7f0b007e;
         public static final int menu_text=0x7f0b0059;
         public static final int new_AnkleVolume=0x7f0b0062;
         public static final int new_KvVolume=0x7f0b0063;
@@ -104,19 +100,21 @@ public final class R {
         public static final int new_urk=0x7f0b005f;
         public static final int news_ok=0x7f0b006a;
         public static final int orders_list=0x7f0b0006;
+        public static final int quick_search_button=0x7f0b006c;
+        public static final int quickly_search=0x7f0b006b;
         public static final int scrollView1=0x7f0b005a;
-        public static final int search_AnkleVolume=0x7f0b0071;
-        public static final int search_KvVolume=0x7f0b0072;
-        public static final int search_TopVolume=0x7f0b0070;
-        public static final int search_customer=0x7f0b0073;
+        public static final int search_AnkleVolume=0x7f0b0073;
+        public static final int search_KvVolume=0x7f0b0074;
+        public static final int search_TopVolume=0x7f0b0072;
+        public static final int search_customer=0x7f0b0075;
         public static final int search_employee=0x7f0b000b;
-        public static final int search_height=0x7f0b006f;
-        public static final int search_model=0x7f0b006c;
-        public static final int search_order_number=0x7f0b006b;
-        public static final int search_size=0x7f0b006d;
-        public static final int search_urk=0x7f0b006e;
+        public static final int search_height=0x7f0b0071;
+        public static final int search_model=0x7f0b006e;
+        public static final int search_order_number=0x7f0b006d;
+        public static final int search_size=0x7f0b006f;
+        public static final int search_urk=0x7f0b0070;
         public static final int submit_new_order=0x7f0b0069;
-        public static final int submit_search=0x7f0b0074;
+        public static final int submit_search=0x7f0b0076;
         public static final int submit_update=0x7f0b0053;
         public static final int tableRow1=0x7f0b0007;
         public static final int tableRow10=0x7f0b0034;
@@ -184,8 +182,8 @@ public final class R {
         public static final int menu_simple_list_item=0x7f030007;
         public static final int new_order_activity=0x7f030008;
         public static final int news=0x7f030009;
-        public static final int search_activity=0x7f03000a;
-        public static final int search_item=0x7f03000b;
+        public static final int quick_search=0x7f03000a;
+        public static final int search_activity=0x7f03000b;
         public static final int short_item=0x7f03000c;
     }
     public static final class menu {

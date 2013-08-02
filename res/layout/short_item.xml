@@ -3,6 +3,7 @@
     android:id="@+id/checked_choice"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/activatedBackgroundIndicator"
     android:orientation="vertical" >
 
     <TableRow

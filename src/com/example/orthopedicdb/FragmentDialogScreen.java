@@ -36,13 +36,13 @@ public class FragmentDialogScreen extends DialogFragment implements OnClickListe
 			case DIALOG_MATERIALS:
 				adb = new AlertDialog.Builder(getActivity());
 				adb.setTitle("Выберите материал");
-				adb.setMultiChoiceItems(FragmentSearchActivity.materialsCursor, "MaterialChecked","MaterialValue",
+				adb.setMultiChoiceItems(FragmentExtenedSearchActivity.materialsCursor, "MaterialChecked","MaterialValue",
 						new DialogInterface.OnMultiChoiceClickListener() {
 							@SuppressWarnings("deprecation")
 							@Override
 							public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 								db.changeMaterialFlag(which, isChecked);
-								FragmentSearchActivity.materialsCursor.requery();
+								FragmentExtenedSearchActivity.materialsCursor.requery();
 							}
 						});
 				break;
@@ -50,13 +50,13 @@ public class FragmentDialogScreen extends DialogFragment implements OnClickListe
 			case DIALOG_EMPLOYEES:
 				adb = new AlertDialog.Builder(getActivity());
 				adb.setTitle("Выберите модельера");
-				adb.setMultiChoiceItems(FragmentSearchActivity.employeeCursor, "EmployeeChecked", "Employee",
+				adb.setMultiChoiceItems(FragmentExtenedSearchActivity.employeeCursor, "EmployeeChecked", "Employee",
 						new DialogInterface.OnMultiChoiceClickListener() {
 							@SuppressWarnings("deprecation")
 							@Override
 							public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 								db.changeEmployeeFlag(which, isChecked);
-								FragmentSearchActivity.employeeCursor.requery();
+								FragmentExtenedSearchActivity.employeeCursor.requery();
 							}
 						});
 	

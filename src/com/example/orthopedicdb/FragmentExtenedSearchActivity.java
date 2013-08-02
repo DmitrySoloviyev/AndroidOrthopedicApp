@@ -1,166 +1,622 @@
 package com.example.orthopedicdb;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import android.app.Activity;
-import android.content.Intent;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
-import android.widget.AbsListView.MultiChoiceModeListener;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class FragmentExtenedSearchActivity extends Fragment {
-	
+
+	protected static final String LOG_TAG = "myLogs";
+	Button submit_search;
+	Button search_employee;
+	Button search_material;
+	String WHERE = "";
 	DB db;
-	View view;
-	ListView lv;
-	Cursor cursor;
-	String WHERE;
-	DialogFragment progressDialog;
+	DialogFragment materialDialog;
+	DialogFragment employeeDialog;
+	
+	public static Cursor materialsCursor;
+	public static Cursor employeeCursor;
 	SimpleCursorAdapter scAdapter;
-	
-	public static FragmentExtenedSearchActivity newInstance(String where) {
-		FragmentExtenedSearchActivity ext_search = new FragmentExtenedSearchActivity();
-	    Bundle arguments = new Bundle();
-	    arguments.putString("EXT_SEARCH_WHERE", where);
-	    ext_search.setArguments(arguments);
-	    return ext_search;
-	}
-	
+
+	EditText edit_order_number;
+	EditText edit_model;
+	EditText edit_size;
+	EditText edit_urk;
+	EditText edit_height;
+	EditText edit_top_volume;
+	EditText edit_ankle_volume;
+	EditText edit_kv_volume;
+	EditText edit_customer;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.all_orders, null);
-		WHERE = getArguments().getString("EXT_SEARCH_WHERE");
-		InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-	    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-	    return view;
-	}// ON CREATE
-	
-	public void onStart() {
-	    super.onStart();
-	    db = new DB(getActivity());
-        db.open();
+		View view = inflater.inflate(R.layout.search_activity, null);
 
-	    new AsyncTask<Void, Void, Cursor>() {
-	    	Cursor taskcursor;
-	    	@Override
-	        protected void onPreExecute() {
-	    		super.onPreExecute();
-	    		progressDialog = FragmentDialogScreen.newInstance(FragmentDialogScreen.DIALOG_PROGRESS);
-	    		progressDialog.show(getFragmentManager(), "pdlg");
-	        }
+		submit_search = (Button) view.findViewById(R.id.submit_search);
+		search_employee = (Button) view.findViewById(R.id.search_employee);
+		search_material = (Button) view.findViewById(R.id.versionCode);
+		submit_search.setOnClickListener(new OnClickListener() {
 			@Override
-	    	protected Cursor doInBackground(Void... params) {
-		    	taskcursor = db.extendedSearch(WHERE);
-	    		return taskcursor;
-	    	}
-			@SuppressWarnings("deprecation")
-			@Override
-	    	protected void onPostExecute(final Cursor cursor) {
-	    		super.onPostExecute(cursor);
-	    		FragmentExtenedSearchActivity.this.cursor = cursor;
-	    		Toast.makeText(getActivity(), "Найдено записей: "+cursor.getCount(), Toast.LENGTH_LONG).show();
-	    		getActivity().startManagingCursor(cursor);
-	            
-	    	    String[] from = new String[] { "OrderID", "Model", "Material", "Customer", "Employee" };
-	    	    int[] to = new int[] { R.id.detailedOrderID, R.id.Model, R.id.Material, R.id.Customer, R.id.Employee };
-	    	    
-	    	    scAdapter = new SimpleCursorAdapter(getActivity(), R.layout.short_item, cursor, from, to);
-	    	    
-	    		lv = (ListView)view.findViewById(R.id.orders_list);
-	    		lv.setAdapter(scAdapter);
+			public void onClick(View v) {
 
-	    		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-	    		lv.setMultiChoiceModeListener(new MultiChoiceModeListener() {
-	    			private ArrayList<String> checkedIds = new ArrayList<String>();
+				String order_number = edit_order_number.getText().toString().trim();
+				String model = edit_model.getText().toString().trim();
+				String size = edit_size.getText().toString().trim();
+				String urk = edit_urk.getText().toString().trim();
+				String height = edit_height.getText().toString().trim();
+				String top_volume = edit_top_volume.getText().toString().trim();
+				String ankle_volume = edit_ankle_volume.getText().toString().trim();
+				String kv_volume = edit_kv_volume.getText().toString().trim();
 
-	    		      public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-	    		    	  mode.getMenuInflater().inflate(R.menu.context, menu);
-	    		    	  return true;
-	    		      }
+				if (order_number.length() != 0) {
+					WHERE += " OrderID='" + order_number + "' ";
+				}
 
-	    		      public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-	    		    	  if (checkedIds.size() == 0) {
-	    		    		  mode.finish();
-	    		    	  } else if (checkedIds.size() == 1 && mode != null) {
-	    		    		  menu.clear();
-	    		    		  mode.setTitle(""+ checkedIds.size());
-	    		    		  mode.getMenuInflater().inflate(R.menu.context, menu);
-	    		    		  return true;
-	    		    	  } else if (checkedIds.size() > 1) {
-	    		    		  menu.clear();
-	    		    		  mode.setTitle(""+ checkedIds.size());
-	    		    		  mode.getMenuInflater().inflate(R.menu.context_delete, menu);
-	    		    		  return true;
-	    		    	  }
-	    		    	  return true;
-	    		      }
+				/***************************************************************
+				 * МОДЕЛЬ
+				 * */
 
-	    		      public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-	    		    	  switch (item.getItemId()) {
-	    		    		case R.id.edit:
-	    		    			Intent editOrderIntent = new Intent(getActivity(), EditOrderActivity.class);
-	    						editOrderIntent.putExtra("ID", Long.valueOf(checkedIds.get(0)));
-	    						startActivity(editOrderIntent);
-	    		    			break;
-	    		    		case R.id.delete:
-	    		    			String[] simpleArray = new String[ checkedIds.size() ];
-	    		    			checkedIds.toArray(simpleArray);
-	    		    			db.deleteOrderById(simpleArray);
-	    		    		    Toast.makeText(getActivity(), "Удалено!", Toast.LENGTH_LONG).show();
-	    		    		    cursor.requery();
-	    		    		    getActivity().getActionBar().setSubtitle("Записей в базе: "+db.countOrders());
-	    		    			break;
-	    		    	  }
-	    		    	  checkedIds.clear();
-	    		    	  mode.finish();
-	    		    	  return false;
-	    		      }
-
-	    		      public void onDestroyActionMode(ActionMode mode) {
-	    		    	  checkedIds.clear();
-	    		      }
-
-	    		      public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-	    		        if(checked){
-	                        checkedIds.add(String.valueOf(id));
-	                    } else{
-	                        Iterator<String> iter = checkedIds.iterator();
-	                        while(iter.hasNext()){
-	                            String stored = iter.next();
-	                            if(stored.contains(String.valueOf(id)))
-	                                iter.remove();
-	                        }
-	                    }
-	    		        mode.invalidate();
-	    		      }
-	    		});
-	    		
-	    	    lv.setOnItemClickListener(new OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long id) {
-						Intent detailedOrderIntent = new Intent(getActivity(), DetailOrderActivity.class);
-						detailedOrderIntent.putExtra("ID", id);
-						startActivity(detailedOrderIntent);
+				if (model.length() != 0) {
+					if (WHERE.equals("")) {
+						WHERE += " mod.ModelID='" + model + "' ";
+					} else {
+						WHERE += " OR mod.ModelID='" + model + "' ";
 					}
-				});
-	    	    progressDialog.dismiss();
-	        }
-	    }.execute();
+				}
+
+				/***************************************************************
+				 * РАЗМЕРЫ
+				 * */
+				if (size.length() != 0) {
+					if (WHERE.equals("")) {
+						// WHERE ПУСТОЙ
+						// разбиваем по пробелу полученные данные
+						String[] arr_size = size.split(" ");
+						// необходимо обойти каждый элемент массива в цикле и
+						// проверяем на наличие диапазона
+						int iteration = 0;
+						for (String size_field : arr_size) {
+							iteration++;
+							if (iteration == arr_size.length) {
+								// значит элемент массива последний
+								// если есть дефис, значит это интервал
+								if (size_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = size_field.split("-");
+									WHERE += " (o.SizeLEFT>='" + interval[0] + "' AND o.SizeLEFT<='" + interval[1] + "') OR "
+											+ " (o.SizeRIGHT>='" + interval[0]+ "' AND o.SizeRIGHT<='" + interval[1] + "') ";
+								} else {
+									// интервалов нет
+									WHERE += " o.SizeLEFT='" + size_field + "' AND o.SizeRIGHT='" + size_field + "' ";
+								}
+							} else {
+								// элемент массива не последний
+								if (size_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = size_field.split("-");
+									WHERE += " (o.SizeLEFT>='" + interval[0]+ "' AND o.SizeLEFT<='"+ interval[1] + "') OR "
+											+ " (o.SizeRIGHT>='" + interval[0]+ "' AND o.SizeRIGHT<='"+ interval[1] + "') AND ";
+								} else {
+									// интервалов нет
+									WHERE += " o.SizeLEFT='" + size_field+ "' AND o.SizeRIGHT='"+ size_field + "' AND ";
+								}
+							}
+						}
+					} else {
+						// WHERE НЕ ПУСТОЙ
+						// разбиваем по пробелу полученные данные
+						String[] arr_size = size.split(" ");
+						// необходимо обойти каждый элемент массива в цикле и
+						// проверяем на наличие диапазона
+						int iteration = 0;
+						for (String size_field : arr_size) {
+							iteration++;
+							if (iteration == arr_size.length) {
+								// значит элемент массива последний
+								// если есть дефис, значит это интервал
+								if (size_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = size_field.split("-");
+									WHERE += " OR (o.SizeLEFT>='" + interval[0]+ "' AND o.SizeLEFT<='"+ interval[1] + "') OR "
+											+ " (o.SizeRIGHT>='" + interval[0]+ "' AND o.SizeRIGHT<='"+ interval[1] + "') ";
+								} else {
+									// интервалов нет
+									WHERE += " OR o.SizeLEFT='" + size_field+ "' AND o.SizeRIGHT='"+ size_field + "' ";
+								}
+							} else {
+								// элемент массива не последний
+								if (size_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = size_field.split("-");
+									WHERE += " OR (o.SizeLEFT>='" + interval[0]+ "' AND o.SizeLEFT<='"+ interval[1] + "') OR "
+											+ " (o.SizeRIGHT>='" + interval[0]+ "' AND o.SizeRIGHT<='"+ interval[1] + "') AND ";
+								} else {
+									// интервалов нет
+									WHERE += " OR o.SizeLEFT='" + size_field+ "' AND o.SizeRIGHT='"+ size_field + "' AND ";
+								}
+							}
+						}
+					}
+				}
+
+				/***************************************************************
+				 * УРК
+				 * */
+				if (urk.length() != 0) {
+					if (WHERE.equals("")) {
+						// WHERE ПУСТОЙ
+						// разбиваем по пробелу полученные данные
+						String[] arr_urk = urk.split(" ");
+						// необходимо обойти каждый элемент массива в цикле и
+						// проверяем на наличие диапазона
+						int iteration = 0;
+						for (String urk_field : arr_urk) {
+							iteration++;
+							if (iteration == arr_urk.length) {
+								// значит элемент массива последний
+								// если есть дефис, значит это интервал
+								if (urk_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = urk_field.split("-");
+									WHERE += " (o.UrkLEFT>='" + interval[0]+ "' AND o.UrkLEFT<='"+ interval[1] + "') OR "
+											+ " (o.UrkRIGHT>='" + interval[0]+ "' AND o.UrkRIGHT<='"+ interval[1] + "') ";
+								} else {
+									// интервалов нет
+									WHERE += " o.UrkLEFT='" + urk_field+ "' AND o.UrkRIGHT='" + urk_field+ "' ";
+								}
+							} else {
+								// элемент массива не последний
+								if (urk_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = urk_field.split("-");
+									WHERE += " (o.UrkLEFT>='" + interval[0]+ "' AND o.UrkLEFT<='"+ interval[1] + "') OR "
+											+ " (o.UrkRIGHT>='" + interval[0]+ "' AND o.UrkRIGHT<='"+ interval[1] + "') AND ";
+								} else {
+									// интервалов нет
+									WHERE += " o.UrkLEFT='" + urk_field+ "' AND o.UrkRIGHT='" + urk_field+ "' AND ";
+								}
+							}
+						}
+					} else {
+						// WHERE НЕ ПУСТОЙ
+						// разбиваем по пробелу полученные данные
+						String[] arr_urk = urk.split(" ");
+						// необходимо обойти каждый элемент массива в цикле и
+						// проверяем на наличие диапазона
+						int iteration = 0;
+						for (String urk_field : arr_urk) {
+							iteration++;
+							if (iteration == arr_urk.length) {
+								// значит элемент массива последний
+								// если есть дефис, значит это интервал
+								if (urk_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = urk_field.split("-");
+									WHERE += " OR (o.UrkLEFT>='" + interval[0]+ "' AND o.UrkLEFT<='"+ interval[1] + "') OR "
+											+ " (o.UrkRIGHT>='" + interval[0]+ "' AND o.UrkRIGHT<='"+ interval[1] + "') ";
+								} else {
+									// интервалов нет
+									WHERE += " OR o.UrkLEFT='" + urk_field+ "' AND o.UrkRIGHT='" + urk_field+ "' ";
+								}
+							} else {
+								// элемент массива не последний
+								if (urk_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = urk_field.split("-");
+									WHERE += " OR (o.UrkLEFT>='" + interval[0]+ "' AND o.UrkLEFT<='"+ interval[1] + "') OR "+ " (o.UrkRIGHT>='" + interval[0]+ "' AND o.UrkRIGHT<='"+ interval[1] + "') AND ";
+								} else {
+									// интервалов нет
+									WHERE += " OR o.UrkLEFT='" + urk_field+ "' AND o.UrkRIGHT='" + urk_field+ "' AND ";
+								}
+							}
+						}
+					}
+				}
+
+				/***************************************************************
+				 * ВЫСОТА
+				 * */
+				if (height.length() != 0) {
+					if (WHERE.equals("")) {
+						// WHERE ПУСТОЙ
+						// разбиваем по пробелу полученные данные
+						String[] arr_height = height.split(" ");
+						// необходимо обойти каждый элемент массива в цикле и
+						// проверяем на наличие диапазона
+						int iteration = 0;
+						for (String height_field : arr_height) {
+							iteration++;
+							if (iteration == arr_height.length) {
+								// значит элемент массива последний
+								// если есть дефис, значит это интервал
+								if (height_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = height_field.split("-");
+									WHERE += " (o.HeightLEFT>='" + interval[0]+ "' AND o.HeightLEFT<='"+ interval[1] + "') OR "
+											+ " (o.HeightRIGHT>='"+ interval[0]+ "' AND o.HeightRIGHT<='"+ interval[1] + "') ";
+								} else {
+									// интервалов нет
+									WHERE += " o.HeightLEFT='" + height_field+ "' AND o.HeightRIGHT='"+ height_field + "' ";
+								}
+							} else {
+								// элемент массива не последний
+								if (height_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = height_field.split("-");
+									WHERE += " (o.HeightLEFT>='" + interval[0]+ "' AND o.HeightLEFT<='"+ interval[1] + "') OR "
+											+ " (o.HeightRIGHT>='"+ interval[0]+ "' AND o.HeightRIGHT<='"+ interval[1] + "') AND ";
+								} else {
+									// интервалов нет
+									WHERE += " o.HeightLEFT='" + height_field+ "' AND o.HeightRIGHT='"+ height_field + "' AND ";
+								}
+							}
+						}
+					} else {
+						// WHERE НЕ ПУСТОЙ
+						// разбиваем по пробелу полученные данные
+						String[] arr_height = height.split(" ");
+						// необходимо обойти каждый элемент массива в цикле и
+						// проверяем на наличие диапазона
+						int iteration = 0;
+						for (String height_field : arr_height) {
+							iteration++;
+							if (iteration == arr_height.length) {
+								// значит элемент массива последний
+								// если есть дефис, значит это интервал
+								if (height_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = height_field.split("-");
+									WHERE += " OR (o.HeightLEFT>='"+ interval[0]+ "' AND o.HeightLEFT<='"+ interval[1] + "') OR "
+											+ " (o.HeightRIGHT>='"+ interval[0]+ "' AND o.HeightRIGHT<='"+ interval[1] + "') ";
+								} else {
+									// интервалов нет
+									WHERE += " OR o.HeightLEFT='"+ height_field+ "' AND o.HeightRIGHT='"+ height_field + "' ";
+								}
+							} else {
+								// элемент массива не последний
+								if (height_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = height_field.split("-");
+									WHERE += " OR (o.HeightLEFT>='"+ interval[0]+ "' AND o.HeightLEFT<='"+ interval[1] + "') OR "
+											+ " (HeightRIGHT>='" + interval[0]+ "' AND o.HeightRIGHT<='"+ interval[1] + "') AND ";
+								} else {
+									// интервалов нет
+									WHERE += " OR o.HeightLEFT='"+ height_field+ "' AND o.HeightRIGHT='"+ height_field + "' AND ";
+								}
+							}
+						}
+					}
+				}
+
+				/***************************************************************
+				 * ОБЪЕМ ВЕРХА
+				 * */
+				if (top_volume.length() != 0) {
+					if (WHERE.equals("")) {
+						// WHERE ПУСТОЙ
+						// разбиваем по пробелу полученные данные
+						String[] arr_top_volume = top_volume.split(" ");
+						// необходимо обойти каждый элемент массива в цикле и
+						// проверяем на наличие диапазона
+						int iteration = 0;
+						for (String top_volume_field : arr_top_volume) {
+							iteration++;
+							if (iteration == arr_top_volume.length) {
+								// значит элемент массива последний
+								// если есть дефис, значит это интервал
+								if (top_volume_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = top_volume_field.split("-");
+									WHERE += " (o.TopVolumeLEFT>='"+ interval[0]+ "' AND o.TopVolumeLEFT<='"+ interval[1] + "') OR "
+											+ " (o.TopVolumeRIGHT>='"+ interval[0]+ "' AND o.TopVolumeRIGHT<='"+ interval[1] + "') ";
+								} else {
+									// интервалов нет
+									WHERE += " o.TopVolumeLEFT='"+ top_volume_field+ "' AND o.TopVolumeRIGHT='"	+ top_volume_field + "' ";
+								}
+							} else {
+								// элемент массива не последний
+								if (top_volume_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = top_volume_field.split("-");
+									WHERE += " (o.TopVolumeLEFT>='"+ interval[0]+ "' AND o.TopVolumeLEFT<='"+ interval[1] + "') OR "
+											+ " (o.TopVolumeRIGHT>='"+ interval[0]+ "' AND o.TopVolumeRIGHT<='"+ interval[1] + "') AND ";
+								} else {
+									// интервалов нет
+									WHERE += " o.TopVolumeLEFT='"+ top_volume_field+ "' AND o.TopVolumeRIGHT='"	+ top_volume_field + "' AND ";
+								}
+							}
+						}
+					} else {
+						// WHERE НЕ ПУСТОЙ
+						// разбиваем по пробелу полученные данные
+						String[] arr_top_volume = top_volume.split(" ");
+						// необходимо обойти каждый элемент массива в цикле и
+						// проверяем на наличие диапазона
+						int iteration = 0;
+						for (String top_volume_field : arr_top_volume) {
+							iteration++;
+							if (iteration == arr_top_volume.length) {
+								// значит элемент массива последний
+								// если есть дефис, значит это интервал
+								if (top_volume_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = top_volume_field.split("-");
+									WHERE += " OR (o.TopVolumeLEFT>='"+ interval[0]+ "' AND o.TopVolumeLEFT<='"+ interval[1] + "') OR "
+											+ " (o.TopVolumeRIGHT>='"+ interval[0]+ "' AND o.TopVolumeRIGHT<='"+ interval[1] + "') ";
+								} else {
+									// интервалов нет
+									WHERE += " OR o.TopVolumeLEFT='"+ top_volume_field+ "' AND o.TopVolumeRIGHT='"+ top_volume_field + "' ";
+								}
+							} else {
+								// элемент массива не последний
+								if (top_volume_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = top_volume_field.split("-");
+									WHERE += " OR (o.TopVolumeLEFT>='"+ interval[0]+ "' AND o.TopVolumeLEFT<='"+ interval[1] + "') OR "
+											+ " (o.TopVolumeRIGHT>='"+ interval[0]	+ "' AND o.TopVolumeRIGHT<='"+ interval[1] + "') AND ";
+								} else {
+									// интервалов нет
+									WHERE += " OR o.TopVolumeLEFT='"+ top_volume_field	+ "' AND o.TopVolumeRIGHT='"+ top_volume_field + "' AND ";
+								}
+							}
+						}
+					}
+				}
+
+				/***************************************************************
+				 * ОБЪЕМ ЛОДЫЖКИ
+				 * */
+				if (ankle_volume.length() != 0) {
+					if (WHERE.equals("")) {
+						// WHERE ПУСТОЙ
+						// разбиваем по пробелу полученные данные
+						String[] arr_ankle_volume = ankle_volume.split(" ");
+						// необходимо обойти каждый элемент массива в цикле и
+						// проверяем на наличие диапазона
+						int iteration = 0;
+						for (String ankle_volume_field : arr_ankle_volume) {
+							iteration++;
+							if (iteration == arr_ankle_volume.length) {
+								// значит элемент массива последний
+								// если есть дефис, значит это интервал
+								if (ankle_volume_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = ankle_volume_field.split("-");
+									WHERE += " (AnkleVolumeLEFT>='"+ interval[0]+ "' AND AnkleVolumeLEFT<='"+ interval[1] + "') OR "
+											+ " (AnkleVolumeRIGHT>='"+ interval[0]+ "' AND AnkleVolumeRIGHT<='"+ interval[1] + "') ";
+								} else {
+									// интервалов нет
+									WHERE += " AnkleVolumeLEFT='"+ ankle_volume_field+ "' AND AnkleVolumeRIGHT='"+ ankle_volume_field + "' ";
+								}
+							} else {
+								// элемент массива не последний
+								if (ankle_volume_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = ankle_volume_field.split("-");
+									WHERE += " (AnkleVolumeLEFT>='"+ interval[0]+ "' AND AnkleVolumeLEFT<='"+ interval[1] + "') OR "
+											+ " (AnkleVolumeRIGHT>='"+ interval[0]+ "' AND AnkleVolumeRIGHT<='"+ interval[1] + "') AND ";
+								} else {
+									// интервалов нет
+									WHERE += " AnkleVolumeLEFT='"+ ankle_volume_field+ "' AND AnkleVolumeRIGHT='"+ ankle_volume_field + "' AND ";
+								}
+							}
+						}
+					} else {
+						// WHERE НЕ ПУСТОЙ
+						// разбиваем по пробелу полученные данные
+						String[] arr_ankle_volume = ankle_volume.split(" ");
+						// необходимо обойти каждый элемент массива в цикле и
+						// проверяем на наличие диапазона
+						int iteration = 0;
+						for (String ankle_volume_field : arr_ankle_volume) {
+							iteration++;
+							if (iteration == arr_ankle_volume.length) {
+								// значит элемент массива последний
+								// если есть дефис, значит это интервал
+								if (ankle_volume_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = ankle_volume_field.split("-");
+									WHERE += " OR (AnkleVolumeLEFT>='"+ interval[0]+ "' AND AnkleVolumeLEFT<='"+ interval[1] + "') OR "
+											+ " (AnkleVolumeRIGHT>='"+ interval[0]+ "' AND AnkleVolumeRIGHT<='"+ interval[1] + "') ";
+								} else {
+									// интервалов нет
+									WHERE += " OR AnkleVolumeLEFT='"+ ankle_volume_field+ "' AND AnkleVolumeRIGHT='"+ ankle_volume_field + "' ";
+								}
+							} else {
+								// элемент массива не последний
+								if (ankle_volume_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = ankle_volume_field.split("-");
+									WHERE += " OR (AnkleVolumeLEFT>='"+ interval[0]+ "' AND AnkleVolumeLEFT<='"+ interval[1] + "') OR "
+											+ " (AnkleVolumeRIGHT>='"	+ interval[0]+ "' AND AnkleVolumeRIGHT<='"+ interval[1] + "') AND ";
+								} else {
+									// интервалов нет
+									WHERE += " OR AnkleVolumeLEFT='"+ ankle_volume_field+ "' AND AnkleVolumeRIGHT='"+ ankle_volume_field + "' AND ";
+								}
+							}
+						}
+					}
+				}
+
+				/***************************************************************
+				 * ОБЪЕМ КВ
+				 * */
+				if (kv_volume.length() != 0) {
+					if (WHERE.equals("")) {
+						// WHERE ПУСТОЙ
+						// разбиваем по пробелу полученные данные
+						String[] arr_kv_volume = kv_volume.split(" ");
+						// необходимо обойти каждый элемент массива в цикле и
+						// проверяем на наличие диапазона
+						int iteration = 0;
+						for (String kv_volume_field : arr_kv_volume) {
+							iteration++;
+							if (iteration == arr_kv_volume.length) {
+								// значит элемент массива последний
+								// если есть дефис, значит это интервал
+								if (kv_volume_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = kv_volume_field.split("-");
+									WHERE += " (KvVolumeLEFT>='" + interval[0]+ "' AND KvVolumeLEFT<='"+ interval[1] + "') OR "
+											+ " (KvVolumeRIGHT>='"+ interval[0]+ "' AND KvVolumeRIGHT<='"+ interval[1] + "') ";
+								} else {
+									// интервалов нет
+									WHERE += " KvVolumeLEFT='"+ kv_volume_field+ "' AND KvVolumeRIGHT='"+ kv_volume_field + "' ";
+								}
+							} else {
+								// элемент массива не последний
+								if (kv_volume_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = kv_volume_field.split("-");
+									WHERE += " (KvVolumeLEFT>='" + interval[0]+ "' AND KvVolumeLEFT<='"	+ interval[1] + "') OR "
+											+ " (KvVolumeLEFT>='" + interval[0]+ "' AND KvVolumeRIGHT<='"+ interval[1] + "') AND ";
+								} else {
+									// интервалов нет
+									WHERE += " KvVolumeLEFT='"+ kv_volume_field+ "' AND KvVolumeRIGHT='"+ kv_volume_field + "' AND ";
+								}
+							}
+						}
+					} else {
+						// WHERE НЕ ПУСТОЙ
+						// разбиваем по пробелу полученные данные
+						String[] arr_kv_volume = kv_volume.split(" ");
+						// необходимо обойти каждый элемент массива в цикле и
+						// проверяем на наличие диапазона
+						int iteration = 0;
+						for (String kv_volume_field : arr_kv_volume) {
+							iteration++;
+							if (iteration == arr_kv_volume.length) {
+								// значит элемент массива последний
+								// если есть дефис, значит это интервал
+								if (kv_volume_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = kv_volume_field.split("-");
+									WHERE += " OR (KvVolumeLEFT>='"+ interval[0]+ "' AND KvVolumeLEFT<='"+ interval[1] + "') OR "
+											+ " (KvVolumeRIGHT>='"+ interval[0]	+ "' AND KvVolumeRIGHT<='"+ interval[1] + "') ";
+								} else {
+									// интервалов нет
+									WHERE += " OR KvVolumeLEFT='"+ kv_volume_field+ "' AND KvVolumeRIGHT='"+ kv_volume_field + "' ";
+								}
+							} else {
+								// элемент массива не последний
+								if (kv_volume_field.indexOf("-") != -1) {
+									// разбираем интервал
+									String[] interval = kv_volume_field.split("-");
+									WHERE += " OR (KvVolumeLEFT>='"	+ interval[0]	+ "' AND KvVolumeLEFT<='"	+ interval[1] + "') OR "
+											+ " (KvVolumeRIGHT>='"+ interval[0]+ "' AND KvVolumeRIGHT<='"+ interval[1] + "') AND ";
+								} else {
+									// интервалов нет
+									WHERE += " OR KvVolumeLEFT='"+ kv_volume_field+ "' AND KvVolumeRIGHT='"+ kv_volume_field + "' AND ";
+								}
+							}
+						}
+					}
+				}
+
+				if (materialsCursor != null) {
+					if (materialsCursor.moveToFirst()) {
+						do {
+							int id = materialsCursor.getInt(materialsCursor.getColumnIndex("_id"));
+							int checked = materialsCursor.getInt(materialsCursor.getColumnIndex("MaterialChecked"));
+
+							if (checked == 1) {
+								if (WHERE.equals("")) {
+									WHERE += " o.MaterialID='" + id + "' ";
+								} else {
+									WHERE += " OR o.MaterialID='" + id + "' ";
+								}
+							}
+						} while (materialsCursor.moveToNext());
+					}
+					materialsCursor.close();
+				}
+
+				if (employeeCursor != null) {
+					if (employeeCursor.moveToFirst()) {
+						do {
+							int id = employeeCursor.getInt(employeeCursor.getColumnIndex("_id"));
+							int checked = employeeCursor.getInt(employeeCursor.getColumnIndex("EmployeeChecked"));
+
+							if (checked == 1) {
+								if (WHERE.equals("")) {
+									WHERE += " o.EmployeeID='" + id + "' ";
+								} else {
+									WHERE += " OR o.EmployeeID='" + id + "' ";
+								}
+							}
+						} while (employeeCursor.moveToNext());
+					}
+					employeeCursor.close();
+				}
+
+				db.cleanMaterialChecked();
+				db.cleanEmployeeChecked();
+
+				extlistener.getExtWhere(WHERE);
+			}
+		});////////////***ОТПРАВКА ПОИСКОВОГО ЗАПРОСА***//////////////
+
+		search_material.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				materialDialog = FragmentDialogScreen.newInstance(FragmentDialogScreen.DIALOG_MATERIALS);
+				materialDialog.show(getFragmentManager(), "mdlg");
+			}
+		});
+		
+		search_employee.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				employeeDialog = FragmentDialogScreen.newInstance(FragmentDialogScreen.DIALOG_EMPLOYEES);
+				employeeDialog.show(getFragmentManager(), "edlg");
+			}
+		});
+
+		// подключаемся к БД
+		db = new DB(getActivity());
+		db.open();
+
+		edit_order_number = (EditText) view.findViewById(R.id.search_order_number);
+		edit_model = (EditText) view.findViewById(R.id.search_model);
+		edit_size = (EditText) view.findViewById(R.id.search_size);
+		edit_urk = (EditText) view.findViewById(R.id.search_urk);
+		edit_height = (EditText) view.findViewById(R.id.search_height);
+		edit_top_volume = (EditText) view.findViewById(R.id.search_TopVolume);
+		edit_ankle_volume = (EditText) view.findViewById(R.id.search_AnkleVolume);
+		edit_kv_volume = (EditText) view.findViewById(R.id.search_KvVolume);
+		edit_customer = (EditText) view.findViewById(R.id.search_customer);
+
+		employeeCursor = db.getEmployeeCursor();
+		materialsCursor = db.getMaterialCursor();
+
+		return view;
+	} // end OnCreate
+
+	public interface OnExtendedSearchClickListener {
+	    public void getExtWhere(String where);
 	}
-}
+
+	OnExtendedSearchClickListener extlistener;
+	
+	
+	@Override
+	public void onAttach(Activity activity) {
+	    super.onAttach(activity);
+	    extlistener = (OnExtendedSearchClickListener) activity;
+	}
+	
+	/*
+	 * public void createWere(String query_string, String valueLEFT, String
+	 * valueRIGHT, String WHERE){ }//end create where
+	 */
+}// end SearchActivity

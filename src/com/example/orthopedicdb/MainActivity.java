@@ -23,7 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.orthopedicdb.FragmentSearchActivity.OnExtendedSearchClickListener;
+import com.example.orthopedicdb.FragmentExtenedSearchActivity.OnExtendedSearchClickListener;
 
 public class MainActivity extends FragmentActivity implements OnExtendedSearchClickListener{
 
@@ -40,7 +40,7 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
     private CharSequence mTitle;
 	ListView mDrawerList;
 	DialogFragment progressDialog;
-	String[] items = new String[] {"Новый заказ", "Поиск", "Все заказы", "Галерея", "Настройки"};
+	String[] items = new String[] {"Новый заказ", "Расширенный поиск", "Обычный поиск", "Все заказы", "Галерея","Настройки"};
 	
 	private ActionBarDrawerToggle mDrawerToggle;
 	
@@ -89,7 +89,7 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 			}
 		});
 
-     	mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
+     	mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.drawer_shadow, R.string.drawer_open, R.string.drawer_close) {
             public void onDrawerClosed(View view) {
                 getActionBar().setTitle(mTitle);
                 getActionBar().setSubtitle("Записей в базе: " + db.countOrders());
@@ -159,13 +159,16 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 					case 0:// НОВЫЙ ЗАКАЗ
 						fragment = (Fragment) new FragmentNewOrderActivity();
 						break;
-					case 1: // ПОИСК
-						fragment = new FragmentSearchActivity();
+					case 1: // РАСШИРЕННЫЙ ПОИСК
+						fragment = new FragmentExtenedSearchActivity();
 						break;
-					case 2:// ВСЕ ЗАПИСИ
+					case 2: // ОБЫЧНЫЙ ПОИСК
+						fragment = new FragmentQuickSearchActivity();
+						break;
+					case 3:// ВСЕ ЗАПИСИ
 						fragment = new FragmentAllOrdersActivity();
 						break;
-					case 3:// ГАЛЕРЕЯ
+					case 4:// ГАЛЕРЕЯ
 						fragment = new FragmentGalleryActivity();
 						break;
 					default:
@@ -234,7 +237,7 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 	private void showSearchResults(int searchID) {
 		switch (searchID) {
 		case EXTRESULT:
-			FragmentExtenedSearchActivity extSearch = FragmentExtenedSearchActivity.newInstance(WHERE);
+			FragmentExtenedRESULTSearchActivity extSearch = FragmentExtenedRESULTSearchActivity.newInstance(WHERE);
 			getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, extSearch).commit();
 			mTitle = "Результаты поиска";
 			getActionBar().setTitle(mTitle);

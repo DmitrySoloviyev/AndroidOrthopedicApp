@@ -45,36 +45,29 @@ public class MenuAdapter extends ArrayAdapter<String> {
         }
 
         holder.textView.setText(items[position]);
-        
-        // Изменение иконки
-/*		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View rowView = inflater.inflate(R.layout.menu_simple_list_item, parent, false);
 
-		TextView text = (TextView) rowView.findViewById(R.id.menu_text);
-		text.setText(items[position]);
-		ImageView img = (ImageView)rowView.findViewById(R.id.image_menu);	*/
+        // Изменение иконки
 		switch (position) {
-		case 0:
-			holder.imageView.setImageResource(android.R.drawable.ic_menu_edit);
-//			img.setImageResource(android.R.drawable.ic_menu_add);
-			break;
-		case 1:
-			holder.imageView.setImageResource(android.R.drawable.ic_menu_search);
-//			img.setImageResource(android.R.drawable.ic_menu_search);
-			break;
-		case 2:
-			holder.imageView.setImageResource(android.R.drawable.ic_menu_sort_by_size);
-//			img.setImageResource(android.R.drawable.ic_menu_view);
-			break;
-		case 3:
-			holder.imageView.setImageResource(android.R.drawable.ic_menu_gallery);
-//			img.setImageResource(android.R.drawable.ic_menu_gallery);
-			break;
-		case 4:
-			holder.imageView.setImageResource(android.R.drawable.ic_menu_preferences);
-			break;
-		default:
-			break;
+			case 0:	// новый заказ
+				holder.imageView.setImageResource(android.R.drawable.ic_menu_edit);
+				break;
+			case 1:	//расширенный поиск
+				holder.imageView.setImageResource(android.R.drawable.ic_menu_search);
+				break;
+			case 2:	//обычный поиск
+				holder.imageView.setImageResource(android.R.drawable.ic_menu_search);
+				break;
+			case 3:	//все заказы
+				holder.imageView.setImageResource(android.R.drawable.ic_menu_sort_by_size);
+				break;
+			case 4:	//галерея
+				holder.imageView.setImageResource(android.R.drawable.ic_menu_gallery);
+				break;
+			case 5:	// настройки
+				holder.imageView.setImageResource(android.R.drawable.ic_menu_preferences);
+				break;
+			default:
+				break;
 		}
 		return rowView;
 	}
