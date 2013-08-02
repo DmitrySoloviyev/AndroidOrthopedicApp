@@ -104,7 +104,7 @@ public class DetailOrderActivity extends Activity {
 				startActivity(editOrderIntent);
     			break;
     		case R.id.delete:
-    			db.deleteOrderById(ID);
+    			db.deleteOrderById(new String[]{String.valueOf(ID)});
     		    Toast.makeText(getApplicationContext(), "Запись успешно удалена!", Toast.LENGTH_LONG).show();
     		    onBackPressed();
     			break;

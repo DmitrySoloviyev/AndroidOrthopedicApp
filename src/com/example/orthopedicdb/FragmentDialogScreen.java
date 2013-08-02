@@ -74,7 +74,6 @@ public class FragmentDialogScreen extends DialogFragment implements OnClickListe
 	    	return adb.create();
 	    }
 	}
-
 	  public void onClick(DialogInterface dialog, int which) {}
 }
 

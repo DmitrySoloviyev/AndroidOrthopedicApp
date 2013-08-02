@@ -253,9 +253,16 @@ public class DB {
 	}
 	
 	// УДАЛЕНИЕ ЗАПИСИ
-	public void deleteOrderById(long id){
-		mDB.delete("Orders", "_id" + " = " + id, null);
+	public void deleteOrderById(String[] whereArgs){
+		if(whereArgs.length == 1)
+			mDB.delete("Orders", "_id = ?", whereArgs);
+		else{
+			for (String id : whereArgs) {
+				mDB.delete("Orders", "_id = ?", new String[]{id});
+			}
+		}
 	}
+	
 	
 	// РЕДАКТИРОВАНИЕ ЗАПИСИ
 	public void updateOrderById(long id, 

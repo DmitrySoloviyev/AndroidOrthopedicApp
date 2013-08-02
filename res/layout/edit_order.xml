@@ -22,7 +22,7 @@
 
             <EditText
                 android:id="@+id/updateOrderID"
-                android:layout_width="wrap_content"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:inputType="number|text"
                 android:maxLines="1"
@@ -47,10 +47,11 @@
                 android:id="@+id/updateModel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
                 android:completionThreshold="1"
                 android:maxLength="6"
+                android:maxLines="1"
                 android:text="TextView" />
+
         </TableRow>
 
         <TableRow
@@ -68,7 +69,7 @@
 
             <Spinner
                 android:id="@+id/updateMaterial"
-                android:layout_width="wrap_content"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content" />
 
         </TableRow>
@@ -559,7 +560,7 @@
 
                 <Spinner
                     android:id="@+id/updateEmployee"
-                    android:layout_width="wrap_content"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>

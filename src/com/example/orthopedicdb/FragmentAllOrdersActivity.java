@@ -1,5 +1,7 @@
 package com.example.orthopedicdb;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,12 +11,14 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
@@ -32,11 +36,8 @@ public class FragmentAllOrdersActivity extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.all_orders, null);
-
 		InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
 	    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-		//cursor = db.getAllShortOrders();
-		//Toast.makeText(getActivity(), "Всего записей: "+cursor.getCount(), Toast.LENGTH_LONG).show();
 	    return view;
 	}// ON CREATE
 	
@@ -60,7 +61,7 @@ public class FragmentAllOrdersActivity extends Fragment{
 	    	}
 			@SuppressWarnings("deprecation")
 			@Override
-	    	protected void onPostExecute(Cursor cursor) {
+	    	protected void onPostExecute(final Cursor cursor) {
 	    		super.onPostExecute(cursor);
 	    		FragmentAllOrdersActivity.this.cursor = cursor;
 	    		Toast.makeText(getActivity(), "Записей в базе: "+cursor.getCount(), Toast.LENGTH_LONG).show();
@@ -75,58 +76,82 @@ public class FragmentAllOrdersActivity extends Fragment{
 	    		lv = (ListView)view.findViewById(R.id.orders_list);
 	    		lv.setAdapter(scAdapter);
 
+	    		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+	    		lv.setMultiChoiceModeListener(new MultiChoiceModeListener() {
+	    			private ArrayList<String> checkedIds = new ArrayList<String>();
+
+	    		      public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+	    		    	  mode.getMenuInflater().inflate(R.menu.context, menu);
+	    		    	  return true;
+	    		      }
+
+	    		      public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+	    		    	  if (checkedIds.size() == 0) {
+	    		    		  mode.finish();
+	    		    	  } else if (checkedIds.size() == 1 && mode != null) {
+	    		    		  menu.clear();
+	    		    		  mode.setTitle(""+ checkedIds.size());
+	    		    		  mode.getMenuInflater().inflate(R.menu.context, menu);
+	    		    		  return true;
+	    		    	  } else if (checkedIds.size() > 1) {
+	    		    		  menu.clear();
+	    		    		  mode.setTitle(""+ checkedIds.size());
+	    		    		  mode.getMenuInflater().inflate(R.menu.context_delete, menu);
+	    		    		  return true;
+	    		    	  }
+	    		    	  return true;
+	    		      }
+
+	    		      public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+	    		    	  switch (item.getItemId()) {
+	    		    		case R.id.edit:
+	    		    			Intent editOrderIntent = new Intent(getActivity(), EditOrderActivity.class);
+	    						editOrderIntent.putExtra("ID", Long.valueOf(checkedIds.get(0)));
+	    						startActivity(editOrderIntent);
+	    		    			break;
+	    		    		case R.id.delete:
+	    		    			String[] simpleArray = new String[ checkedIds.size() ];
+	    		    			checkedIds.toArray(simpleArray);
+	    		    			db.deleteOrderById(simpleArray);
+	    		    		    Toast.makeText(getActivity(), "Удалено!", Toast.LENGTH_LONG).show();
+	    		    		    cursor.requery();
+	    		    		    getActivity().getActionBar().setSubtitle("Записей в базе: "+db.countOrders());
+	    		    			break;
+	    		    	  }
+	    		    	  checkedIds.clear();
+	    		    	  mode.finish();
+	    		    	  return false;
+	    		      }
+
+	    		      public void onDestroyActionMode(ActionMode mode) {
+	    		    	  checkedIds.clear();
+	    		      }
+
+	    		      public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+	    		        if(checked){
+	                        checkedIds.add(String.valueOf(id));
+	                    } else{
+	                        Iterator<String> iter = checkedIds.iterator();
+	                        while(iter.hasNext()){
+	                            String stored = iter.next();
+	                            if(stored.contains(String.valueOf(id)))
+	                                iter.remove();
+	                        }
+	                    }
+	    		        mode.invalidate();
+	    		      }
+	    		});
+	    		
 	    	    lv.setOnItemClickListener(new OnItemClickListener() {
 					@Override
-					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long id) {
 						Intent detailedOrderIntent = new Intent(getActivity(), DetailOrderActivity.class);
-						detailedOrderIntent.putExtra("ID", arg3);
+						detailedOrderIntent.putExtra("ID", id);
 						startActivity(detailedOrderIntent);
-					}
-				});
-	    	    
-	    	    lv.setLongClickable(true);
-	    	    lv.setOnItemLongClickListener(new OnItemLongClickListener() {
-					@Override
-					public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-
-						return true;
 					}
 				});
 	    	    progressDialog.dismiss();
 	        }
 	    }.execute();
 	}
-	
-/*
-	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-		    super.onCreateContextMenu(menu, v, menuInfo);
-		    menu.add(0, 1, 0, "Редактировать");
-		    menu.add(0, 2, 0, "Удалить");
-		  }
-
-	@SuppressWarnings("deprecation")
-	public boolean onContextItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case 1:			// редактирование
-			AdapterContextMenuInfo acmi_edit = (AdapterContextMenuInfo) item.getMenuInfo();
-			Intent editOrderIntent = new Intent(getActivity(), EditOrderActivity.class);
-				editOrderIntent.putExtra("ID", acmi_edit.id);
-			startActivity(editOrderIntent);
-			return true;
-			//break;
-		case 2:			// удаление
-			// получаем из пункта контекстного меню данные по пункту списка 
-		    AdapterContextMenuInfo acmi_delete = (AdapterContextMenuInfo) item.getMenuInfo();
-		    // извлекаем id записи и удаляем соответствующую запись в БД
-		    db.deleteOrderById(acmi_delete.id);
-		    Toast.makeText(getActivity(), "Запись успешно удалена!", Toast.LENGTH_LONG).show();
-		    // обновляем курсор
-		    cursor.requery();
-		    return true;
-			//break;
-		default:
-			break;
-		}
-	    return super.onContextItemSelected(item);
-	  }*/
 }// END ACTIVITY

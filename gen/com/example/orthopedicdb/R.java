@@ -50,7 +50,6 @@ public final class R {
         public static final int MENU_SEARCH=0x7f0b007f;
         public static final int Material=0x7f0b007a;
         public static final int Model=0x7f0b0078;
-        public static final int button1=0x7f0b006a;
         public static final int checkBox1=0x7f0b0075;
         public static final int checked_choice=0x7f0b0076;
         public static final int content_frame=0x7f0b0056;
@@ -103,6 +102,7 @@ public final class R {
         public static final int new_order_number=0x7f0b005b;
         public static final int new_size=0x7f0b005e;
         public static final int new_urk=0x7f0b005f;
+        public static final int news_ok=0x7f0b006a;
         public static final int orders_list=0x7f0b0006;
         public static final int scrollView1=0x7f0b005a;
         public static final int search_AnkleVolume=0x7f0b0071;
@@ -190,7 +190,8 @@ public final class R {
     }
     public static final class menu {
         public static final int context=0x7f0a0000;
-        public static final int main=0x7f0a0001;
+        public static final int context_delete=0x7f0a0001;
+        public static final int main=0x7f0a0002;
     }
     public static final class string {
         public static final int action_settings=0x7f080004;

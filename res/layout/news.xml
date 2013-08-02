@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrollView1"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/scrollView1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-        
-<!--        <TextView
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <!--
+            <TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -21,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.9\t Внешний вид приложения оптимизирован под планшеты." />
+                android:text="\t0.9\t Внешний вид приложения оптимизирован под различные экраны." />
 
 			<TextView
                 android:id="@+id/textView4"
@@ -49,7 +56,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.5\t Все ресурсоемкие процессы, везде где это необходимо, осуществляются в отдельном потоке. Реализован собственный адаптер данных для вывода информации о заказе." />          
+                android:text="\t0.5\t Все ресурсоемкие процессы, везде где это необходимо, осуществляются в отдельном потоке. Реализован собственный адаптер
+                данных для вывода информации о заказе." />          
                 
            <TextView
                 android:id="@+id/textView4"
@@ -57,45 +65,45 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.4\t Вновь доступен быстрый поиск." />
-                
-           <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="\t0.3\t Реализован ActionMode в качестве замены контектстному меню. Upstream changes." />
-                                 -->                
-           <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="\t0.2\t Добавлены настройки приложения. Пока доступен только один пункт, позволяющий выбрать какой экран будет запускаться при запуске приложения." />
-
-           <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="\t0.1.1\t Результаты поиска корректно отображаются при повороте экрана или при переходе с другого экрана." />
-           
-           <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="\t0.1\t Прекращена поддержка версий Android меньше 3.x. Полностью переделан интерфейс: основан на фрагментах. Сдвиньте экран вправо или нажмите на иконку приложения для доступа 
-                к главному меню. Обычное меню больше не доступно. Переписаны диалоговые окна. Множество существенных улучшений и исправлений, удалено все лишнее. Временно удален быстрый поиск. 
-                Подкорректирована реализация поиска." />
-                
-
+            -->
 
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.0.7\t Реализован расширенный поиск (beta). Upstream changes." /> 
+                android:text="\t0.3\t Реализован ActionMode в качестве замены контектстному меню." />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.2\t Добавлены настройки приложения. Пока доступен только один пункт, позволяющий выбрать какой экран будет запускаться при запуске
+            приложения." />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.1.1\t Результаты поиска корректно отображаются при повороте экрана или при переходе с другого экрана." />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.1\t Прекращена поддержка версий Android меньше 3.x. Полностью переделан интерфейс: основан на фрагментах. Сдвиньте экран вправо или
+            нажмите на иконку приложения для доступа к главному меню. Обычное меню больше не доступно. Переписаны диалоговые окна. Множество существенных 
+            улучшений и исправлений, удалено все лишнее. Временно удален быстрый поиск. Подкорректирована реализация поиска." />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.0.7\t Реализован расширенный поиск (beta). Upstream changes." />
 
             <TextView
                 android:id="@+id/textView4"
@@ -110,10 +118,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.0.5\t Добавлена возможность редактирования заказа (beta)." />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/search_employee"
@@ -135,14 +139,15 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.0.2\t Добавлено визуальное наполнение приложения." />
+        </LinearLayout>
+    </ScrollView>
 
-            <Button
-                android:id="@+id/button1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="OK" />
-        
-    </LinearLayout>
+    <Button
+        android:id="@+id/news_ok"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:text="OK" />
 
-</ScrollView>
+</LinearLayout>

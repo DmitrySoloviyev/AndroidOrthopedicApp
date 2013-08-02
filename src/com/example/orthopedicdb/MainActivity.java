@@ -111,7 +111,7 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
         	whichSearch = savedInstanceState.getInt("SEARCHID");
         	showSearchResults(whichSearch);
         }else{
-        	selectMenuItem(Integer.valueOf(sp.getString("activityList", "1")));
+        	selectMenuItem(Integer.valueOf(sp.getString("activityList", "1")));// вызываем фрагмент по-умолчанию, считывая настройки приложения
         }
 	}// END ONCREATE
 	
@@ -145,11 +145,11 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
     		@Override
 	        protected void onPreExecute() {
     			super.onPreExecute();
+    			progressDialog = FragmentDialogScreen.newInstance(FragmentDialogScreen.DIALOG_PROGRESS);
+	            progressDialog.show(getSupportFragmentManager(), "pdlg");
     			mTitle = items[position];
 	            getActionBar().setTitle(mTitle);
 	            mDrawerLayout.closeDrawer(mDrawerList);
-	            progressDialog = FragmentDialogScreen.newInstance(FragmentDialogScreen.DIALOG_PROGRESS);
-	            progressDialog.show(getSupportFragmentManager(), "pdlg");
 	        }
 			@Override
 			protected Fragment doInBackground(Integer... params) {
@@ -186,32 +186,6 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 	    		progressDialog.dismiss();
 			}
 		}.execute(position);
-    	
-
-    	/*
-        mDrawerList.setItemChecked(position, true);
-    	FragmentManager fragmentManager = getSupportFragmentManager();
-    	Fragment fragment = new Fragment();
-		switch (position) {
-			case 0:// НОВЫЙ ЗАКАЗ
-				fragment = new FragmentNewOrderActivity();
-				break;
-			case 1: // ПОИСК
-				fragment = new FragmentSearchActivity();
-				break;
-			case 2:// ВСЕ ЗАПИСИ
-				fragment = new FragmentAllOrdersActivity();
-				break;
-			case 3:// ГАЛЕРЕЯ
-				fragment = new FragmentGalleryActivity();
-				break;
-			default:
-				break;
-		}
-    	fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-    	mTitle = items[position];
-        getActionBar().setTitle(mTitle);
-        mDrawerLayout.closeDrawer(mDrawerList);*/
     }
 	
 	protected void onDestroy() {
@@ -260,13 +234,10 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 	private void showSearchResults(int searchID) {
 		switch (searchID) {
 		case EXTRESULT:
-//			FragmentExtenedSearchActivity details = (FragmentExtenedSearchActivity) getSupportFragmentManager().findFragmentById(R.id.content_frame);
-//			if (details == null || details.getPosition() != searchID) {
 			FragmentExtenedSearchActivity extSearch = FragmentExtenedSearchActivity.newInstance(WHERE);
-				getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, extSearch).commit();
-				mTitle = "Результаты поиска";
-				getActionBar().setTitle(mTitle);
-//	    }
+			getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, extSearch).commit();
+			mTitle = "Результаты поиска";
+			getActionBar().setTitle(mTitle);
 			break;
 		case QUICKRESULT:
 			

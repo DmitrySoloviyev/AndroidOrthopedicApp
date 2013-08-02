@@ -31,7 +31,7 @@ public class NewsActivity extends Activity {
 		}
         
         sp = PreferenceManager.getDefaultSharedPreferences(this);
-        Button btn = (Button)findViewById(R.id.button1);
+        Button btn = (Button)findViewById(R.id.news_ok);
         btn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
