@@ -42,11 +42,12 @@ public class FragmentQuickSearchActivity extends Fragment {
 		view = inflater.inflate(R.layout.quick_search, null);
 	    quickly_search = (EditText)view.findViewById(R.id.quickly_search);
 	    quickly_search_button = (ImageButton)view.findViewById(R.id.quick_search_button);
+	    
 	    quickly_search_button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				final String query = quickly_search.getText().toString().trim();
-				if(query.length() == 0){
+				WHERE = quickly_search.getText().toString().trim();
+				if(WHERE.length() == 0){
 					return;
 				}
 				db = new DB(getActivity());
@@ -62,7 +63,7 @@ public class FragmentQuickSearchActivity extends Fragment {
 			        }
 					@Override
 			    	protected Cursor doInBackground(Void... params) {
-				    	taskcursor = db.quicklySearch(query);
+				    	taskcursor = db.quicklySearch(WHERE);
 			    		return taskcursor;
 			    	}
 					@SuppressWarnings("deprecation")
@@ -160,6 +161,17 @@ public class FragmentQuickSearchActivity extends Fragment {
 			    }.execute();
 			}
 		});
+	    if (savedInstanceState != null){
+        	WHERE = savedInstanceState.getString("WHERE");
+        	quickly_search.setText(WHERE);
+        	quickly_search_button.callOnClick();
+	    }
 	    return view;
 	}// ON CREATE
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
+	    outState.putString("WHERE", WHERE);
+	}
 }

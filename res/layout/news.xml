@@ -17,65 +17,62 @@
 
             <!--
             <TextView
-                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t1.0\t Stable release. " /> УБРАТЬ ВСЕ ЛОГИ И Debuggable ИЗ МАНИФЕСТА
 
 			<TextView
-                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.9\t Внешний вид приложения оптимизирован под различные экраны." />
 
 			<TextView
-                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.8\t Виджет, с возможностью быстро попасть на нужную страницу приложения прямо с рабочего стола." />
 
 			<TextView
-                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.7\t Добавлена функция резервирования БД и ее восстановления." />
                 
            <TextView
-                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.6\t Теперь возможно прикреплять фотографию модели к заказу. Доступна 'Галерея'." />
                 
            <TextView
-                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.5\t Все ресурсоемкие процессы, везде где это необходимо, осуществляются в отдельном потоке. Реализован собственный адаптер
                 данных для вывода информации о заказе." />          
             -->                
+           
            <TextView
-                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.4.1\t Подкорректирован быстрый поиск: сохранение результатов поиска при возвращении с другого экрана." />
+           
+           <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.4\t Вновь доступен быстрый поиск. Подкорректирован внешний вид приложения." />
 
-
             <TextView
-                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.3\t Реализован ActionMode в качестве замены контектстному меню." />
 
             <TextView
-                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -83,14 +80,12 @@
             приложения." />
 
             <TextView
-                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.1.1\t Результаты поиска корректно отображаются при повороте экрана или при переходе с другого экрана." />
 
             <TextView
-                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -99,42 +94,36 @@
             улучшений и исправлений, удалено все лишнее. Временно удален быстрый поиск. Подкорректирована реализация поиска." />
 
             <TextView
-                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.0.7\t Реализован расширенный поиск (beta). Upstream changes." />
 
             <TextView
-                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.0.6\t На главный экран добавлен быстрый поиск. As usually upstream changes)" />
 
             <TextView
-                android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.0.5\t Добавлена возможность редактирования заказа (beta)." />
 
             <TextView
-                android:id="@+id/search_employee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.0.4\t Краткий просмотр заказов (beta), удаление заказа и детальный просмотр заказа." />
 
             <TextView
-                android:id="@+id/versionCode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.0.3\t Добавление нового заказа (beta)." />
 
             <TextView
-                android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
