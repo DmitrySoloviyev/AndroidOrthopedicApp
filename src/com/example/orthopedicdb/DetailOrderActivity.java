@@ -59,8 +59,7 @@ public class DetailOrderActivity extends Activity {
  	    								"CustomerP",
  	    								"EmployeeSN",
  	    								"EmployeeFN",
- 	    								"EmployeeP",
- 	    								"ModelIMG" };
+ 	    								"EmployeeP" };
  	    int[] to = new int[] { R.id.detailedOrderID, 
  	    					   R.id.detailedModel, 
  	    					   R.id.detailedMaterial,
@@ -81,8 +80,7 @@ public class DetailOrderActivity extends Activity {
  	    					   R.id.detailedCustomerP,
  	    					   R.id.detailedEmployeeSN,
  	    					   R.id.detailedEmployeeFN,
- 	    					   R.id.detailedEmployeeP,
- 	    					   R.id.updateModelIMG };
+ 	    					   R.id.detailedEmployeeP};
  		
  	    scAdapter = new SimpleCursorAdapter(this, R.layout.detailed_item, cursor, from, to);
 	    lv = (ListView)findViewById(R.id.orders_list);

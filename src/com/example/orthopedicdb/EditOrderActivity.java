@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -151,11 +152,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 		update_customerSN.setText(customersn);	
 		update_customerFN.setText(customerfn);	
 		update_customerP.setText(customerp);
-//		if(model_img_src.equals(""))
-//			modelIMG.setImageResource(R.drawable.ic_launcher);
-//		else
-//			modelIMG.setImageURI(Uri.parse(model_img_src));
-//			setPic(model_img_src);
+		modelIMG.setImageBitmap(decodeBitmapFromFile(model_img_src, 200, 200));
 
 		// узнаем каков у заказа МАТЕРИАЛ для вызова диалогового окна для его выбора
 		old_material = cursor.getInt( cursor.getColumnIndex("MaterialID") )-1;
@@ -283,31 +280,42 @@ public class EditOrderActivity extends Activity implements OnClickListener {
   	    }
   	}
 
-/*   // Декодирование масштабированого изображения
-  	private void setPic(String photoPath) {
-  	    // Get the dimensions of the View
-  	    int targetW = modelIMG.getWidth();
-  	    int targetH = modelIMG.getHeight();
-  	 
-  	    // Get the dimensions of the bitmap
-  	    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-  	    bmOptions.inJustDecodeBounds = true;
-  	    BitmapFactory.decodeFile(photoPath, bmOptions);
-  	    int photoW = bmOptions.outWidth;
-  	    int photoH = bmOptions.outHeight;
-  	 
-  	    // Determine how much to scale down the image
-  	    int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-  	 
-  	    // Decode the image file into a Bitmap sized to fill the View
-  	    bmOptions.inJustDecodeBounds = true;
-  	    bmOptions.inSampleSize = scaleFactor;
-  	    bmOptions.inPurgeable = true;
-  	 
-  	    Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
-  	    modelIMG.setImageBitmap(bitmap);
+      
+   // ДЕКОДИРОВАНИЕ ИЗОБРАЖЕНИЯ //
+  	private Bitmap decodeBitmapFromFile(String imagePath, int reqWidth, int reqHeight) {
+  	    // получаем картинку и определяем ее высоту и ширину
+  	    BitmapFactory.Options options = new BitmapFactory.Options();
+  	    options.inJustDecodeBounds = true;
+  	    BitmapFactory.decodeFile(imagePath, options);
+  	    
+  	    // Calculate inSampleSize
+  	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+  	    // Decode bitmap with inSampleSize set
+  	    options.inJustDecodeBounds = false;
+  	    return BitmapFactory.decodeFile(imagePath, options);
   	}
-*/      
+   
+  	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+	    // Raw height and width of image
+	    final int height = options.outHeight;
+	    final int width = options.outWidth;
+	    int inSampleSize = 1;
+	
+	    if (height > reqHeight || width > reqWidth) {
+	        // Calculate ratios of height and width to requested height and width
+	        final int heightRatio = Math.round((float) height / (float) reqHeight);
+	        final int widthRatio = Math.round((float) width / (float) reqWidth);
+	
+	        // Choose the smallest ratio as inSampleSize value, this will guarantee
+	        // a final image with both dimensions larger than or equal to the
+	        // requested height and width.
+	        inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+	    }
+	
+	    return inSampleSize;
+  	}
+  	
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {

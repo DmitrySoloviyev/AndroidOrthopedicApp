@@ -40,6 +40,7 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
     private CharSequence mTitle;
 	ListView mDrawerList;
 	DialogFragment progressDialog;
+	final int REQUEST_ADD_MATERIAL = 1;
 	String[] items = new String[] {"Новый заказ", "Расширенный поиск", "Обычный поиск", "Все заказы", "Галерея","Настройки"};
 	
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -69,7 +70,7 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 
         if(db.countEmployees() == 0){
 			intent = new Intent(this, NewEmployee.class);
-			startActivityForResult(intent, 1);
+			startActivityForResult(intent, REQUEST_ADD_MATERIAL);
 		}
 
         getActionBar().setHomeButtonEnabled(true);
@@ -208,23 +209,24 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 	}
 	// РЕЗУЛЬТАТ ИЗ АКТИВИТИ
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	    if (data == null) {
-	    	Toast.makeText(this, "Модельер не добавлен! Добавьте модельера", Toast.LENGTH_SHORT).show();
-	    	intent = new Intent(this, NewEmployee.class);
-			startActivityForResult(intent, 1);
-	    	return;
+    	if(requestCode == REQUEST_ADD_MATERIAL){
+		    if (data == null) {
+		    	Toast.makeText(this, "Модельер не добавлен! Добавьте модельера", Toast.LENGTH_SHORT).show();
+		    	intent = new Intent(this, NewEmployee.class);
+				startActivityForResult(intent, 1);
+		    	return;
+		    }
+		    if (resultCode == Activity.RESULT_OK) {
+		       	String surname 		= data.getStringExtra("surname");
+		        String firstname 	= data.getStringExtra("firstname");
+		        String patronymic 	= data.getStringExtra("patronymic");
+		        db.addNewEmployee(surname, firstname, patronymic);
+		        Toast.makeText(this, "Модельер "+surname +" "+firstname+" "+patronymic+" добавлен!", Toast.LENGTH_SHORT).show();
+		    } else {
+		    	Toast.makeText(this, "Модельер не добавлен! Добавьте модельера", Toast.LENGTH_LONG).show();
+		    }
 	    }
-	    if (resultCode == Activity.RESULT_OK) {
-	       	String surname 		= data.getStringExtra("surname");
-	        String firstname 	= data.getStringExtra("firstname");
-	        String patronymic 	= data.getStringExtra("patronymic");
-	        db.addNewEmployee(surname, firstname, patronymic);
-	        Toast.makeText(this, "Модельер "+surname +" "+firstname+" "+patronymic+" добавлен!", Toast.LENGTH_SHORT).show();
-	    } else {
-	    	Toast.makeText(this, "Модельер не добавлен! Добавьте модельера", Toast.LENGTH_LONG).show();
-	    }
-	}
-
+    }
 
 	@Override
 	public void getExtWhere(String where) {

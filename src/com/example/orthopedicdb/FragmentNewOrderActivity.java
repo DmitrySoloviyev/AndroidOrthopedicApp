@@ -65,6 +65,10 @@ public class FragmentNewOrderActivity extends Fragment {
         db = new DB(getActivity());
         db.open();
         
+        if(savedInstanceState != null){
+        	model_img_src = savedInstanceState.getString("src");
+        }
+        
         // инициализируем КНОПКИ и прикрепляем к ним слушателя
         submit_new_order = (Button)view.findViewById(R.id.submit_new_order);
         submit_new_order.setOnClickListener(new OnClickListener() {
@@ -455,11 +459,4 @@ public class FragmentNewOrderActivity extends Fragment {
 	    super.onSaveInstanceState(outState);
 	    outState.putString("src", model_img_src);
 	}
-/*	
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-	    super.onRestoreInstanceState(savedInstanceState);
-	    model_img_src = savedInstanceState.getString("src");
-	    if(!model_img_src.equals(""))
-	    	Toast.makeText(getActivity(), "Фотография закреплена за моделью!", Toast.LENGTH_SHORT).show();
-	}*/
 }

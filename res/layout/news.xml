@@ -26,32 +26,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.9\t Внешний вид приложения оптимизирован под различные экраны." />
+                android:text="\t0.8\t Внешний вид приложения оптимизирован под различные экраны." />
 
 			<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.8\t Виджет, с возможностью быстро попасть на нужную страницу приложения прямо с рабочего стола." />
+                android:text="\t0.7\t У приложения появидся виджет, с его помощью можно быстро попасть на нужную страницу приложения прямо с рабочего стола. Кроме этого 
+                он отображает количество заказов в базе данных на текущей момент." />
 
 			<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.7\t Добавлена функция резервирования БД и ее восстановления." />
+                android:text="\t0.6\t Добавлена новая возможность в настройках. Можно в любое время сделать резервную копию БД или восстановить ее." />
                 
            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.6\t Теперь возможно прикреплять фотографию модели к заказу. Доступна 'Галерея'." />
-                
-           <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="\t0.5\t Все ресурсоемкие процессы, везде где это необходимо, осуществляются в отдельном потоке. Реализован собственный адаптер
-                данных для вывода информации о заказе." />          
+                android:text="\t0.5\t Теперь возможно прикреплять фотографию модели к заказу. Доступна 'Галерея'. Все ресурсоемкие процессы, везде где это необходимо, 
+                осуществляются в отдельном потоке. Реализован собственный адаптер данных для вывода информации о заказе. Редизайн окна редактирования и вывода 
+                подробной информации о заказе." />          
             -->                
            
            <TextView

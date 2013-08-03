@@ -55,6 +55,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"
+            android:ellipsize="marquee"	 
+            android:marqueeRepeatLimit="marquee_forever"
             android:text="customer"
             android:textSize="16sp" />
 
