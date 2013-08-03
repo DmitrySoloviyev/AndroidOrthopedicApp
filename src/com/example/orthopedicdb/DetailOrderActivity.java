@@ -7,20 +7,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
-public class DetailOrderActivity extends Activity {
-// TODO НАПИСАТЬ СВОЙ АДАПТЕР ДЛЯ ОБРАБОТКИ И УСТАНОВКИ ФОТОГРАФИИ МОДЕЛИ И 
-//	ДЛЯ ВЫВОДА ПОЛЕЙ ФИО МОДЕЛЬЕРА И ЗАКАЗЧИКА В ВИДЕ БУГУЩЕЙ СТРОКИ, ИСПОЛЬЗОВАВ android:ellipsize="marquee"	 android:marqueeRepeatLimit="marquee_forever" 	text.setSelected(true);
-// Bitmap image = BitmapFactory.decodeFile(fileName);
-	
+public class DetailOrderActivity extends Activity {	
 	long ID;
 	ListView lv;
-	SimpleCursorAdapter scAdapter;
+	DetailedOrderAdapter scAdapter;
 	Cursor cursor;
 	DB db;
-	final String LOG_TAG = "myLogs";
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -37,10 +31,9 @@ public class DetailOrderActivity extends Activity {
 
 	 	cursor = db.getDetailedOrderById(ID);
 	 	startManagingCursor(cursor);
-//	 	cursor.moveToFirst();
 
- 	    String[] from = new String[] { "OrderID", 
- 	    								"Model", 
+ 	    String[] from = new String[] { "OrderID",
+ 	    								"Model",
  	    								"Material", 
  	    								"SizeLEFT",
  	    								"SizeRIGHT",
@@ -59,9 +52,9 @@ public class DetailOrderActivity extends Activity {
  	    								"CustomerP",
  	    								"EmployeeSN",
  	    								"EmployeeFN",
- 	    								"EmployeeP" };
- 	    int[] to = new int[] { R.id.detailedOrderID, 
- 	    					   R.id.detailedModel, 
+ 	    								"EmployeeP",
+ 	    								"ModelIMG"};
+ 	    int[] to = new int[] { R.id.shortOrderID,  
  	    					   R.id.detailedMaterial,
  	    					   R.id.detailedSizeLeft,
  	    					   R.id.detailedSizeRight,
@@ -80,9 +73,11 @@ public class DetailOrderActivity extends Activity {
  	    					   R.id.detailedCustomerP,
  	    					   R.id.detailedEmployeeSN,
  	    					   R.id.detailedEmployeeFN,
- 	    					   R.id.detailedEmployeeP};
+ 	    					   R.id.detailedEmployeeP,
+ 	    					   R.id.detailedModel,
+ 	    					   R.id.detailedModelIMG }; 
  		
- 	    scAdapter = new SimpleCursorAdapter(this, R.layout.detailed_item, cursor, from, to);
+ 	    scAdapter = new DetailedOrderAdapter(this, R.layout.detailed_item, cursor, from, to);
 	    lv = (ListView)findViewById(R.id.orders_list);
 		// устанавливаем режим выбора пунктов списка 
 		lv.setAdapter(scAdapter);
@@ -103,7 +98,7 @@ public class DetailOrderActivity extends Activity {
     			break;
     		case R.id.delete:
     			db.deleteOrderById(new String[]{String.valueOf(ID)});
-    		    Toast.makeText(getApplicationContext(), "Запись успешно удалена!", Toast.LENGTH_LONG).show();
+    		    Toast.makeText(getApplicationContext(), "Запись успешно удалена!", Toast.LENGTH_SHORT).show();
     		    onBackPressed();
     			break;
     	}

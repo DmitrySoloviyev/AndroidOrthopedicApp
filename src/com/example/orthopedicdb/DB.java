@@ -227,7 +227,6 @@ public class DB {
 		List<String> labels = new ArrayList<String>();
 		
 		Cursor cursor = mDB.rawQuery("SELECT EmployeeSN, EmployeeFN, EmployeeP, EmployeeChecked FROM Employees", null);
-		//Cursor cursor = mDB.query("Employees", new String[]{"EmployeeSN", "EmployeeFN", "EmployeeP"}, null, null, null, null, null);
 
 		if (cursor != null) {
 			if (cursor.moveToFirst()) {

@@ -20,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView.OnItemClickListener;
@@ -35,7 +34,7 @@ public class FragmentQuickSearchActivity extends Fragment {
 	EditText quickly_search;
 	ImageButton quickly_search_button;
 	DialogFragment progressDialog;
-	SimpleCursorAdapter scAdapter;
+	AllOrdersAdapter scAdapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,13 +70,13 @@ public class FragmentQuickSearchActivity extends Fragment {
 			    	protected void onPostExecute(final Cursor cursor) {
 			    		super.onPostExecute(cursor);
 			    		FragmentQuickSearchActivity.this.cursor = cursor;
-			    		Toast.makeText(getActivity(), "Найдено записей: "+cursor.getCount(), Toast.LENGTH_LONG).show();
+			    		Toast.makeText(getActivity(), "Найдено записей: "+cursor.getCount(), Toast.LENGTH_SHORT).show();
 			    		getActivity().startManagingCursor(cursor);
 			            
 			    	    String[] from = new String[] { "OrderID", "Model", "Material", "Customer", "Employee" };
-			    	    int[] to = new int[] { R.id.detailedOrderID, R.id.Model, R.id.Material, R.id.Customer, R.id.Employee };
+			    	    int[] to = new int[] { R.id.shortOrderID, R.id.shortModel, R.id.shortMaterial, R.id.shortCustomer, R.id.shortEmployee };
 			    	    
-			    	    scAdapter = new SimpleCursorAdapter(getActivity(), R.layout.short_item, cursor, from, to);
+			    	    scAdapter = new AllOrdersAdapter(getActivity(), R.layout.short_item, cursor, from, to);
 			    	    
 			    		lv = (ListView)view.findViewById(R.id.orders_list);
 			    		lv.setAdapter(scAdapter);
@@ -119,7 +118,7 @@ public class FragmentQuickSearchActivity extends Fragment {
 			    		    			String[] simpleArray = new String[ checkedIds.size() ];
 			    		    			checkedIds.toArray(simpleArray);
 			    		    			db.deleteOrderById(simpleArray);
-			    		    		    Toast.makeText(getActivity(), "Удалено!", Toast.LENGTH_LONG).show();
+			    		    		    Toast.makeText(getActivity(), "Удалено!", Toast.LENGTH_SHORT).show();
 			    		    		    cursor.requery();
 			    		    		    getActivity().getActionBar().setSubtitle("Записей в базе: "+db.countOrders());
 			    		    			break;

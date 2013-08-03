@@ -1,5 +1,6 @@
 package com.example.orthopedicdb;
 
+import java.io.File;
 import java.util.List;
 
 import android.app.Activity;
@@ -7,7 +8,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -27,7 +31,6 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 	SimpleCursorAdapter scAdapter;
 	Cursor cursor;
 	DB db;
-	final String LOG_TAG = "myLogs";
 	
 	EditText update_order_number;
 	AutoCompleteTextView update_model;
@@ -68,7 +71,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 	String customersn;
 	String customerfn;
 	String customerp;
-	String model_img_src;
+	String model_img_src = "";
 	
 	int old_employee;
 	int old_material;
@@ -135,7 +138,6 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 		customerp 			= cursor.getString( cursor.getColumnIndex("CustomerP") );
 		model_img_src 		= cursor.getString( cursor.getColumnIndex("ModelIMG") );
 		
-		
 		update_order_number.setText(order_number_before);
 		update_size_left.setText(size_left);	
 		update_size_right.setText(size_right);	
@@ -152,7 +154,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 		update_customerSN.setText(customersn);	
 		update_customerFN.setText(customerfn);	
 		update_customerP.setText(customerp);
-		modelIMG.setImageBitmap(decodeBitmapFromFile(model_img_src, 200, 200));
+		modelIMG.setImageBitmap(decodeBitmapFromFile(model_img_src, 300, 300));
 
 		// узнаем каков у заказа МАТЕРИАЛ для вызова диалогового окна для его выбора
 		old_material = cursor.getInt( cursor.getColumnIndex("MaterialID") )-1;
@@ -183,7 +185,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 	        update_model.setAdapter(modelsAdapter);
 	        model = cursor.getString( cursor.getColumnIndex("Model") );
 	        update_model.setText(model);
-	}
+	}// END ONCREATE
 
 
 	protected void onDestroy() {
@@ -197,7 +199,8 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 	    if(db!=null)
 	    	db.close();
 	}
-	
+
+	@SuppressWarnings("deprecation")
 	protected void onResume() {
 	    super.onResume();
 	    db = new DB(this);
@@ -220,6 +223,8 @@ public class EditOrderActivity extends Activity implements OnClickListener {
         spinner_update_employee.setPrompt("Выберите модельера");
         spinner_update_employee.setOnItemSelectedListener(employeeUpdated);
         spinner_update_employee.setSelection(old_employee);
+        
+        cursor.requery();
 	}
 
 	
@@ -250,53 +255,72 @@ public class EditOrderActivity extends Activity implements OnClickListener {
       };
       
       protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-  	    if (resultCode == RESULT_OK) {
-  	        switch (requestCode) {
-  	        
-  	        case REQUEST_ADD_MATERIAL:	
-  	        	String material = data.getStringExtra("material");
-  	        	changed_material = (int) db.addNewMaterial(material);
-  	        	Toast.makeText(this, "Добавлен новый материал: " + material, Toast.LENGTH_SHORT).show();
-  	          break;
-  	          
-  	        case REQUEST_ADD_EMPLOYEE:
-  	        	String surname 		= data.getStringExtra("surname");
-  	    	    String firstname 	= data.getStringExtra("firstname");
-  	    	    String patronymic 	= data.getStringExtra("patronymic");
-  	    	    changed_employee = (int) db.addNewEmployee(surname, firstname, patronymic);
-  	    	    Toast.makeText(this, "Модельер "+surname +" "+firstname+" "+patronymic+" добавлен!", Toast.LENGTH_SHORT).show();
-  	          break;
-  	          
-  	        case REQUEST_ADD_FOTO:
-  	                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-  	                modelIMG.setImageBitmap(thumbnail);
-  	                model_img_src = data.getStringExtra("srс");
-  	                Toast.makeText(this, "Фотография закреплена за моделью!", Toast.LENGTH_SHORT).show();
-  	        	break;
-  	        }
-  	      // если вернулось не ОК
-  	    } else {
-  	    	Toast.makeText(this, "Ничего не добавлено", Toast.LENGTH_SHORT).show();
-  	    }
-  	}
 
+  	        switch (requestCode) {
+	  	        case REQUEST_ADD_MATERIAL:
+	  	        	if (resultCode == Activity.RESULT_OK) {
+		  	        	String material = data.getStringExtra("material");
+		  	        	changed_material = (int) db.addNewMaterial(material);
+		  	        	Toast.makeText(this, "Добавлен новый материал: " + material, Toast.LENGTH_SHORT).show();
+	  	        	}else{
+	  	        		Toast.makeText(this, "Новый материал не был добавлен", Toast.LENGTH_SHORT).show();
+	  	        	}
+	  	          break;
+	  	          
+	  	        case REQUEST_ADD_EMPLOYEE:
+	  	        	if (resultCode == Activity.RESULT_OK) {
+		  	        	String surname 		= data.getStringExtra("surname");
+		  	    	    String firstname 	= data.getStringExtra("firstname");
+		  	    	    String patronymic 	= data.getStringExtra("patronymic");
+		  	    	    changed_employee = (int) db.addNewEmployee(surname, firstname, patronymic);
+		  	    	    Toast.makeText(this, "Модельер "+surname +" "+firstname+" "+patronymic+" добавлен!", Toast.LENGTH_SHORT).show();
+	  	        	}else{
+	  	        		Toast.makeText(this, "Новый модельер не был добавлен", Toast.LENGTH_SHORT).show();
+	  	        	}
+	  	          break;
+	  	          
+	  	        case REQUEST_ADD_FOTO:
+	  	        	if (resultCode == Activity.RESULT_OK) {
+	  	        		modelIMG.setImageBitmap(decodeBitmapFromFile(model_img_src, 300, 300));
+	  	                Toast.makeText(this, "Фотография обновлена!", Toast.LENGTH_SHORT).show();
+	  	        	}else{
+	  	        		model_img_src = "";
+	  	        		Toast.makeText(this, "Фотография модели не сохранена!", Toast.LENGTH_SHORT).show();
+	  	        	}
+	  	          break;
+  	        }
+      }
+      
+      public boolean imgExists(String path){
+    	  File file = new File(path);
+    	  if(file.exists()){
+    		  return true;
+    	  }else{
+    		  return false;
+    	  }
+      }
       
    // ДЕКОДИРОВАНИЕ ИЗОБРАЖЕНИЯ //
-  	private Bitmap decodeBitmapFromFile(String imagePath, int reqWidth, int reqHeight) {
-  	    // получаем картинку и определяем ее высоту и ширину
-  	    BitmapFactory.Options options = new BitmapFactory.Options();
-  	    options.inJustDecodeBounds = true;
-  	    BitmapFactory.decodeFile(imagePath, options);
-  	    
-  	    // Calculate inSampleSize
-  	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-  	    // Decode bitmap with inSampleSize set
-  	    options.inJustDecodeBounds = false;
-  	    return BitmapFactory.decodeFile(imagePath, options);
+  	public Bitmap decodeBitmapFromFile(String imagePath, int reqWidth, int reqHeight) {
+  		if(!imgExists(imagePath)){
+  			model_img_src = "";
+  			return BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+  		}else{
+	  	    // получаем картинку и определяем ее высоту и ширину
+	  	    BitmapFactory.Options options = new BitmapFactory.Options();
+	  	    options.inJustDecodeBounds = true;
+	  	    BitmapFactory.decodeFile(imagePath, options);
+	  	    
+	  	    // Calculate inSampleSize
+	  	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+	
+	  	    // Decode bitmap with inSampleSize set
+	  	    options.inJustDecodeBounds = false;
+	  	    return BitmapFactory.decodeFile(imagePath, options);
+  		}
   	}
    
-  	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+  	public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
 	    // Raw height and width of image
 	    final int height = options.outHeight;
 	    final int width = options.outWidth;
@@ -370,11 +394,40 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 			onBackPressed();
 			break;
 		case R.id.updateModelIMG:
+			// проверяем доступность SD
+		    if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+		    	Toast.makeText(this, "Ошибка! SD-карта не доступна: " + Environment.getExternalStorageState(), Toast.LENGTH_LONG).show();
+		    	return;
+		    }
+		    // получаем путь к SD
+		    File sdPath = Environment.getExternalStorageDirectory();
+		    // добавляем свой каталог к пути
+		    sdPath = new File(sdPath.getAbsolutePath() + "/OrthopedicGallery");
+		    // создаем каталог
+		    if (!sdPath.exists()) {
+		    	sdPath.mkdirs();
+		    }
+		    // формируем объект File, который содержит путь к файлу
+		    String timeStamp = String.valueOf(System.currentTimeMillis());
+			String FILENAME_SD = "ORTHOIMG_" + timeStamp+".jpg";
+		    File sdFile = new File(sdPath, FILENAME_SD);
+		    
+			// проверяем, была ли уже сделана фотография, если да, то удаляем предыдущую фотографию
+		    if(!model_img_src.equals("")){
+		    	File old_img = new File(model_img_src);
+		    	old_img.delete();
+		    }
+		    	
+		    // сохраняем путь к фотографии
+		    model_img_src = sdFile.toString();
+		    
+			Intent intentGetFoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			intentGetFoto.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(sdFile));
+			startActivityForResult(intentGetFoto, REQUEST_ADD_FOTO);
 			Toast.makeText(this, "Обновляем фотку", Toast.LENGTH_SHORT).show();
 			break;
 		default:
 			break;
 		}
-		
 	}
 }

@@ -449,7 +449,7 @@ public class FragmentNewOrderActivity extends Fragment {
 		        		Toast.makeText(getActivity(), "Фотография закреплена за моделью!", Toast.LENGTH_SHORT).show();
 		        	}else{
 		        		model_img_src = "";
-		        		Toast.makeText(getActivity(), "Фотография можели не сохранена!", Toast.LENGTH_SHORT).show();
+		        		Toast.makeText(getActivity(), "Фотография модели не сохранена!", Toast.LENGTH_SHORT).show();
 		        	}
 		        	break;
 	        }

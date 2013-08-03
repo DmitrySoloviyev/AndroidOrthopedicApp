@@ -20,7 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t1.0\t Stable release. " /> УБРАТЬ ВСЕ ЛОГИ И Debuggable ИЗ МАНИФЕСТА
+                android:text="\t1.0\t Stable release. " /> УБРАТЬ ВСЕ ЛОГИ ИЗ ВСЕХ ФАЙЛОВ, УБРАТЬ Debuggable ИЗ МАНИФЕСТА, ПОДПИСАТЬ
 
 			<TextView
                 android:layout_width="wrap_content"
@@ -39,24 +39,38 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.6\t Добавлена новая возможность в настройках. Можно в любое время сделать резервную копию БД или восстановить ее." />
+                android:text="\t0.6\t Добавлена новая возможность в настройках. Можно в любое время сделать резервную копию БД или восстановить ее из сделанной 
+                ранее копии." />
                 
-           <TextView
+                
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.5\t Теперь возможно прикреплять фотографию модели к заказу. Доступна 'Галерея'. Все ресурсоемкие процессы, везде где это необходимо, 
-                осуществляются в отдельном потоке. Реализован собственный адаптер данных для вывода информации о заказе. Редизайн окна редактирования и вывода 
-                подробной информации о заказе." />          
-            -->                
-           
-           <TextView
+                android:text="\t0.5.2\t Доступна 'Галерея'. Все ресурсоемкие процессы, везде где это необходимо, осуществляются в отдельном потоке." />
+                
+                
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.5.1\t На страницу детальной информации о заказе добавлена возможность увеличивать изображение модели." />
+            -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.5\t Теперь возможно прикреплять фотографию модели к заказу, просматривать ее в детальном описании и изменять при редактировании. Реализованы собственные адаптеры 
+                данных для вывода информации о заказе. Подправлен дизайн." />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.4.1\t Подкорректирован быстрый поиск: сохранение результатов поиска при возвращении с другого экрана." />
-           
-           <TextView
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
