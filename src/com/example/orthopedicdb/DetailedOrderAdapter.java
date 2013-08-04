@@ -1,22 +1,20 @@
 package com.example.orthopedicdb;
 
-import java.io.File;
-
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class DetailedOrderAdapter extends SimpleCursorAdapter {
 
 	private int mLayout;
 	private Context mContext;
+	LoadImageTask imageTask;
 	
 	@SuppressWarnings("deprecation")
 	public DetailedOrderAdapter(Context context, int layout, Cursor c, String[] from, int[] to) {
@@ -82,6 +80,7 @@ public class DetailedOrderAdapter extends SimpleCursorAdapter {
 		TextView TVemployeeFN 		= (TextView) view.findViewById(R.id.detailedEmployeeFN);
 		TextView TVemployeeP 		= (TextView) view.findViewById(R.id.detailedEmployeeP);
 		ImageView IVmodelIMG 		= (ImageView) view.findViewById(R.id.detailedModelIMG);
+		ProgressBar pb 				= (ProgressBar)view.findViewById(R.id.progressBar);
 
 		// СВЯЗЫВАЕМ ДАННЫЕ С ВИДЖЕТАМИ
 		TVorderID.setText(orderID);
@@ -105,46 +104,8 @@ public class DetailedOrderAdapter extends SimpleCursorAdapter {
 		TVemployeeSN.setText(employeeSN);
 		TVemployeeFN.setText(employeeFN);
 		TVemployeeP.setText(employeeP);
-		IVmodelIMG.setImageBitmap(decodeBitmapFromFile(modelIMG, 300, 300));
+//		IVmodelIMG.setImageBitmap(decodeBitmapFromFile(modelIMG, 300, 300));
+		imageTask = new LoadImageTask(mContext, modelIMG, IVmodelIMG, pb);
+		imageTask.execute();
 	}
-	
-	public boolean imgExists(String path){
-  	  File file = new File(path);
-  	  if(file.exists()){
-  		  return true;
-  	  }else{
-  		  return false;
-  	  }
-    }
-	
-		// ДЕКОДИРОВАНИЕ ИЗОБРАЖЕНИЯ //
-	  	public Bitmap decodeBitmapFromFile(String imagePath, int reqWidth, int reqHeight) {
-	  		if(!imgExists(imagePath)){
-	  			return BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher);
-	  		}
-	  	    // получаем картинку и определяем ее высоту и ширину
-	  	    BitmapFactory.Options options = new BitmapFactory.Options();
-	  	    options.inJustDecodeBounds = true;
-	  	    BitmapFactory.decodeFile(imagePath, options);
-	  	    
-	  	    // Calculate inSampleSize
-	  	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-	  	    // Decode bitmap with inSampleSize set
-	  	    options.inJustDecodeBounds = false;
-	  	    return BitmapFactory.decodeFile(imagePath, options);
-	  	}
-	   
-	  	public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-		    final int height = options.outHeight;
-		    final int width = options.outWidth;
-		    int inSampleSize = 1;
-		
-		    if (height > reqHeight || width > reqWidth) {
-		        final int heightRatio = Math.round((float) height / (float) reqHeight);
-		        final int widthRatio = Math.round((float) width / (float) reqWidth);
-		        inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
-		    }
-		    return inSampleSize;
-	  	}
 }

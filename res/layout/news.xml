@@ -41,20 +41,13 @@
                 android:layout_margin="5dp"
                 android:text="\t0.6\t Добавлена новая возможность в настройках. Можно в любое время сделать резервную копию БД или восстановить ее из сделанной 
                 ранее копии." />
-                
-                
+
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.5.2\t Доступна 'Галерея'. Все ресурсоемкие процессы, везде где это необходимо, осуществляются в отдельном потоке." />
-                
-                
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="\t0.5.1\t На страницу детальной информации о заказе добавлена возможность увеличивать изображение модели." />
+                android:text="\t0.5.1\t Доступна 'Галерея'. Все ресурсоемкие процессы, везде где это необходимо, осуществляются в отдельном потоке." />
             -->
 
             <TextView

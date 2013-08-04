@@ -398,24 +398,8 @@ public class DB {
 		mDB.update("Employees", cv, null, null);
 	}
 	
-	public List<String> getModelsGallery(){
-		List<String> labels = new ArrayList<String>();
-
-		Cursor cursor = mDB.rawQuery("SELECT ModelPictureSRC FROM Models", null);
-		if (cursor != null) {
-			if (cursor.moveToFirst()) {
-				String str;
-				do {
-					str = "";
-					// int modelid = cursor.getColumnIndex("MaterialValue"); = 0
-					str = cursor.getString(0);
-					labels.add(str);
-				} while (cursor.moveToNext());
-			}
-			cursor.close();
-		}
-		
-		return labels;
+	public Cursor getModelsGallery(){
+		return mDB.rawQuery("SELECT _id, ModelID, ModelPictureSRC as ModelIMG FROM Models", null);
 	}
 	
 	// /////////////////////////////////////////////////////////////////////////////////////

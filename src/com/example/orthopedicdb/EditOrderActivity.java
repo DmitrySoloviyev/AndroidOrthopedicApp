@@ -6,8 +6,6 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,6 +18,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -29,6 +28,8 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 
 	long ID;
 	SimpleCursorAdapter scAdapter;
+	LoadImageTask imageTask;
+	ProgressBar pb;
 	Cursor cursor;
 	DB db;
 	
@@ -119,6 +120,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 		update_customerSN 			= (EditText)findViewById(R.id.updateCustomerSN);
 		update_customerFN 			= (EditText)findViewById(R.id.updateCustomerFN);
 		update_customerP 			= (EditText)findViewById(R.id.updateCustomerP);
+		pb 							= (ProgressBar)findViewById(R.id.progressBar);
 		
 		order_number_before	= cursor.getString( cursor.getColumnIndex("OrderID") );
 		size_left 			= cursor.getString( cursor.getColumnIndex("SizeLEFT") );
@@ -154,7 +156,10 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 		update_customerSN.setText(customersn);	
 		update_customerFN.setText(customerfn);	
 		update_customerP.setText(customerp);
-		modelIMG.setImageBitmap(decodeBitmapFromFile(model_img_src, 300, 300));
+//		modelIMG.setImageBitmap(decodeBitmapFromFile(model_img_src, 300, 300));
+		imageTask = new LoadImageTask(this, model_img_src, modelIMG, pb);
+		imageTask.execute();
+		
 
 		// узнаем каков у заказа МАТЕРИАЛ для вызова диалогового окна для его выбора
 		old_material = cursor.getInt( cursor.getColumnIndex("MaterialID") )-1;
@@ -281,7 +286,9 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 	  	          
 	  	        case REQUEST_ADD_FOTO:
 	  	        	if (resultCode == Activity.RESULT_OK) {
-	  	        		modelIMG.setImageBitmap(decodeBitmapFromFile(model_img_src, 300, 300));
+//	  	        		modelIMG.setImageBitmap(decodeBitmapFromFile(model_img_src, 300, 300));
+	  	        		imageTask = new LoadImageTask(this, model_img_src, modelIMG, pb);
+	  	        		imageTask.execute();
 	  	                Toast.makeText(this, "Фотография обновлена!", Toast.LENGTH_SHORT).show();
 	  	        	}else{
 	  	        		model_img_src = "";
@@ -290,55 +297,6 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 	  	          break;
   	        }
       }
-      
-      public boolean imgExists(String path){
-    	  File file = new File(path);
-    	  if(file.exists()){
-    		  return true;
-    	  }else{
-    		  return false;
-    	  }
-      }
-      
-   // ДЕКОДИРОВАНИЕ ИЗОБРАЖЕНИЯ //
-  	public Bitmap decodeBitmapFromFile(String imagePath, int reqWidth, int reqHeight) {
-  		if(!imgExists(imagePath)){
-  			model_img_src = "";
-  			return BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
-  		}else{
-	  	    // получаем картинку и определяем ее высоту и ширину
-	  	    BitmapFactory.Options options = new BitmapFactory.Options();
-	  	    options.inJustDecodeBounds = true;
-	  	    BitmapFactory.decodeFile(imagePath, options);
-	  	    
-	  	    // Calculate inSampleSize
-	  	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-	
-	  	    // Decode bitmap with inSampleSize set
-	  	    options.inJustDecodeBounds = false;
-	  	    return BitmapFactory.decodeFile(imagePath, options);
-  		}
-  	}
-   
-  	public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-	    // Raw height and width of image
-	    final int height = options.outHeight;
-	    final int width = options.outWidth;
-	    int inSampleSize = 1;
-	
-	    if (height > reqHeight || width > reqWidth) {
-	        // Calculate ratios of height and width to requested height and width
-	        final int heightRatio = Math.round((float) height / (float) reqHeight);
-	        final int widthRatio = Math.round((float) width / (float) reqWidth);
-	
-	        // Choose the smallest ratio as inSampleSize value, this will guarantee
-	        // a final image with both dimensions larger than or equal to the
-	        // requested height and width.
-	        inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
-	    }
-	
-	    return inSampleSize;
-  	}
   	
 	@Override
 	public void onClick(View v) {
