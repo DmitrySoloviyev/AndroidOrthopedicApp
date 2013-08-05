@@ -32,28 +32,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.8\t У приложения появидся виджет, с его помощью можно быстро попасть на нужную страницу приложения прямо с рабочего стола. Кроме этого 
+                android:text="\t0.8\t У приложения появился виджет, с его помощью можно быстро попасть на нужную страницу приложения прямо с рабочего стола. Кроме этого 
                 он отображает количество заказов в базе данных на текущей момент." />
 
 			<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.7\t Добавлена новая возможность в настройках. Можно в любое время сделать резервную копию БД или восстановить ее из сделанной 
-                ранее копии." />
+                android:text="\t0.7\t Добавлена новая возможность в настройках. Можно в любое время сделать резервную копию БД или восстановить ее из сделанной ранее копии." />
 
 			<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.6.2\t В галерею добавлен детальный просмотр фотографии, а также кнопки обновления изображения модели и быстрого перехода к тем заказам, в которых содержится данная модель." /> 
-
+                android:text="\t0.6.3\t В галерею добавлен детальный просмотр фотографии, а также кнопки обновления изображения модели и быстрого перехода к тем заказам, в которых содержится данная модель. 
+                Удаление заказа из " /> 
+                
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.6.2\t Изменения в структуре базы дынных: изображение модели больше не закреплено за ее именем, у каждого заказа свое изображение модели." /> 
+            -->    
 			<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.6.1\t Исправлен недочет редактирования заказа: при отмене обновления фотографии, старое изображение теперь не затирается." /> 
-            -->               
+                android:text="\t0.6.1\t Исправлен недочет редактирования заказа: при отмене обновления фотографии, старое изображение теперь не затирается. А также некоторые второстепенные улучшения." /> 
+           
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

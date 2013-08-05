@@ -73,10 +73,10 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 	String customerfn;
 	String customerp;
 	String model_img_src = "";
+	String changed_model_img_src = "";
 	
 	int old_employee;
 	int old_material;
-	
 	long changed_material;
 	long changed_employee;
 	
@@ -285,12 +285,12 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 	  	          
 	  	        case REQUEST_ADD_FOTO:
 	  	        	if (resultCode == Activity.RESULT_OK) {
-	  	        		imageTask = new LoadImageTask(this, model_img_src, modelIMG, pb);
+	  	        		imageTask = new LoadImageTask(this, changed_model_img_src, modelIMG, pb);
 	  	        		imageTask.execute(300, 300);
 	  	                Toast.makeText(this, "Новая фотография добавлена!", Toast.LENGTH_SHORT).show();
 	  	        	}else{
-	  	        		model_img_src = "";
-	  	        		Toast.makeText(this, "Фотография модели не сохранена!", Toast.LENGTH_SHORT).show();
+	  	        		changed_model_img_src = "";
+	  	        		Toast.makeText(this, "Новая фотография модели не сохранена!", Toast.LENGTH_SHORT).show();
 	  	        	}
 	  	          break;
   	        }
@@ -325,30 +325,43 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 				}
 			}
 			
-			db.updateOrderById(ID, 
-							order_number_after, 
+			// проверяем, была ли уже сделана фотография, если да, то удаляем предыдущую фотографию
+      		if(!changed_model_img_src.equals("")){
+      			if(!model_img_src.equals("")){
+          			File old_img = new File(model_img_src);
+          			old_img.delete();
+          		}
+      			model_img_src = changed_model_img_src;
+    		}
+      		
+			db.updateOrderById(ID,
+							order_number_after,
 							model,
-							model_img_src, 
+							model_img_src,
 							changed_material,
 							size_left,
-							size_right, 
-							urk_left, 
+							size_right,
+							urk_left,
 							urk_right,
-							height_left, 
-							height_right, 
+							height_left,
+							height_right,
 							top_volume_left,
-							top_volume_right, 
+							top_volume_right,
 							ankle_volume_left,
-							ankle_volume_right, 
+							ankle_volume_right,
 							kv_volume_left,
-							kv_volume_right, 
-							customersn, 
+							kv_volume_right,
+							customersn,
 							customerfn,
-							customerp, 
+							customerp,
 							changed_employee);
 			Toast.makeText(this, "Изменения сохранены!", Toast.LENGTH_LONG).show();
+			Intent detailedOrderIntent = new Intent(this, DetailOrderActivity.class);
+			detailedOrderIntent.putExtra("ID", ID);
+			startActivity(detailedOrderIntent);
 			onBackPressed();
 			break;
+
 		case R.id.updateModelIMG:
 			// проверяем доступность SD
 		    if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -367,15 +380,9 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 		    String timeStamp = String.valueOf(System.currentTimeMillis());
 			String FILENAME_SD = "ORTHOIMG_" + timeStamp+".jpg";
 		    File sdFile = new File(sdPath, FILENAME_SD);
-		    
-			// проверяем, была ли уже сделана фотография, если да, то удаляем предыдущую фотографию
-		    if(!model_img_src.equals("")){
-		    	File old_img = new File(model_img_src);
-		    	old_img.delete();
-		    }
 		    	
 		    // сохраняем путь к фотографии
-		    model_img_src = sdFile.toString();
+		    changed_model_img_src = sdFile.toString();
 		    
 			Intent intentGetFoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			intentGetFoto.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(sdFile));
@@ -384,6 +391,15 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 			break;
 		default:
 			break;
+		}
+	}
+	
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		if(!changed_model_img_src.equals("")){
+			File img_tmp = new File(changed_model_img_src);
+			img_tmp.delete();
 		}
 	}
 }

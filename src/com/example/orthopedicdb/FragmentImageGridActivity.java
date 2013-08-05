@@ -3,6 +3,7 @@ package com.example.orthopedicdb;
 import java.lang.ref.WeakReference;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -75,10 +76,9 @@ public class FragmentImageGridActivity extends Fragment implements AdapterView.O
     }
 
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-//        final Intent i = new Intent(getActivity(), ImageDetailActivity.class);
-//        i.putExtra(ImageDetailActivity.EXTRA_IMAGE, position);
-//        startActivity(i);
-//    	Toast.makeText(getActivity(), "Выбрана фотография " + id, Toast.LENGTH_SHORT).show();
+        final Intent i = new Intent(getActivity(), ImageDetailActivity.class);
+//        i.putExtra(ImageDetailActivity.EXTRA_IMAGE, id);
+        startActivity(i);
     }
 
     private class ImageAdapter extends BaseAdapter {

@@ -78,7 +78,6 @@ public class DB {
 			mDB.setTransactionSuccessful();
 		} finally {
 			mDB.endTransaction();
-			mDB.close();
 		}
 	}
 

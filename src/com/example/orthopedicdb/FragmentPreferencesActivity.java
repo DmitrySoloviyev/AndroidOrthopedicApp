@@ -8,7 +8,6 @@ public class FragmentPreferencesActivity extends PreferenceFragment {
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    addPreferencesFromResource(R.xml.preferences);
-		super.onCreate(savedInstanceState);
 		getActivity().setTitle("Настройки");
 	}
 }
