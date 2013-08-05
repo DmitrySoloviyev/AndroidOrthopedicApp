@@ -170,7 +170,7 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 						fragment = new FragmentAllOrdersActivity();
 						break;
 					case 4:// ГАЛЕРЕЯ
-						fragment = new FragmentGalleryActivity();
+						fragment = new FragmentImageGridActivity();
 						break;
 					default:
 						break;

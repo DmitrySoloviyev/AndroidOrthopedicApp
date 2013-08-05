@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-public class LoadImageTask extends AsyncTask<Void, Void, Bitmap> {
+public class LoadImageTask extends AsyncTask<Integer, Void, Bitmap> {
 
 	Context mContext;
 	private final WeakReference<ImageView> imageViewReference;
@@ -31,20 +31,20 @@ public class LoadImageTask extends AsyncTask<Void, Void, Bitmap> {
 	}
 	
 	@Override
-	protected Bitmap doInBackground(Void... arg0) {
-		return decodeBitmapFromFile(mPath, 300, 300);
+	protected Bitmap doInBackground(Integer... param) {
+		return decodeBitmapFromFile(mPath, param[0], param[1]);
 	}
 
 	@Override
     protected void onPostExecute(Bitmap bitmap) {
 		final ImageView imageView = imageViewReference.get();
         if (imageView != null) {
-        	mPb.setVisibility(View.INVISIBLE);
+        	mPb.setVisibility(View.GONE);
         	imageView.setImageBitmap(bitmap);
         }
     }
 	
-	
+	// ДЕКОДИРОВАНИЕ ИЗОБРАЖЕНИЯ //	
 	public boolean imgExists(String path){
 		File file = new File(path);
 		if(file.exists()){
@@ -54,10 +54,9 @@ public class LoadImageTask extends AsyncTask<Void, Void, Bitmap> {
 		}
 	}
 	
-	// ДЕКОДИРОВАНИЕ ИЗОБРАЖЕНИЯ //
   	public Bitmap decodeBitmapFromFile(String imagePath, int reqWidth, int reqHeight) {
   		if(!imgExists(imagePath)){
-  			return BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher);
+  			return BitmapFactory.decodeResource(mContext.getResources(), R.drawable.empty_photo);
   		}
   	    // получаем картинку и определяем ее высоту и ширину
   	    BitmapFactory.Options options = new BitmapFactory.Options();

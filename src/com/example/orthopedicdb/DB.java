@@ -78,6 +78,7 @@ public class DB {
 			mDB.setTransactionSuccessful();
 		} finally {
 			mDB.endTransaction();
+			mDB.close();
 		}
 	}
 
@@ -197,10 +198,7 @@ public class DB {
 	// Автозаполнение SPINNER МАТЕРИАЛЫ
 	public List<String> getMaterialList() throws SQLException {
 		List<String> labels = new ArrayList<String>();
-
 		Cursor cursor = mDB.rawQuery("SELECT DISTINCT MaterialValue FROM Materials", null);	
-		//Cursor cursor = mDB.query("Materials", new String[]{"MaterialValue"}, null, null, null, null, null);
-
 		if (cursor != null) {
 			if (cursor.moveToFirst()) {
 				String str;
@@ -212,7 +210,6 @@ public class DB {
 			}
 			cursor.close();
 		}
-
 		return labels;
 	}
 	
@@ -225,9 +222,7 @@ public class DB {
 	// Автозаполнение SPINNER МОДЕЛЬЕРЫ//
 	public List<String> getEmployeeList() {
 		List<String> labels = new ArrayList<String>();
-		
 		Cursor cursor = mDB.rawQuery("SELECT EmployeeSN, EmployeeFN, EmployeeP, EmployeeChecked FROM Employees", null);
-
 		if (cursor != null) {
 			if (cursor.moveToFirst()) {
 				String str;
@@ -285,9 +280,7 @@ public class DB {
 								String customerFN,
 								String customerP, 
 								long employee_id){
-		
-		
-		
+
 		String sql_update_models = "UPDATE Models " +
 								   "SET ModelID='"+model_id+"', " +
 								   	   "ModelPictureSRC='"+model_picture_src+"' " +
@@ -313,7 +306,6 @@ public class DB {
 										"CustomerP = '"+customerP+"', " +
 										"EmployeeID = '"+employee_id+"' " +
 										"WHERE _id = "+id+";";
-		
 		mDB.beginTransaction();
 		try {
 			mDB.execSQL(sql_update_models);
@@ -321,6 +313,7 @@ public class DB {
 			mDB.setTransactionSuccessful();
 		} finally {
 			mDB.endTransaction();
+			mDB.close();
 		}
 	}
 	
@@ -399,7 +392,7 @@ public class DB {
 	}
 	
 	public Cursor getModelsGallery(){
-		return mDB.rawQuery("SELECT _id, ModelID, ModelPictureSRC as ModelIMG FROM Models", null);
+		return mDB.rawQuery("SELECT _id, ModelID, ModelPictureSRC as ModelIMG FROM Models WHERE ModelPictureSRC <> ''", null);
 	}
 	
 	// /////////////////////////////////////////////////////////////////////////////////////

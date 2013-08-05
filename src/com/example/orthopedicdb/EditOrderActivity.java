@@ -156,9 +156,8 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 		update_customerSN.setText(customersn);	
 		update_customerFN.setText(customerfn);	
 		update_customerP.setText(customerp);
-//		modelIMG.setImageBitmap(decodeBitmapFromFile(model_img_src, 300, 300));
 		imageTask = new LoadImageTask(this, model_img_src, modelIMG, pb);
-		imageTask.execute();
+		imageTask.execute(300, 300);
 		
 
 		// узнаем каков у заказа МАТЕРИАЛ для вызова диалогового окна для его выбора
@@ -286,10 +285,9 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 	  	          
 	  	        case REQUEST_ADD_FOTO:
 	  	        	if (resultCode == Activity.RESULT_OK) {
-//	  	        		modelIMG.setImageBitmap(decodeBitmapFromFile(model_img_src, 300, 300));
 	  	        		imageTask = new LoadImageTask(this, model_img_src, modelIMG, pb);
-	  	        		imageTask.execute();
-	  	                Toast.makeText(this, "Фотография обновлена!", Toast.LENGTH_SHORT).show();
+	  	        		imageTask.execute(300, 300);
+	  	                Toast.makeText(this, "Новая фотография добавлена!", Toast.LENGTH_SHORT).show();
 	  	        	}else{
 	  	        		model_img_src = "";
 	  	        		Toast.makeText(this, "Фотография модели не сохранена!", Toast.LENGTH_SHORT).show();

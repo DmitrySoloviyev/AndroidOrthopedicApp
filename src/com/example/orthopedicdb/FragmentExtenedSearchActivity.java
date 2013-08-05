@@ -615,6 +615,12 @@ public class FragmentExtenedSearchActivity extends Fragment {
 	    extlistener = (OnExtendedSearchClickListener) activity;
 	}
 	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+	    super.onCreate(savedInstanceState);
+	    getActivity().setTitle("Расширенный поиск");
+	}
+	
 	/*
 	 * public void createWere(String query_string, String valueLEFT, String
 	 * valueRIGHT, String WHERE){ }//end create where

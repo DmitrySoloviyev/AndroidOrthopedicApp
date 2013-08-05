@@ -20,35 +20,46 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t1.0\t Stable release. " /> УБРАТЬ ВСЕ ЛОГИ ИЗ ВСЕХ ФАЙЛОВ, УБРАТЬ Debuggable ИЗ МАНИФЕСТА, ПОДПИСАТЬ
+                android:text="\t1.0\t OrthopedicDB stable is released!" /> УБРАТЬ ВСЕ ЛОГИ ИЗ ВСЕХ ФАЙЛОВ, УБРАТЬ Debuggable ИЗ МАНИФЕСТА, ПОДПИСАТЬ
 
 			<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.8\t Внешний вид приложения оптимизирован под различные экраны." />
+                android:text="\t0.9\t Внешний вид приложения оптимизирован под различные экраны." />
 
 			<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.7\t У приложения появидся виджет, с его помощью можно быстро попасть на нужную страницу приложения прямо с рабочего стола. Кроме этого 
+                android:text="\t0.8\t У приложения появидся виджет, с его помощью можно быстро попасть на нужную страницу приложения прямо с рабочего стола. Кроме этого 
                 он отображает количество заказов в базе данных на текущей момент." />
 
 			<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.6\t Добавлена новая возможность в настройках. Можно в любое время сделать резервную копию БД или восстановить ее из сделанной 
+                android:text="\t0.7\t Добавлена новая возможность в настройках. Можно в любое время сделать резервную копию БД или восстановить ее из сделанной 
                 ранее копии." />
 
+			<TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.6.2\t В галерею добавлен детальный просмотр фотографии, а также кнопки обновления изображения модели и быстрого перехода к тем заказам, в которых содержится данная модель." /> 
 
+			<TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.6.1\t Исправлен недочет редактирования заказа: при отмене обновления фотографии, старое изображение теперь не затирается." /> 
+            -->               
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.5.1\t Доступна 'Галерея'. Все ресурсоемкие процессы, везде где это необходимо, осуществляются в отдельном потоке." />
-            -->
+                android:text="\t0.6\t Доступна 'Галерея'. Введено кэширование изображений. Все ресурсоемкие процессы, везде где это необходимо, осуществляются в отдельном потоке." />
+
 
             <TextView
                 android:layout_width="wrap_content"

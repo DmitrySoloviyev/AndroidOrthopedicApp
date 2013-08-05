@@ -106,6 +106,6 @@ public class DetailedOrderAdapter extends SimpleCursorAdapter {
 		TVemployeeP.setText(employeeP);
 //		IVmodelIMG.setImageBitmap(decodeBitmapFromFile(modelIMG, 300, 300));
 		imageTask = new LoadImageTask(mContext, modelIMG, IVmodelIMG, pb);
-		imageTask.execute();
+		imageTask.execute(300, 300);
 	}
 }

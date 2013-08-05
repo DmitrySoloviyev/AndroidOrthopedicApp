@@ -32,6 +32,12 @@ public class FragmentAllOrdersActivity extends Fragment{
 	View view;
 	
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+	    super.onCreate(savedInstanceState);
+	    getActivity().setTitle("Все заказы");
+	}
+	
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.all_orders, null);
 		InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);

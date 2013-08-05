@@ -37,6 +37,12 @@ public class FragmentQuickSearchActivity extends Fragment {
 	AllOrdersAdapter scAdapter;
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+	    super.onCreate(savedInstanceState);
+	    getActivity().setTitle("Обычный поиск");
+	}
+	
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.quick_search, null);
 	    quickly_search = (EditText)view.findViewById(R.id.quickly_search);
