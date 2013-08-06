@@ -25,7 +25,7 @@ public class DetailOrderActivity extends Activity {
 		// подключаемся к БД
 	    db = new DB(this);
 	    db.open();
-	    
+
 	    Intent intent = getIntent();
 	    ID = intent.getLongExtra("ID", 1);
 
@@ -99,17 +99,9 @@ public class DetailOrderActivity extends Activity {
     		case R.id.delete:
     			db.deleteOrderById(new String[]{String.valueOf(ID)});
     		    Toast.makeText(getApplicationContext(), "Запись успешно удалена!", Toast.LENGTH_SHORT).show();
-    		    onBackPressed();
+    		    finish();
     			break;
     	}
     	return true;
     }
-	
-	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
-		Intent i = new Intent(this, MainActivity.class);
-		i.putExtra("SELECTMENUITEM", 3);
-		startActivity(i);
-	}
 }

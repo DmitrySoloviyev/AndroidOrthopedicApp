@@ -2,7 +2,6 @@ package com.example.orthopedicdb;
 
 import java.io.File;
 import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -25,7 +24,6 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 public class EditOrderActivity extends Activity implements OnClickListener {
-
 	long ID;
 	SimpleCursorAdapter scAdapter;
 	LoadImageTask imageTask;
@@ -327,7 +325,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 			
 			// проверяем, была ли уже сделана фотография, если да, то удаляем предыдущую фотографию
       		if(!changed_model_img_src.equals("")){
-      			if(!model_img_src.equals("")){
+      			if(!model_img_src.isEmpty()){
           			File old_img = new File(model_img_src);
           			old_img.delete();
           		}
@@ -356,10 +354,7 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 							customerp,
 							changed_employee);
 			Toast.makeText(this, "Изменения сохранены!", Toast.LENGTH_LONG).show();
-			Intent detailedOrderIntent = new Intent(this, DetailOrderActivity.class);
-			detailedOrderIntent.putExtra("ID", ID);
-			startActivity(detailedOrderIntent);
-			onBackPressed();
+			finish();
 			break;
 
 		case R.id.updateModelIMG:
@@ -397,9 +392,28 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		if(!changed_model_img_src.equals("")){
+		if(!changed_model_img_src.isEmpty()){
 			File img_tmp = new File(changed_model_img_src);
 			img_tmp.delete();
 		}
 	}
+	
+	protected void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
+	    outState.putString("model_img_src", model_img_src);
+	    outState.putString("changed_model_img_src", changed_model_img_src);
+	}
+	
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+	    super.onRestoreInstanceState(savedInstanceState);
+	    model_img_src = savedInstanceState.getString("model_img_src");
+	    changed_model_img_src = savedInstanceState.getString("changed_model_img_src");
+	    if(Long.parseLong(model_img_src.substring(44, 57)) < Long.parseLong(changed_model_img_src.substring(44, 57))){
+	    	imageTask = new LoadImageTask(this, changed_model_img_src, modelIMG, pb);
+	  		imageTask.execute(300, 300);	
+	    }else{
+	    	imageTask = new LoadImageTask(this, model_img_src, modelIMG, pb);
+	  		imageTask.execute(300, 300);
+	    }
+	  }
 }

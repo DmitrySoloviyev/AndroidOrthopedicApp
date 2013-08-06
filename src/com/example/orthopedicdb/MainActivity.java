@@ -112,10 +112,7 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
         	whichSearch = savedInstanceState.getInt("SEARCHID");
         	showSearchResults(whichSearch);
         }else{
-        	if( getIntent().hasExtra("SELECTMENUITEM") )
-        		selectMenuItem( getIntent().getIntExtra("SELECTMENUITEM", 3) );
-        	else
-        		selectMenuItem(Integer.valueOf(sp.getString("activityList", "1")));// вызываем фрагмент по-умолчанию, считывая настройки приложения
+        	selectMenuItem(Integer.valueOf(sp.getString("activityList", "1")));// вызываем фрагмент по-умолчанию, считывая настройки приложения
         }
 	}// END ONCREATE
 	

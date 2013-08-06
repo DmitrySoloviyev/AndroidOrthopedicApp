@@ -2,6 +2,8 @@ package com.example.orthopedicdb;
 
 import java.lang.ref.WeakReference;
 
+import android.app.ActionBar;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -16,15 +18,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.util.LruCache;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
 
-public class ImageDetailActivity extends FragmentActivity {
+public class ImageDetailActivity extends FragmentActivity implements OnClickListener{
 	public static final String EXTRA_IMAGE = "extra_image";
     private ImagePagerAdapter mAdapter;
     private ViewPager mPager;
     DB db;
-    static Cursor cursor;
+    static Cursor cursor = null;
     private LruCache<String, Bitmap> mMemoryCache;
     private Bitmap mPlaceHolderBitmap;
     int extraCurrentItem;
@@ -37,7 +43,6 @@ public class ImageDetailActivity extends FragmentActivity {
         db = new DB(this);
         db.open();
         cursor = db.getModelsGallery();
-
         
         // Get max available VM memory, exceeding this amount will throw an
         // OutOfMemory exception. Stored in kilobytes as LruCache takes an
@@ -65,16 +70,64 @@ public class ImageDetailActivity extends FragmentActivity {
 
         extraCurrentItem = getIntent().getIntExtra(EXTRA_IMAGE, -1);
         mPager.setCurrentItem(extraCurrentItem);
+        
+        // Set up activity to go full screen
+        getWindow().addFlags(LayoutParams.FLAG_FULLSCREEN);
+        
+        final ActionBar actionBar = getActionBar();
+
+        // Hide and show the ActionBar as the visibility changes
+        mPager.setOnSystemUiVisibilityChangeListener( new View.OnSystemUiVisibilityChangeListener() {
+                    @Override
+                    public void onSystemUiVisibilityChange(int vis) {
+                        if ((vis & View.SYSTEM_UI_FLAG_LOW_PROFILE) != 0) {
+                            actionBar.hide();
+                        } else {
+                            actionBar.show();
+                        }
+                    }
+                });
+
+        // Start low profile mode and hide ActionBar
+        mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+        actionBar.hide();
     }
     
-    public void loadBitmap(String resIdPath, ImageView imageView) {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.view_order, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	cursor.moveToPosition(mPager.getCurrentItem());
+        long id = cursor.getLong(cursor.getColumnIndex("_id"));
+    	
+    	Intent detailedOrderIntent = new Intent(this, DetailOrderActivity.class);
+		detailedOrderIntent.putExtra("ID", id);
+		startActivity(detailedOrderIntent);
+		finish();
+        return super.onOptionsItemSelected(item);
+    }
+    
+    @Override
+    public void onClick(View v) {
+        final int vis = mPager.getSystemUiVisibility();
+        if ((vis & View.SYSTEM_UI_FLAG_LOW_PROFILE) != 0) {
+            mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        } else {
+            mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+        }
+    }
+    
+    public void loadBitmap(String resIdPath, ImageView imageView, int w, int h) {
         final String imageKey = resIdPath;
         final Bitmap bitmap = mMemoryCache.get(imageKey);
         if (bitmap != null) {
         	imageView.setImageBitmap(bitmap);
         } else {
-        	imageView.setImageBitmap(mPlaceHolderBitmap);
-            BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+//        	imageView.setImageBitmap(mPlaceHolderBitmap);
+            BitmapWorkerTask task = new BitmapWorkerTask(imageView, w, h);
             AsyncDrawable asyncDrawable = new AsyncDrawable(getResources(), null, task);
             imageView.setImageDrawable(asyncDrawable);
             task.execute(resIdPath);
@@ -98,7 +151,7 @@ public class ImageDetailActivity extends FragmentActivity {
         @Override
         public Fragment getItem(int position) {
         	cursor.moveToPosition(position);
-            return ImageDetailFragment.newInstance(cursor.getString(cursor.getColumnIndex("ModelIMG")));
+            return ImageDetailFragment.newInstance(cursor.getString(cursor.getColumnIndex("ModelIMG")), cursor.getString(cursor.getColumnIndex("ModelID")));
         }
     }
     
@@ -207,15 +260,19 @@ public class ImageDetailActivity extends FragmentActivity {
     public class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
         private final WeakReference<ImageView> imageViewReference;
         String data = "";
-        public BitmapWorkerTask(ImageView imageView) {
+        private int width;
+        private int height;
+        public BitmapWorkerTask(ImageView imageView, int w, int h) {
             // Use a WeakReference to ensure the ImageView can be garbage collected
             imageViewReference = new WeakReference<ImageView>(imageView);
+            width = w;
+            height = h;
         }
 
         // Decode image in background.
         @Override
         protected Bitmap doInBackground(String... params) {
-        	Bitmap bitmap = decodeBitmapFromFile(params[0], 500, 500);
+        	Bitmap bitmap = decodeBitmapFromFile(params[0], width, height);
         	if(bitmap == null)
         		bitmap = mPlaceHolderBitmap;
         	else{

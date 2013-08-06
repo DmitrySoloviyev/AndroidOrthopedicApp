@@ -26,14 +26,22 @@ import android.widget.ImageView;
 public class FragmentImageGridActivity extends Fragment implements AdapterView.OnItemClickListener {
 	private ImageAdapter mAdapter;
 	DB db;
-	Cursor cursor;
+	Cursor cursor = null;;
 	LoadImageTask imageTask;
 	ProgressDialog pb;
 	private LruCache<String, Bitmap> mMemoryCache;
-	private Bitmap mPlaceHolderBitmap;
+	private Bitmap mPlaceHolderBitmap = null;
 
     // Empty constructor as per Fragment docs
     public FragmentImageGridActivity() {}
+    
+    @SuppressWarnings("deprecation")
+	public void onResume() {
+		super.onResume();
+		if(cursor != null)
+			cursor.requery();
+		mAdapter.notifyDataSetChanged();
+	}
     
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -1,5 +1,6 @@
 package com.example.orthopedicdb;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import android.net.Uri;
 public class DB {
 
 	private static final String DB_NAME = "SHOES";
-	private static final int DATABASE_VERSION = 9;
+	private static final int DATABASE_VERSION = 10;
 	private final Context mCtx;
 	private DBHelper mDBHelper;
 	public SQLiteDatabase mDB;
@@ -46,12 +47,10 @@ public class DB {
 			String customerP, long employee_id) {
 
 		ContentValues values_in_order = new ContentValues();
-		ContentValues values_in_model = new ContentValues();
-
-		values_in_model.put("ModelID", model_id);
-		values_in_model.put("ModelPictureSRC", Uri.parse(model_picture_src).toString());
 
 		values_in_order.put("OrderID", OrderID);
+		values_in_order.put("ModelID", model_id);
+		values_in_order.put("ModelPictureSRC", Uri.parse(model_picture_src).toString());
 		values_in_order.put("MaterialID", material);
 		values_in_order.put("SizeLEFT", size_left);
 		values_in_order.put("SizeRIGHT", size_right);
@@ -69,16 +68,7 @@ public class DB {
 		values_in_order.put("CustomerFN", customerFN);
 		values_in_order.put("CustomerP", customerP);
 		values_in_order.put("EmployeeID", employee_id);
-
-		mDB.beginTransaction();
-		try {
-			long o_Orders_ModelID = mDB.insert("Models", null, values_in_model);
-			values_in_order.put("ModelID", o_Orders_ModelID);
-			mDB.insert("Orders", null, values_in_order);
-			mDB.setTransactionSuccessful();
-		} finally {
-			mDB.endTransaction();
-		}
+		mDB.insert("Orders", null, values_in_order);
 	}
 
 	// Количество заказов в базе
@@ -117,11 +107,10 @@ public class DB {
 
 	// ВСЕ ЗАПИСИ (КРАТКО)
 	public Cursor getAllShortOrders() {
-		String sql = "SELECT o._id, o.OrderID AS OrderID, mod.ModelID AS Model, mat.MaterialValue AS Material, " +
+		String sql = "SELECT o._id, o.OrderID AS OrderID, o.ModelID AS Model, mat.MaterialValue AS Material, " +
 					 "SUBSTR(CustomerSN, 1)||'.'||SUBSTR(CustomerFN, 1, 1)||'.'||SUBSTR(CustomerP, 1, 1) as Customer, " +
 					 "SUBSTR(emp.EmployeeSN, 1)||'.'||SUBSTR(emp.EmployeeFN, 1, 1)||'.'||SUBSTR(emp.EmployeeP, 1, 1) as Employee " +
 					 "FROM Orders AS o " +
-					 "INNER JOIN Models AS mod ON o.ModelID=mod._id " +
 					 "INNER JOIN Materials AS mat ON o.MaterialID=mat._id " +
 					 "INNER JOIN Employees AS emp ON o.EmployeeID=emp._id;";
 		return mDB.rawQuery(sql, null);
@@ -132,7 +121,7 @@ public class DB {
 		
 		String sql = "SELECT o._id, " +
 							"o.OrderID AS OrderID, " +
-							"mod.ModelID AS Model, " +
+							"o.ModelID AS Model, " +
 							"mat._id AS MaterialID, " +
 							"mat.MaterialValue AS Material, " +
 							"o.SizeLEFT, " +
@@ -154,9 +143,8 @@ public class DB {
 							"emp.EmployeeSN, " +
 							"emp.EmployeeFN, " +
 							"emp.EmployeeP," +
-							"mod.ModelPictureSRC AS ModelIMG " +
+							"o.ModelPictureSRC AS ModelIMG " +
 							"FROM Orders AS o " +
-							"INNER JOIN Models AS mod ON o.ModelID=mod._id " +
 							"INNER JOIN Materials AS mat ON o.MaterialID=mat._id " +
 							"INNER JOIN Employees AS emp ON o.EmployeeID=emp._id " +
 							"WHERE o._id=?;";
@@ -177,13 +165,12 @@ public class DB {
 	public List<String> getModelList() {
 		List<String> labels = new ArrayList<String>();
 
-		Cursor cursor = mDB.rawQuery("SELECT DISTINCT ModelID FROM Models", null);
+		Cursor cursor = mDB.rawQuery("SELECT DISTINCT ModelID FROM Orders", null);
 		if (cursor != null) {
 			if (cursor.moveToFirst()) {
 				String str;
 				do {
 					str = "";
-					// int modelid = cursor.getColumnIndex("MaterialValue"); = 0
 					str = cursor.getString(0);
 					labels.add(str);
 				} while (cursor.moveToNext());
@@ -247,10 +234,38 @@ public class DB {
 	
 	// УДАЛЕНИЕ ЗАПИСИ
 	public void deleteOrderById(String[] whereArgs){
-		if(whereArgs.length == 1)
+		
+		
+		
+		
+		if(whereArgs.length == 1){
+			Cursor c = mDB.rawQuery("SELECT ModelPictureSRC FROM Orders WHERE _id=?  AND ModelPictureSRC <> ''", whereArgs);
+			if(c != null){
+				if (c.moveToFirst()) {
+					do{
+						String path = c.getString(c.getColumnIndex("ModelPictureSRC"));
+						if(!path.isEmpty()){
+							File img = new File(path);
+							img.delete();
+						}
+					}while(c.moveToNext());
+				}c.close();
+			}
 			mDB.delete("Orders", "_id = ?", whereArgs);
-		else{
+		}else{
 			for (String id : whereArgs) {
+				Cursor c = mDB.rawQuery("SELECT ModelPictureSRC FROM Orders WHERE _id=?  AND ModelPictureSRC <> ''", new String[]{id});
+				if(c != null){
+					if (c.moveToFirst()) {
+						do{
+							String path = c.getString(c.getColumnIndex("ModelPictureSRC"));
+							if(!path.isEmpty()){
+								File img = new File(path);
+								img.delete();
+							}
+						}while(c.moveToNext());
+					}c.close();
+				}
 				mDB.delete("Orders", "_id = ?", new String[]{id});
 			}
 		}
@@ -280,13 +295,10 @@ public class DB {
 								String customerP, 
 								long employee_id){
 
-		String sql_update_models = "UPDATE Models " +
-								   "SET ModelID='"+model_id+"', " +
-								   	   "ModelPictureSRC='"+model_picture_src+"' " +
-								   	   "WHERE _id = (SELECT ModelID FROM Orders WHERE _id = "+id+");" ;
-
 		String sql_update_orders = "UPDATE Orders " +
 									"SET OrderID = '"+OrderID+"', " +
+										"ModelID='"+model_id+"', " +
+										"ModelPictureSRC='"+model_picture_src+"', " +
 										"MaterialID = '"+material+"', " +
 										"SizeLEFT = '"+size_left+"', " +
 										"SizeRIGHT = '"+size_right+"', " +
@@ -304,29 +316,20 @@ public class DB {
 										"CustomerFN = '"+customerFN+"', " +
 										"CustomerP = '"+customerP+"', " +
 										"EmployeeID = '"+employee_id+"' " +
-										"WHERE _id = "+id+";";
-		mDB.beginTransaction();
-		try {
-			mDB.execSQL(sql_update_models);
-			mDB.execSQL(sql_update_orders);
-			mDB.setTransactionSuccessful();
-		} finally {
-			mDB.endTransaction();
-			mDB.close();
-		}
+										"WHERE _id = '"+id+"';";
+		mDB.execSQL(sql_update_orders);
 	}
 	
 	// БЫСТРЫЙ ПОИСК
 	public Cursor quicklySearch(String query) {
-		String sql = "SELECT o._id, o.OrderID AS OrderID, mod.ModelID AS Model, mat.MaterialValue AS Material, " +
+		String sql = "SELECT o._id, o.OrderID AS OrderID, o.ModelID AS Model, mat.MaterialValue AS Material, " +
 							"SUBSTR(o.CustomerSN, 1)||'.'||SUBSTR(o.CustomerFN, 1, 1)||'.'||SUBSTR(o.CustomerP, 1, 1) as Customer, " +
 							"SUBSTR(emp.EmployeeSN, 1)||'.'||SUBSTR(emp.EmployeeFN, 1, 1)||'.'||SUBSTR(emp.EmployeeP, 1, 1) as Employee " +
 				    "FROM Orders AS o " +
-						"INNER JOIN Models AS mod ON o.ModelID=mod._id " +
 						"INNER JOIN Materials AS mat ON o.MaterialID=mat._id " +
 						"INNER JOIN Employees AS emp ON o.EmployeeID=emp._id " +
 					"WHERE OrderID = '"+query+"' " +
-						"OR mod.ModelID = '"+query+"' "+
+						"OR ModelID = '"+query+"' "+
 						"OR MaterialValue = '"+query+"' "+
 						"OR SizeLEFT = '"+query+"' "+
 						"OR SizeRIGHT = '"+query+"' "+
@@ -352,14 +355,13 @@ public class DB {
 	
 	// РАСШИРЕННЫЙ ПОИСК
 	public Cursor extendedSearch(String where) {
-		String sql = "SELECT o._id, o.OrderID AS OrderID, mod.ModelID AS Model, mat.MaterialValue AS Material, " +
+		String sql = "SELECT o._id, o.OrderID AS OrderID, o.ModelID AS Model, mat.MaterialValue AS Material, " +
 							"SUBSTR(o.CustomerSN, 1)||'.'||SUBSTR(o.CustomerFN, 1, 1)||'.'||SUBSTR(o.CustomerP, 1, 1) as Customer, " +
 							"SUBSTR(emp.EmployeeSN, 1)||'.'||SUBSTR(emp.EmployeeFN, 1, 1)||'.'||SUBSTR(emp.EmployeeP, 1, 1) as Employee " +
 				    "FROM Orders AS o " +
-						"INNER JOIN Models AS mod ON o.ModelID=mod._id " +
 						"INNER JOIN Materials AS mat ON o.MaterialID=mat._id " +
 						"INNER JOIN Employees AS emp ON o.EmployeeID=emp._id " +
-					"WHERE "+where;
+					"WHERE "+where+" ;";
 		Cursor cursor = mDB.rawQuery(sql, null);
 		return cursor;
 	}
@@ -391,10 +393,10 @@ public class DB {
 	}
 	
 	public Cursor getModelsGallery(){
-		return mDB.rawQuery("SELECT _id, ModelID, ModelPictureSRC as ModelIMG FROM Models WHERE ModelPictureSRC <> ''", null);
+		return mDB.rawQuery("SELECT _id, ModelID, ModelPictureSRC as ModelIMG FROM Orders WHERE ModelPictureSRC <> '' ;", null);
 	}
 	
-	// /////////////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////////// //
 
 	private class DBHelper extends SQLiteOpenHelper {
 
@@ -421,7 +423,7 @@ public class DB {
 				db.insert("Materials", null, cv);
 			}
 
-			// УСОВЕРШЕНСТВОВАТЬ!!!!!! ВПИСАТЬ ПОЛЬЗОВАТЕЛЯ ТЕЛЕФОНА!!!
+
 			// ТАБЛИЦА СОТРУДНИКОВ
 			db.execSQL("CREATE TABLE Employees ( "
 					+ "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
@@ -434,17 +436,12 @@ public class DB {
 			cv.put("EmployeeP", " +++ ");
 			db.insert("Employees", null, cv);
 
-			// ТАБЛИЦА МОДЕЛЕЙ
-			final String CREATE_DB_Model = "CREATE TABLE Models ( "
-					+ "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-					+ "ModelID TEXT NOT NULL,"
-					+ "ModelPictureSRC TEXT NOT NULL DEFAULT 'no image');";
-			db.execSQL(CREATE_DB_Model); //// "ModelDescription TEXT NOT NULL DEFAULT 'no description',"
-
+			// ТАБЛИЦА ЗАКАЗОВ
 			final String CREATE_TABLE_Orders = "CREATE TABLE Orders ( "
 					+ "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
 					+ "OrderID TEXT NOT NULL, "
-					+ "ModelID INTEGER NOT NULL, "
+					+ "ModelID TEXT NOT NULL, "
+					+ "ModelPictureSRC TEXT NOT NULL DEFAULT '', "
 					+ "MaterialID INTEGER NOT NULL, "
 					+ "SizeLEFT INTEGER NOT NULL, "
 					+ "SizeRIGHT INTEGER NOT NULL, "
@@ -462,7 +459,6 @@ public class DB {
 					+ "CustomerFN TEXT NOT NULL, "
 					+ "CustomerP TEXT NOT NULL, "
 					+ "EmployeeID INTEGER NOT NULL, "
-					+ "FOREIGN KEY(ModelID) REFERENCES Models(_id) "
 					+ "FOREIGN KEY(EmployeeID) REFERENCES Employees(_id) "
 					+ "FOREIGN KEY(MaterialID) REFERENCES Materials(_id));";
 			db.execSQL(CREATE_TABLE_Orders);

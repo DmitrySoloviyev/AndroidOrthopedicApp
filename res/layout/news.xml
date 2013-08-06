@@ -20,7 +20,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t1.0\t OrthopedicDB stable is released!" /> УБРАТЬ ВСЕ ЛОГИ ИЗ ВСЕХ ФАЙЛОВ, УБРАТЬ Debuggable ИЗ МАНИФЕСТА, ПОДПИСАТЬ
+                android:textSize="16sp"
+			    android:textStyle="bold"
+                android:text="\t1.0\t OrthopedicDB stable is released! Congratulations!!!" /> УБРАТЬ ВСЕ ЛОГИ ИЗ ВСЕХ ФАЙЛОВ, УБРАТЬ Debuggable ИЗ МАНИФЕСТА, ПОДПИСАТЬ
 
 			<TextView
                 android:layout_width="wrap_content"
@@ -45,14 +47,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.6.3\t Изменения в структуре базы дынных: изображение модели больше не закреплено за ее именем, у каждого заказа свое изображение модели. При удалении заказа 
-                также удаляется фотография модели с телефона. В галерею добавлена кнопка быстрого перехода к тому заказу, в котором содержится данная модель." />
+                android:text="\t0.6.4\t Видоизменен быстрый поиск, именно таким он и должен быть - быстродоступным. Не можете найти его? Сдвиньте меню сверху при просмотре всех заказов :)" />
             -->
 			<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.6.2\t В галерею добавлен детальный просмотр фотографии." /> 
+                android:text="\t0.6.3\t Изменения в структуре базы дынных: изображение модели больше не закреплено за ее именем, у каждого заказа теперь свое изображение модели. При удалении заказа 
+                также удаляется фотография модели с телефона. В галерее при просмотре модели отображается ее номер, так же добавлена кнопка быстрого перехода к тому заказу, 
+                в котором содержится данная модель. Подправлена обработка фотографий в галерее." />
+
+
+			<TextView
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_margin="5dp"
+			    android:text="\t0.6.2\t В галерею добавлен детальный просмотр фотографии." />
 
 			<TextView
                 android:layout_width="wrap_content"
