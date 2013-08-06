@@ -104,4 +104,12 @@ public class DetailOrderActivity extends Activity {
     	}
     	return true;
     }
+	
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		Intent i = new Intent(this, MainActivity.class);
+		i.putExtra("SELECTMENUITEM", 3);
+		startActivity(i);
+	}
 }

@@ -5,11 +5,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_margin="5dp"
+    android:background="#c6c6c6"
     android:columnWidth="@dimen/image_thumbnail_size"
+    android:gravity="center"
     android:horizontalSpacing="@dimen/image_thumbnail_spacing"
     android:numColumns="auto_fit"
     android:stretchMode="columnWidth"
-    android:gravity="center"
     android:verticalSpacing="@dimen/image_thumbnail_spacing" >
 
 </GridView>

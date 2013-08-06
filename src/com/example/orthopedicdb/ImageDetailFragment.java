@@ -1,5 +1,6 @@
 package com.example.orthopedicdb;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -7,15 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-public class ImageDetailFragment extends Fragment {/*
+public class ImageDetailFragment extends Fragment {
 	private static final String IMAGE_DATA_EXTRA = "resId";
-    private int mImageNum;
+    private String mPATH;
     private ImageView mImageView;
+    DB db;
+    Cursor cursor;
 
-    static ImageDetailFragment newInstance(int imageNum) {
+    static ImageDetailFragment newInstance(String imageNum) {
         final ImageDetailFragment f = new ImageDetailFragment();
         final Bundle args = new Bundle();
-        args.putInt(IMAGE_DATA_EXTRA, imageNum);
+        args.putString(IMAGE_DATA_EXTRA, imageNum);
         f.setArguments(args);
         return f;
     }
@@ -26,7 +29,7 @@ public class ImageDetailFragment extends Fragment {/*
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mImageNum = getArguments() != null ? getArguments().getInt(IMAGE_DATA_EXTRA) : -1;
+        mPATH = getArguments().getString(IMAGE_DATA_EXTRA);
     }
 
     @Override
@@ -41,9 +44,8 @@ public class ImageDetailFragment extends Fragment {/*
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (ImageDetailActivity.class.isInstance(getActivity())) {
-            final int resId = ImageDetailActivity.imageResIds[mImageNum];
             // Call out to ImageDetailActivity to load the bitmap in a background thread
-            ((ImageDetailActivity) getActivity()).loadBitmap(resId, mImageView);
+            ((ImageDetailActivity) getActivity()).loadBitmap(mPATH, mImageView);
         }
-    }*/
+    }
 }

@@ -77,7 +77,7 @@ public class FragmentImageGridActivity extends Fragment implements AdapterView.O
 
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
         final Intent i = new Intent(getActivity(), ImageDetailActivity.class);
-//        i.putExtra(ImageDetailActivity.EXTRA_IMAGE, id);
+        i.putExtra(ImageDetailActivity.EXTRA_IMAGE, position);
         startActivity(i);
     }
 
@@ -101,8 +101,7 @@ public class FragmentImageGridActivity extends Fragment implements AdapterView.O
 
         @Override
         public long getItemId(int position) {
-        	cursor.moveToPosition(position);
-            return cursor.getLong(cursor.getColumnIndex("_id"));
+            return position;
         }
 
         @Override
@@ -196,7 +195,7 @@ public class FragmentImageGridActivity extends Fragment implements AdapterView.O
     
     
     // РАБОЧИЙ КЛАСС
-    class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
+    public class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
         private final WeakReference<ImageView> imageViewReference;
         String data = "";
         public BitmapWorkerTask(ImageView imageView) {
@@ -264,7 +263,7 @@ public class FragmentImageGridActivity extends Fragment implements AdapterView.O
   	    return BitmapFactory.decodeFile(imagePath, options);
   	}
    
-  	public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+  	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
 	    final int height = options.outHeight;
 	    final int width = options.outWidth;
 	    int inSampleSize = 1;

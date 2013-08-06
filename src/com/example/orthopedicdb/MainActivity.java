@@ -72,7 +72,7 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 			intent = new Intent(this, NewEmployee.class);
 			startActivityForResult(intent, REQUEST_ADD_MATERIAL);
 		}
-
+        
         getActionBar().setHomeButtonEnabled(true);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setSubtitle("Записей в базе: "+db.countOrders());
@@ -112,7 +112,10 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
         	whichSearch = savedInstanceState.getInt("SEARCHID");
         	showSearchResults(whichSearch);
         }else{
-        	selectMenuItem(Integer.valueOf(sp.getString("activityList", "1")));// вызываем фрагмент по-умолчанию, считывая настройки приложения
+        	if( getIntent().hasExtra("SELECTMENUITEM") )
+        		selectMenuItem( getIntent().getIntExtra("SELECTMENUITEM", 3) );
+        	else
+        		selectMenuItem(Integer.valueOf(sp.getString("activityList", "1")));// вызываем фрагмент по-умолчанию, считывая настройки приложения
         }
 	}// END ONCREATE
 	

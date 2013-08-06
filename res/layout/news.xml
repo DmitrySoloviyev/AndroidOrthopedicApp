@@ -45,15 +45,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.6.3\t В галерею добавлен детальный просмотр фотографии, а также кнопки обновления изображения модели и быстрого перехода к тем заказам, в которых содержится данная модель. 
-                Удаление заказа из " /> 
-                
-            <TextView
+                android:text="\t0.6.3\t Изменения в структуре базы дынных: изображение модели больше не закреплено за ее именем, у каждого заказа свое изображение модели. При удалении заказа 
+                также удаляется фотография модели с телефона. В галерею добавлена кнопка быстрого перехода к тому заказу, в котором содержится данная модель." />
+            -->
+			<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.6.2\t Изменения в структуре базы дынных: изображение модели больше не закреплено за ее именем, у каждого заказа свое изображение модели." /> 
-            -->    
+                android:text="\t0.6.2\t В галерею добавлен детальный просмотр фотографии." /> 
+
 			<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.0.7\t Реализован расширенный поиск (beta). Upstream changes." />
+                android:text="\t0.0.7\t Реализован расширенный поиск. Upstream changes." />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -129,19 +129,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.0.5\t Добавлена возможность редактирования заказа (beta)." />
+                android:text="\t0.0.5\t Добавлена возможность редактирования заказа." />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.0.4\t Краткий просмотр заказов (beta), удаление заказа и детальный просмотр заказа." />
+                android:text="\t0.0.4\t Краткий просмотр заказов, удаление заказа и детальный просмотр заказа." />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.0.3\t Добавление нового заказа (beta)." />
+                android:text="\t0.0.3\t Добавление нового заказа." />
 
             <TextView
                 android:layout_width="wrap_content"

@@ -27,8 +27,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 public class FragmentNewOrderActivity extends Fragment {
-	
-	final String LOG_TAG = "myLogs";
 	Button submit_new_order;
 	ImageButton get_picture;
 

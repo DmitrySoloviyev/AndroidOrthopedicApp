@@ -3,7 +3,7 @@
     package="com.example.orthopedicdb"
     android:installLocation="auto"
     android:versionCode="1"
-    android:versionName="0.6.1" >
+    android:versionName="0.6.2" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -52,6 +52,10 @@
             android:name="NewsActivity"
             android:label="Что нового?"
             android:theme="@android:style/Theme.Holo.Light.Dialog" >
+        </activity>
+        <activity
+            android:name="ImageDetailActivity"
+            android:theme="@style/AppTheme.FullScreen" >
         </activity>
     </application>
 
