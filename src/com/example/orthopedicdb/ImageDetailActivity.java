@@ -35,6 +35,14 @@ public class ImageDetailActivity extends FragmentActivity implements OnClickList
     private Bitmap mPlaceHolderBitmap;
     int extraCurrentItem;
     
+    @SuppressWarnings("deprecation")
+	public void onResume() {
+		super.onResume();
+		if(cursor != null)
+			cursor.requery();
+		mAdapter.notifyDataSetChanged();
+	}
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,7 +114,6 @@ public class ImageDetailActivity extends FragmentActivity implements OnClickList
     	Intent detailedOrderIntent = new Intent(this, DetailOrderActivity.class);
 		detailedOrderIntent.putExtra("ID", id);
 		startActivity(detailedOrderIntent);
-		finish();
         return super.onOptionsItemSelected(item);
     }
     

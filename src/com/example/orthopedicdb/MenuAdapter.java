@@ -66,6 +66,9 @@ public class MenuAdapter extends ArrayAdapter<String> {
 			case 5:	// настройки
 				holder.imageView.setImageResource(android.R.drawable.ic_menu_preferences);
 				break;
+			case 6:
+				holder.imageView.setImageResource(android.R.drawable.stat_notify_sync);
+				break;
 			default:
 				break;
 		}

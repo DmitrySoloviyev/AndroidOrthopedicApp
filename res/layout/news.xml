@@ -36,19 +36,13 @@
                 android:layout_margin="5dp"
                 android:text="\t0.8\t У приложения появился виджет, с его помощью можно быстро попасть на нужную страницу приложения прямо с рабочего стола. Кроме этого 
                 он отображает количество заказов в базе данных на текущей момент." />
-
-			<TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="\t0.7\t Добавлена новая возможность в настройках. Можно в любое время сделать резервную копию БД или восстановить ее из сделанной ранее копии." />
-
-			<TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="\t0.6.4\t Видоизменен быстрый поиск, именно таким он и должен быть - быстродоступным. Не можете найти его? Сдвиньте меню сверху при просмотре всех заказов :)" />
             -->
+			<TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.7\t Добавлено резервирование и восстановление базы данных." />
+
 			<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

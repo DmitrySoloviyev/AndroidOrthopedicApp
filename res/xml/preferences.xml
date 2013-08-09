@@ -7,6 +7,21 @@
         android:entryValues="@array/entry_values"
         android:key="activityList"
         android:summary="Выберите стартовый экран"
-        android:title="Главный экран"/>
+        android:title="Главный экран" />
+
+    <CheckBoxPreference
+        android:key="allow"
+        android:title="Backup"
+        android:summary="Включить автоматическое резервирование" >
+    </CheckBoxPreference>
+
+    <ListPreference
+        android:dependency="allow"
+        android:dialogTitle="Период"
+        android:entries="@array/time_entries"
+        android:entryValues="@array/time_entry_values"
+        android:key="backupFrequency"
+        android:title="Выберите периодичность" >
+    </ListPreference>
 
 </PreferenceScreen>

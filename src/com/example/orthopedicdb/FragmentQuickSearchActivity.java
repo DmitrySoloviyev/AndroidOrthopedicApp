@@ -2,7 +2,6 @@ package com.example.orthopedicdb;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;

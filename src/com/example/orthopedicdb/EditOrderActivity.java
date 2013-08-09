@@ -408,12 +408,25 @@ public class EditOrderActivity extends Activity implements OnClickListener {
 	    super.onRestoreInstanceState(savedInstanceState);
 	    model_img_src = savedInstanceState.getString("model_img_src");
 	    changed_model_img_src = savedInstanceState.getString("changed_model_img_src");
-	    if(Long.parseLong(model_img_src.substring(44, 57)) < Long.parseLong(changed_model_img_src.substring(44, 57))){
-	    	imageTask = new LoadImageTask(this, changed_model_img_src, modelIMG, pb);
-	  		imageTask.execute(300, 300);	
-	    }else{
-	    	imageTask = new LoadImageTask(this, model_img_src, modelIMG, pb);
-	  		imageTask.execute(300, 300);
+	    
+	    if(!model_img_src.isEmpty() && changed_model_img_src.isEmpty()){
+		    imageTask = new LoadImageTask(this, model_img_src, modelIMG, pb);
+		  	imageTask.execute(300, 300);	
 	    }
-	  }
+	    
+	    if(model_img_src.isEmpty() && !changed_model_img_src.isEmpty()){
+		    imageTask = new LoadImageTask(this, changed_model_img_src, modelIMG, pb);
+		  	imageTask.execute(300, 300);	
+	    }
+
+	    if(!model_img_src.isEmpty() && !changed_model_img_src.isEmpty()){
+		    if(Long.parseLong(model_img_src.substring(44, 57)) < Long.parseLong(changed_model_img_src.substring(44, 57))){
+		    	imageTask = new LoadImageTask(this, changed_model_img_src, modelIMG, pb);
+		  		imageTask.execute(300, 300);	
+		    }else{
+		    	imageTask = new LoadImageTask(this, model_img_src, modelIMG, pb);
+		  		imageTask.execute(300, 300);
+		    }
+	    }
+	}
 }

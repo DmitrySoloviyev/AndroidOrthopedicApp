@@ -41,7 +41,7 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 	ListView mDrawerList;
 	DialogFragment progressDialog;
 	final int REQUEST_ADD_MATERIAL = 1;
-	String[] items = new String[] {"Новый заказ", "Расширенный поиск", "Обычный поиск", "Все заказы", "Галерея","Настройки"};
+	String[] items = new String[] {"Новый заказ", "Расширенный поиск", "Обычный поиск", "Все заказы", "Галерея", "Настройки", "Сохранение и восстановление"};
 	
 	private ActionBarDrawerToggle mDrawerToggle;
 	
@@ -112,7 +112,7 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
         	whichSearch = savedInstanceState.getInt("SEARCHID");
         	showSearchResults(whichSearch);
         }else{
-        	selectMenuItem(Integer.valueOf(sp.getString("activityList", "1")));// вызываем фрагмент по-умолчанию, считывая настройки приложения
+        	selectMenuItem(Integer.parseInt(sp.getString("activityList", "1")));// вызываем фрагмент по-умолчанию, считывая настройки приложения
         }
 	}// END ONCREATE
 	
@@ -171,6 +171,9 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 						break;
 					case 4:// ГАЛЕРЕЯ
 						fragment = new FragmentImageGridActivity();
+						break;
+					case 6:
+						fragment = new FragmentBackupAndRestore();
 						break;
 					default:
 						break;

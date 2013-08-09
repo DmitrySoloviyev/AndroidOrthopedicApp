@@ -234,10 +234,6 @@ public class DB {
 	
 	// УДАЛЕНИЕ ЗАПИСИ
 	public void deleteOrderById(String[] whereArgs){
-		
-		
-		
-		
 		if(whereArgs.length == 1){
 			Cursor c = mDB.rawQuery("SELECT ModelPictureSRC FROM Orders WHERE _id=?  AND ModelPictureSRC <> ''", whereArgs);
 			if(c != null){
