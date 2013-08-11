@@ -3,7 +3,7 @@
     package="com.example.orthopedicdb"
     android:installLocation="auto"
     android:versionCode="1"
-    android:versionName="0.7" >
+    android:versionName="0.8" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -59,6 +59,25 @@
         </activity>
 
         <receiver android:name="Receiver" >
+        </receiver>
+
+        <service
+            android:name="MyService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" >
+        </service>
+
+        <receiver
+            android:name="Widget"
+            android:icon="@drawable/shoes" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" >
+                </action>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_metadata" >
+            </meta-data>
         </receiver>
     </application>
 

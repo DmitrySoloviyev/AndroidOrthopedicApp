@@ -389,7 +389,7 @@ public class DB {
 	}
 	
 	public Cursor getModelsGallery(){
-		return mDB.rawQuery("SELECT _id, ModelID, ModelPictureSRC as ModelIMG FROM Orders WHERE ModelPictureSRC <> '' ;", null);
+		return mDB.rawQuery("SELECT _id, OrderID, ModelID, ModelPictureSRC as ModelIMG FROM Orders WHERE ModelPictureSRC <> '' ;", null);
 	}
 	
 	// ///////////////////////////////////////////////////////////////////////////////////// //

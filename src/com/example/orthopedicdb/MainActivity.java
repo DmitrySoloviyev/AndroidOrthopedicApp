@@ -1,5 +1,7 @@
 package com.example.orthopedicdb;
 
+import com.example.orthopedicdb.FragmentExtenedSearchActivity.OnExtendedSearchClickListener;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,8 +25,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.orthopedicdb.FragmentExtenedSearchActivity.OnExtendedSearchClickListener;
-
 public class MainActivity extends FragmentActivity implements OnExtendedSearchClickListener{
 
 	DB db;
@@ -32,9 +32,6 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 	SharedPreferences sp;
 	String version;
 	String WHERE = "";
-	int whichSearch;
-	private final int EXTRESULT   = 1;
-	private final int QUICKRESULT = 2;
 	DrawerLayout mDrawerLayout;
 	PackageInfo packageInfo;
     private CharSequence mTitle;
@@ -106,29 +103,18 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+        Intent searchIntent = getIntent();
         
         if (savedInstanceState != null){
         	WHERE = savedInstanceState.getString("WHERE");
-        	whichSearch = savedInstanceState.getInt("SEARCHID");
-        	showSearchResults(whichSearch);
+        	showSearchResults();
+        }else if(searchIntent.hasExtra("remoteSearchID")){
+        	WHERE = searchIntent.getStringExtra("remoteSearchID");
+        	showSearchResults();
         }else{
         	selectMenuItem(Integer.parseInt(sp.getString("activityList", "1")));// вызываем фрагмент по-умолчанию, считывая настройки приложения
         }
 	}// END ONCREATE
-	
-
-/*	@Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -234,31 +220,20 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 	@Override
 	public void getExtWhere(String where) {
 		this.WHERE = where;
-		whichSearch = 1;
-		showSearchResults(EXTRESULT);
+		showSearchResults();
 	}
 
 
-	private void showSearchResults(int searchID) {
-		switch (searchID) {
-		case EXTRESULT:
-			FragmentExtenedRESULTSearchActivity extSearch = FragmentExtenedRESULTSearchActivity.newInstance(WHERE);
-			getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, extSearch).commit();
-			mTitle = "Результаты поиска";
-			getActionBar().setTitle(mTitle);
-			break;
-		case QUICKRESULT:
-			
-			break;
-		default:
-			break;
-		}
+	private void showSearchResults() {
+		FragmentExtenedRESULTSearchActivity extSearch = FragmentExtenedRESULTSearchActivity.newInstance(WHERE);
+		getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, extSearch).commit();
+		mTitle = "Результаты поиска";
+		getActionBar().setTitle(mTitle);
 	}
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 	    super.onSaveInstanceState(outState);
 	    outState.putString("WHERE", WHERE);
-	    outState.putInt("SEARCHID", whichSearch);
 	}
 }// end MainActivity

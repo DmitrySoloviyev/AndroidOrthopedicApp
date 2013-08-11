@@ -68,9 +68,9 @@ public class FragmentExtenedSearchActivity extends Fragment {
 
 				if (model.length() != 0) {
 					if (WHERE.equals("")) {
-						WHERE += " mod.ModelID='" + model + "' ";
+						WHERE += " o.ModelID='" + model + "' ";
 					} else {
-						WHERE += " OR mod.ModelID='" + model + "' ";
+						WHERE += " OR o.ModelID='" + model + "' ";
 					}
 				}
 

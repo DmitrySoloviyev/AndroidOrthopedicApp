@@ -56,7 +56,7 @@ public final class R {
         public static final int content_frame=0x7f0c0049;
         public static final int create_new_employee=0x7f0c0003;
         public static final int create_new_material=0x7f0c0005;
-        public static final int delete=0x7f0c0071;
+        public static final int delete=0x7f0c0073;
         public static final int detailedAnkleVolumeLeft=0x7f0c001d;
         public static final int detailedAnkleVolumeRight=0x7f0c001e;
         public static final int detailedCustomerFN=0x7f0c0024;
@@ -79,9 +79,9 @@ public final class R {
         public static final int detailedUrkLeft=0x7f0c0014;
         public static final int detailedUrkRight=0x7f0c0015;
         public static final int drawer_layout=0x7f0c0048;
-        public static final int edit=0x7f0c0070;
+        public static final int edit=0x7f0c0072;
         public static final int get_model_image=0x7f0c004f;
-        public static final int gotoOrder=0x7f0c0072;
+        public static final int gotoOrder=0x7f0c0074;
         public static final int gridView=0x7f0c0047;
         public static final int imageView=0x7f0c0045;
         public static final int image_menu=0x7f0c004b;
@@ -128,6 +128,7 @@ public final class R {
         public static final int shortMaterial=0x7f0c006f;
         public static final int shortModel=0x7f0c006d;
         public static final int shortOrderID=0x7f0c000d;
+        public static final int stackView1=0x7f0c0071;
         public static final int submit_new_order=0x7f0c005b;
         public static final int submit_search=0x7f0c006a;
         public static final int submit_update=0x7f0c0042;
@@ -142,7 +143,6 @@ public final class R {
         public static final int tableRow7=0x7f0c001c;
         public static final int tableRow8=0x7f0c001f;
         public static final int tableRow9=0x7f0c0022;
-        public static final int textView1=0x7f0c0009;
         public static final int updateAnkleVolumeLeft=0x7f0c0038;
         public static final int updateAnkleVolumeRight=0x7f0c0039;
         public static final int updateCustomerFN=0x7f0c003d;
@@ -164,6 +164,8 @@ public final class R {
         public static final int updateUrkLeft=0x7f0c0032;
         public static final int updateUrkRight=0x7f0c0033;
         public static final int versionCode=0x7f0c0068;
+        public static final int widgetIMG=0x7f0c0070;
+        public static final int widgetModel=0x7f0c0009;
     }
     public static final class layout {
         public static final int add_new_employee_dialog=0x7f030000;
@@ -182,6 +184,8 @@ public final class R {
         public static final int quick_search=0x7f03000d;
         public static final int search_activity=0x7f03000e;
         public static final int short_item=0x7f03000f;
+        public static final int widget_item=0x7f030010;
+        public static final int widget_layout=0x7f030011;
     }
     public static final class menu {
         public static final int context=0x7f0b0000;
@@ -243,5 +247,6 @@ public final class R {
     public static final class xml {
         public static final int mypref=0x7f050000;
         public static final int preferences=0x7f050001;
+        public static final int widget_metadata=0x7f050002;
     }
 }

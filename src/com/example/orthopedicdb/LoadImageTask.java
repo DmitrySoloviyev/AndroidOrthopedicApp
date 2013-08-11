@@ -27,7 +27,8 @@ public class LoadImageTask extends AsyncTask<Integer, Void, Bitmap> {
 	
 	@Override
 	protected void onPreExecute() {
-		mPb.setVisibility(View.VISIBLE);
+		if(mPb != null)
+			mPb.setVisibility(View.VISIBLE);
 	}
 	
 	@Override
@@ -39,7 +40,8 @@ public class LoadImageTask extends AsyncTask<Integer, Void, Bitmap> {
     protected void onPostExecute(Bitmap bitmap) {
 		final ImageView imageView = imageViewReference.get();
         if (imageView != null) {
-        	mPb.setVisibility(View.GONE);
+        	if(mPb != null)
+        		mPb.setVisibility(View.GONE);
         	imageView.setImageBitmap(bitmap);
         }
     }
