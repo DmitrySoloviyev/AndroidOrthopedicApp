@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/checked_choice"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/activatedBackgroundIndicator"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:shadowColor="#fff"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:text="Заказ №:"
+            android:textSize="16sp"
+            android:textStyle="italic|bold" />
+
+        <TextView
+            android:id="@+id/shortOrderID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:shadowColor="#fff"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:text="id"
+            android:textSize="16sp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:text="Заказчик:"
+            android:textSize="16sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/shortCustomer"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:focusableInTouchMode="true"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="customer"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="16sp" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:text="Модель:"
+            android:textSize="16sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/shortModel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:text="model"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:text="Модельер:"
+            android:textSize="16sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/shortEmployee"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:focusableInTouchMode="true"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="employee"
+            android:textSize="16sp" />
+    </TableRow>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:text="Материал:"
+            android:textSize="16sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/shortMaterial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="material"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</TableLayout>

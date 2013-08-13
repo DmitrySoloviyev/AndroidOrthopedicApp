@@ -28,21 +28,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.9 RC\t Окончательная корректировка внешнего вида приложения с оптимизацией под различные экраны." />
+                android:text="\t0.9.1 RC2\t И вновь переделан быстрый поиск - теперь он оправдывает свое название еще и потому, что 
+                стал быстродоступным. Введена автоматическая подгрузка заказов. Добавлены диалоговое окно при восстановлении БД." />
             -->
 			<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:text="\t0.9 RC1\t Окончательная корректировка внешнего вида приложения с оптимизацией под различные экраны." />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:text="\t0.8\t У приложения появился виджет." />
 
-			<TextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="\t0.7\t Добавлено резервирование и восстановление базы данных." />
 
-			<TextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -50,25 +58,23 @@
                 также удаляется фотография модели с телефона. В галерее при просмотре модели отображается ее номер, так же добавлена кнопка быстрого перехода к тому заказу, 
                 в котором содержится данная модель. Подправлена обработка фотографий в галерее." />
 
-
-			<TextView
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_margin="5dp"
-			    android:text="\t0.6.2\t В галерею добавлен детальный просмотр фотографии." />
-
-			<TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="\t0.6.1\t Исправлен недочет редактирования заказа: при отмене обновления фотографии, старое изображение теперь не затирается. А также некоторые второстепенные улучшения." /> 
-           
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.6\t Доступна 'Галерея'. Введено кэширование изображений. Все ресурсоемкие процессы, везде где это необходимо, осуществляются в отдельном потоке." />
+                android:text="\t0.6.2\t В галерею добавлен детальный просмотр фотографии." />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.6.1\t Исправлен недочет редактирования заказа: при отмене обновления фотографии, старое изображение теперь не затирается. А также некоторые второстепенные улучшения." />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.6\t Доступна &apos;Галерея&apos;. Введено кэширование изображений. Все ресурсоемкие процессы, везде где это необходимо, осуществляются в отдельном потоке." />
 
             <TextView
                 android:layout_width="wrap_content"

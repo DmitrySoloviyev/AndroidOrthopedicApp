@@ -29,7 +29,7 @@ public class FragmentExtenedRESULTSearchActivity extends Fragment {
 	View view;
 	ListView lv;
 	Cursor cursor;
-	String WHERE;
+	String WHERE = "";
 	DialogFragment progressDialog;
 	AllOrdersAdapter scAdapter;
 	
@@ -72,6 +72,12 @@ public class FragmentExtenedRESULTSearchActivity extends Fragment {
 			@Override
 	    	protected void onPostExecute(final Cursor cursor) {
 	    		super.onPostExecute(cursor);
+	    		if(cursor == null){
+	    			Toast.makeText(getActivity(), "Найдено записей: 0", Toast.LENGTH_SHORT).show();
+	    			progressDialog.dismiss();
+	    			return;
+	    		}
+	    			
 	    		FragmentExtenedRESULTSearchActivity.this.cursor = cursor;
 	    		Toast.makeText(getActivity(), "Найдено записей: "+cursor.getCount(), Toast.LENGTH_SHORT).show();
 	    		getActivity().startManagingCursor(cursor);

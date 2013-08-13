@@ -83,8 +83,8 @@ public class DetailedOrderAdapter extends SimpleCursorAdapter {
 		ProgressBar pb 				= (ProgressBar)view.findViewById(R.id.progressBar);
 
 		// СВЯЗЫВАЕМ ДАННЫЕ С ВИДЖЕТАМИ
-		TVorderID.setText(orderID);
-		TVmodel.setText(model);
+		TVorderID.setText("Заказ № "+orderID);
+		TVmodel.setText("Модель: "+model);
 		TVmaterial.setText(material);
 		TVsizeLeft.setText(sizeLeft);
 		TVsizeRight.setText(sizeRight);
@@ -104,7 +104,6 @@ public class DetailedOrderAdapter extends SimpleCursorAdapter {
 		TVemployeeSN.setText(employeeSN);
 		TVemployeeFN.setText(employeeFN);
 		TVemployeeP.setText(employeeP);
-//		IVmodelIMG.setImageBitmap(decodeBitmapFromFile(modelIMG, 300, 300));
 		imageTask = new LoadImageTask(mContext, modelIMG, IVmodelIMG, pb);
 		imageTask.execute(300, 300);
 	}

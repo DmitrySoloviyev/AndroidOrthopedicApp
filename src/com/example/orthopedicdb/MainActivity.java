@@ -31,7 +31,7 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 	Intent intent;
 	SharedPreferences sp;
 	String version;
-	String WHERE = "";
+	String WHERE = null;
 	DrawerLayout mDrawerLayout;
 	PackageInfo packageInfo;
     private CharSequence mTitle;
@@ -107,7 +107,8 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
         
         if (savedInstanceState != null){
         	WHERE = savedInstanceState.getString("WHERE");
-        	showSearchResults();
+        	if(WHERE != null)
+        		showSearchResults();
         }else if(searchIntent.hasExtra("remoteSearchID")){
         	WHERE = searchIntent.getStringExtra("remoteSearchID");
         	showSearchResults();
@@ -219,7 +220,7 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 
 	@Override
 	public void getExtWhere(String where) {
-		this.WHERE = where;
+		WHERE = where;
 		showSearchResults();
 	}
 
@@ -234,6 +235,9 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 	    super.onSaveInstanceState(outState);
-	    outState.putString("WHERE", WHERE);
+	    if(WHERE != null)
+	    	outState.putString("WHERE", WHERE);
+	    else
+	    	outState.putString("WHERE", null);
 	}
 }// end MainActivity

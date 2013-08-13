@@ -351,6 +351,8 @@ public class DB {
 	
 	// РАСШИРЕННЫЙ ПОИСК
 	public Cursor extendedSearch(String where) {
+		if(where.isEmpty() || where == null)
+			return null;
 		String sql = "SELECT o._id, o.OrderID AS OrderID, o.ModelID AS Model, mat.MaterialValue AS Material, " +
 							"SUBSTR(o.CustomerSN, 1)||'.'||SUBSTR(o.CustomerFN, 1, 1)||'.'||SUBSTR(o.CustomerP, 1, 1) as Customer, " +
 							"SUBSTR(emp.EmployeeSN, 1)||'.'||SUBSTR(emp.EmployeeFN, 1, 1)||'.'||SUBSTR(emp.EmployeeP, 1, 1) as Employee " +

@@ -8,8 +8,9 @@
         android:id="@+id/RelativeLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/activity_bg"
-        android:orientation="vertical" >
+        android:background="#cccccc"
+        android:orientation="vertical"
+        android:paddingBottom="10dp" >
 
         <TextView
             android:id="@+id/widgetModel"
@@ -33,6 +34,10 @@
             android:layout_below="@+id/widgetModel"
             android:layout_centerHorizontal="true"
             android:layout_margin="10dp"
+            android:shadowColor="#fff"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
             android:text="Backup"
             android:textSize="20sp" />
 
@@ -42,6 +47,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/backup"
             android:layout_centerHorizontal="true"
+            android:shadowColor="#fff"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
             android:layout_margin="10dp"
             android:text="Restore"
             android:textSize="20sp" />
