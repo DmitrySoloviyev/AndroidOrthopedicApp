@@ -5,13 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.DialogFragment;
@@ -27,6 +21,7 @@ public class FragmentBackupAndRestore extends Fragment {
 
 	View view;
 	final String LOG_TAG = "myLogs";
+	DialogFragment alertDialog;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,7 +31,8 @@ public class FragmentBackupAndRestore extends Fragment {
 		restore.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				restore();
+				alertDialog = FragmentDialogScreen.newInstance(FragmentDialogScreen.DIALOG_ALERT);
+				alertDialog.show(getFragmentManager(), "adlg");
 			}
 		});
 
@@ -107,33 +103,5 @@ public class FragmentBackupAndRestore extends Fragment {
 				}
 			}
 		}).start();
-	}
-
-	public void restore() {
-		File file = new File(Environment.getExternalStorageDirectory() + "/SHOES_BACKUP");
-		if (file.exists()) {
-			OutputStream myOutput;
-			try {
-				myOutput = new FileOutputStream("/data/data/com.example.orthopedicdb/databases/SHOES");
-				InputStream myInputs = new FileInputStream(Environment.getExternalStorageDirectory() + "/SHOES_BACKUP");
-				byte[] buffer = new byte[1024];
-				int length;
-				while ((length = myInputs.read(buffer)) > 0) {
-					myOutput.write(buffer, 0, length);
-				}
-				myOutput.flush();
-				myOutput.close();
-				myInputs.close();
-				Toast.makeText(getActivity(),"База данных успешно восстановлена!",Toast.LENGTH_SHORT).show();
-			} catch (FileNotFoundException e) {
-				Toast.makeText(getActivity(),"Ошибка, файл резервной копии должен быть на SD-карте!",Toast.LENGTH_SHORT).show();
-				e.printStackTrace();
-			} catch (IOException e) {
-				Toast.makeText(getActivity(), "Ошибка восстановления!",Toast.LENGTH_SHORT).show();
-				e.printStackTrace();
-			}
-		}else{
-			Toast.makeText(getActivity(),"Ошибка, файл резервной копии должен быть на SD-карте!",Toast.LENGTH_SHORT).show();
-		}
 	}
 }

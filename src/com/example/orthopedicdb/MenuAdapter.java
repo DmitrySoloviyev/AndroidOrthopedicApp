@@ -54,19 +54,16 @@ public class MenuAdapter extends ArrayAdapter<String> {
 			case 1:	//расширенный поиск
 				holder.imageView.setImageResource(android.R.drawable.ic_menu_search);
 				break;
-			case 2:	//обычный поиск
-				holder.imageView.setImageResource(android.R.drawable.ic_menu_search);
-				break;
-			case 3:	//все заказы
+			case 2:	//все заказы
 				holder.imageView.setImageResource(android.R.drawable.ic_menu_sort_by_size);
 				break;
-			case 4:	//галерея
+			case 3:	//галерея
 				holder.imageView.setImageResource(android.R.drawable.ic_menu_gallery);
 				break;
-			case 5:	// настройки
+			case 4:	// настройки
 				holder.imageView.setImageResource(android.R.drawable.ic_menu_preferences);
 				break;
-			case 6:
+			case 5:
 				holder.imageView.setImageResource(R.drawable.stat_notify_sync);
 				break;
 			default:

@@ -9,11 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
-import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.util.Log;
 
 public class FragmentPreferencesActivity extends PreferenceFragment implements OnSharedPreferenceChangeListener{
 	ListPreference lp;

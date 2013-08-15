@@ -56,7 +56,7 @@ public class FragmentExtenedRESULTSearchActivity extends Fragment {
         db.open();
 
 	    new AsyncTask<Void, Void, Cursor>() {
-	    	Cursor taskcursor;
+	    	
 	    	@Override
 	        protected void onPreExecute() {
 	    		super.onPreExecute();
@@ -65,8 +65,7 @@ public class FragmentExtenedRESULTSearchActivity extends Fragment {
 	        }
 			@Override
 	    	protected Cursor doInBackground(Void... params) {
-		    	taskcursor = db.extendedSearch(WHERE);
-	    		return taskcursor;
+		    	return db.extendedSearch(WHERE);
 	    	}
 			@SuppressWarnings("deprecation")
 			@Override

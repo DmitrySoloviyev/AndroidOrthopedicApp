@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -34,13 +33,19 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 	String WHERE = null;
 	DrawerLayout mDrawerLayout;
 	PackageInfo packageInfo;
-    private CharSequence mTitle;
+    String mTitle;
 	ListView mDrawerList;
 	DialogFragment progressDialog;
 	final int REQUEST_ADD_MATERIAL = 1;
-	String[] items = new String[] {"Новый заказ", "Расширенный поиск", "Обычный поиск", "Все заказы", "Галерея", "Настройки", "Сохранение и восстановление"};
+	public static String quickSearchWhere = null;
+	String[] items = new String[] {"Новый заказ", "Расширенный поиск", "Все заказы", "Галерея", "Настройки", "Сохранение и восстановление"};
 	
 	private ActionBarDrawerToggle mDrawerToggle;
+	
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+	    super.onRestoreInstanceState(savedInstanceState);
+	    mTitle = savedInstanceState.getString("mTitle");
+	  }
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,75 +133,57 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
     
 	/** ЗАГРУЖАЕМ ОСНОВНЫЕ ФРАГМЕНТЫ */
     private void selectMenuItem(final int position) {
-
-    	new AsyncTask<Integer, Void, Fragment>() {
-    		@Override
-	        protected void onPreExecute() {
-    			super.onPreExecute();
-    			progressDialog = FragmentDialogScreen.newInstance(FragmentDialogScreen.DIALOG_PROGRESS);
-	            progressDialog.show(getSupportFragmentManager(), "pdlg");
-    			mTitle = items[position];
-	            getActionBar().setTitle(mTitle);
-	            mDrawerLayout.closeDrawer(mDrawerList);
-	        }
-			@Override
-			protected Fragment doInBackground(Integer... params) {
-				Fragment fragment = null;
-
-				switch (params[0]) {
-					case 0:// НОВЫЙ ЗАКАЗ
-						fragment = (Fragment) new FragmentNewOrderActivity();
-						break;
-					case 1: // РАСШИРЕННЫЙ ПОИСК
-						fragment = new FragmentExtenedSearchActivity();
-						break;
-					case 2: // ОБЫЧНЫЙ ПОИСК
-						fragment = new FragmentQuickSearchActivity();
-						break;
-					case 3:// ВСЕ ЗАПИСИ
-						fragment = new FragmentAllOrdersActivity();
-						break;
-					case 4:// ГАЛЕРЕЯ
-						fragment = new FragmentImageGridActivity();
-						break;
-					case 6:
-						fragment = new FragmentBackupAndRestore();
-						break;
-					default:
-						break;
-				}
-					return fragment;
-			}
-			@Override
-	    	protected void onPostExecute(Fragment result) {
-	    		super.onPostExecute(result);
-	    		if(result==null){
-	    			getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new Fragment()).commit();//удаляем фрагмент
-			        getFragmentManager().beginTransaction().replace(R.id.content_frame, new FragmentPreferencesActivity()).commit();//добавляем фрагмент с настройками
-	    		}else{
-	    			FragmentManager fragmentManager = getSupportFragmentManager();
-	    			fragmentManager.beginTransaction().replace(R.id.content_frame, result).commit();
-	    		}
-	    		progressDialog.dismiss();
-			}
-		}.execute(position);
+        Fragment fragment = null;
+		switch (position) {
+			case 0:// НОВЫЙ ЗАКАЗ
+				fragment = (Fragment) new FragmentNewOrderActivity();
+				break;
+			case 1: // РАСШИРЕННЫЙ ПОИСК
+				fragment = new FragmentExtenedSearchActivity();
+				break;
+			case 2:// ВСЕ ЗАПИСИ
+				fragment = new FragmentAllOrdersActivity();
+				break;
+			case 3:// ГАЛЕРЕЯ
+				fragment = new FragmentImageGridActivity();
+				break;
+			case 5:
+				fragment = new FragmentBackupAndRestore();
+				break;
+			default:
+				break;
+		}
+		if(fragment==null){
+			getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new Fragment()).commit();//удаляем фрагмент
+	        getFragmentManager().beginTransaction().replace(R.id.content_frame, new FragmentPreferencesActivity()).commit();//добавляем фрагмент с настройками
+		}else{
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+		}
+		mTitle = items[position];
+        getActionBar().setTitle(mTitle);
+		mDrawerLayout.closeDrawer(mDrawerList);
     }
-	
+    
+	@Override
 	protected void onDestroy() {
 	    super.onDestroy();
 	    db.close();
 	}
 	
+	@Override
 	protected void onStart() {
 	    super.onStart();
 	    db = new DB(this);
         db.open();
 	}
 	
+	@Override
 	protected void onStop() {
 	    super.onStop();
 	    db.close();
 	}
+	
 	// РЕЗУЛЬТАТ ИЗ АКТИВИТИ
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	if(requestCode == REQUEST_ADD_MATERIAL){
@@ -239,5 +226,8 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 	    	outState.putString("WHERE", WHERE);
 	    else
 	    	outState.putString("WHERE", null);
+	    if(MainActivity.quickSearchWhere != null)
+	    	outState.putString("quickSearchWhere", quickSearchWhere);
+	    outState.putString("mTitle", mTitle);
 	}
 }// end MainActivity

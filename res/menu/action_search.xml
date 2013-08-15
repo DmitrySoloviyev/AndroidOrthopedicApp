@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_search"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@android:drawable/ic_menu_search"
+        android:showAsAction="always|withText"
+        android:title="Поиск">
+    </item>
+    <item
+        android:id="@+id/action_back_to_all_orders"
+        android:icon="@android:drawable/ic_menu_revert"
+        android:showAsAction="always"
+        android:title="Назад">
+    </item>
+
+</menu>

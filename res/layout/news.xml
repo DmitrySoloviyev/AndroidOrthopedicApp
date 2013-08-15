@@ -28,9 +28,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="\t0.9.1 RC2\t И вновь переделан быстрый поиск - теперь он оправдывает свое название еще и потому, что 
-                стал быстродоступным. Введена автоматическая подгрузка заказов. Добавлены диалоговое окно при восстановлении БД." />
+                android:text="\t0.9.2 RC3\t Введена автоматическая подгрузка заказов." />
             -->
+			<TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="\t0.9.1 RC2\t Вновь переделан быстрый поиск - теперь стал быстродоступным :-) Удобно. Добавлено диалоговое окно при восстановлении БД." />
+
 			<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

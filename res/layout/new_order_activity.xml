@@ -216,6 +216,8 @@
             android:shadowColor="#fff"
             android:shadowDx="1"
             android:shadowDy="1"
+            android:paddingLeft="50dp"
+	        android:paddingRight="50dp"
             android:shadowRadius="1"
             android:text="Записать!"
             android:textSize="20sp"

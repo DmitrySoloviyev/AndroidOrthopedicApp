@@ -4,7 +4,6 @@
     <string-array name="entries">
         <item>Новый заказ</item>
         <item>Расширенный поиск</item>
-        <item>Обычный поиск</item>
         <item>Все заказы</item>
         <item>Галерея</item>
     </string-array>
@@ -13,7 +12,6 @@
         <item>1</item>
         <item>2</item>
         <item>3</item>
-        <item>4</item>
     </string-array>
 
 </resources>
