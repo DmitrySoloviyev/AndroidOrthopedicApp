@@ -106,13 +106,13 @@ public class DB {
 	}
 
 	// ВСЕ ЗАПИСИ (КРАТКО)
-	public Cursor getAllShortOrders() {
+	public Cursor getAllShortOrders(int limit) {
 		String sql = "SELECT o._id, o.OrderID AS OrderID, o.ModelID AS Model, mat.MaterialValue AS Material, " +
 					 "SUBSTR(CustomerSN, 1)||'.'||SUBSTR(CustomerFN, 1, 1)||'.'||SUBSTR(CustomerP, 1, 1) as Customer, " +
 					 "SUBSTR(emp.EmployeeSN, 1)||'.'||SUBSTR(emp.EmployeeFN, 1, 1)||'.'||SUBSTR(emp.EmployeeP, 1, 1) as Employee " +
 					 "FROM Orders AS o " +
 					 "INNER JOIN Materials AS mat ON o.MaterialID=mat._id " +
-					 "INNER JOIN Employees AS emp ON o.EmployeeID=emp._id;";
+					 "INNER JOIN Employees AS emp ON o.EmployeeID=emp._id LIMIT "+limit+" ;";
 		return mDB.rawQuery(sql, null);
 	}
 

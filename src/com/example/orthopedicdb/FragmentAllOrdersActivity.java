@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +18,8 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView.MultiChoiceModeListener;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.SearchView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -25,12 +28,16 @@ import android.widget.Toast;
 
 public class FragmentAllOrdersActivity extends Fragment implements SearchView.OnQueryTextListener{
 
-	ListView lv;
 	AllOrdersAdapter scAdapter;
 	DialogFragment progressDialog;
+	ListView lv;
 	DB db;
 	View view;
 	SearchView quickSearchView;
+	static int loadedItems = 6;
+	volatile Cursor allOrdersCursor;
+	static int mScrollState;
+	static int orderCounts;
 
 	@Override
 	public void onStart() {
@@ -41,6 +48,14 @@ public class FragmentAllOrdersActivity extends Fragment implements SearchView.On
 	    
 	    db = new DB(getActivity());
         db.open();
+        
+        orderCounts = db.countOrders();
+        getActivity().getActionBar().setSubtitle("Записей в базе: "+orderCounts);
+        
+        if(orderCounts < 20)
+        	loadedItems = orderCounts;
+        else
+        	loadedItems = 20;
         
         if(MainActivity.quickSearchWhere != null){
 	    	loadSearchResultList(MainActivity.quickSearchWhere);
@@ -116,9 +131,9 @@ public class FragmentAllOrdersActivity extends Fragment implements SearchView.On
 	    	    String[] from = new String[] { "OrderID", "Model", "Material", "Customer", "Employee" };
 	    	    int[] to = new int[] { R.id.shortOrderID, R.id.shortModel, R.id.shortMaterial, R.id.shortCustomer, R.id.shortEmployee };
 	    	    
-	    	    scAdapter = new AllOrdersAdapter(getActivity(), R.layout.short_item, searchResult, from, to);
+	    	    AllOrdersAdapter scAdapter = new AllOrdersAdapter(getActivity(), R.layout.short_item, searchResult, from, to);
 	    	    
-	    		lv = (ListView)view.findViewById(R.id.orders_list);
+	    	    ListView lv = (ListView)view.findViewById(R.id.orders_list);
 	    		lv.setAdapter(scAdapter);
 
 	    		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -195,6 +210,9 @@ public class FragmentAllOrdersActivity extends Fragment implements SearchView.On
 						startActivity(detailedOrderIntent);
 					}
 				});
+	    	    
+	    	    lv.setOnScrollListener(emptyListener);
+	    	    
 	    	    progressDialog.dismiss();
 	        }
 	    }.execute();
@@ -212,22 +230,21 @@ public class FragmentAllOrdersActivity extends Fragment implements SearchView.On
 	        }
 			@Override
 	    	protected Cursor doInBackground(Void... params) {
-				return db.getAllShortOrders();
+				return db.getAllShortOrders(loadedItems);
 	    	}
 			@SuppressWarnings("deprecation")
 			@Override
-	    	protected void onPostExecute(final Cursor searchResult) {
+	    	protected void onPostExecute(Cursor searchResult) {
 	    		super.onPostExecute(searchResult);
-	    		Toast.makeText(getActivity(), "Записей в базе: "+searchResult.getCount(), Toast.LENGTH_SHORT).show();
-	    		getActivity().getActionBar().setSubtitle("Записей в базе: "+db.countOrders());
-	    		getActivity().startManagingCursor(searchResult);
+	    		allOrdersCursor = searchResult;
+	    		getActivity().startManagingCursor(allOrdersCursor);
 	            
 	    	    String[] from = new String[] { "OrderID", "Model", "Material", "Customer", "Employee" };
 	    	    int[] to = new int[] { R.id.shortOrderID, R.id.shortModel, R.id.shortMaterial, R.id.shortCustomer, R.id.shortEmployee };
 	    	    
-	    	    scAdapter = new AllOrdersAdapter(getActivity(), R.layout.short_item, searchResult, from, to);
+	    	    scAdapter = new AllOrdersAdapter(getActivity(), R.layout.short_item, allOrdersCursor, from, to);
 	    	    
-	    		lv = (ListView)view.findViewById(R.id.orders_list);
+	    	    lv = (ListView)view.findViewById(R.id.orders_list);
 	    		lv.setAdapter(scAdapter);
 
 	    		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -268,7 +285,7 @@ public class FragmentAllOrdersActivity extends Fragment implements SearchView.On
 	    		    			checkedIds.toArray(simpleArray);
 	    		    			db.deleteOrderById(simpleArray);
 	    		    		    Toast.makeText(getActivity(), "Удалено!", Toast.LENGTH_SHORT).show();
-	    		    		    searchResult.requery();
+	    		    		    allOrdersCursor.requery();
 	    		    		    getActivity().getActionBar().setSubtitle("Записей в базе: "+db.countOrders());
 	    		    			break;
 	    		    	  }
@@ -296,6 +313,55 @@ public class FragmentAllOrdersActivity extends Fragment implements SearchView.On
 	    		      }
 	    		});
 	    		
+	    		lv.setOnScrollListener(new OnScrollListener() {
+	    			@Override
+	    			public void onScrollStateChanged(AbsListView view, int scrollState) {
+	    				if (scrollState == OnScrollListener.SCROLL_STATE_IDLE)
+	    					mScrollState = scrollState;
+	    			}
+	    			
+	    			@Override
+	    			public void onScroll(AbsListView v, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+	    		        if ( (mScrollState == OnScrollListener.SCROLL_STATE_IDLE) && ((firstVisibleItem + visibleItemCount) >= totalItemCount) ) {
+	    		        	final int oldTotal = totalItemCount;
+	    		        	if( orderCounts > loadedItems ){
+	    		        		// если количество всех заказов больше чем загружено на данный момент, то грузим еще
+	    		        		// но сначала узнаем сколько грузить: будем грузить по 20 штук, НО если в базе осталось, скажем, 10 заказов
+	    		        		// необходимо загрузить только 10, если осталось 7, значит 7, и т.д
+	    		        		int itemsToLoad = orderCounts - loadedItems;
+	    		        		if(itemsToLoad < 20)
+	    		        			loadedItems = loadedItems + itemsToLoad;
+	    		        		else
+	    		        			loadedItems+=20;
+
+	    		        		
+	    		        		new AsyncTask<Void, Void, Cursor>() {
+	    		        			
+	    		        			@Override
+	    		        			protected void onPreExecute(){
+	    		        				view.findViewById(R.id.loadingData).setVisibility(View.VISIBLE);
+	    		        			}
+	    		        			
+	    							@Override
+	    							protected Cursor doInBackground(Void... params) {
+	    								return db.getAllShortOrders(loadedItems);
+	    							}
+	    							
+	    							@Override
+	    					    	protected void onPostExecute(Cursor searchResult) {
+	    					    		super.onPostExecute(searchResult);
+	    					    		scAdapter.changeCursor(searchResult);
+	    					    		scAdapter.notifyDataSetChanged();
+	    					    		view.findViewById(R.id.loadingData).setVisibility(View.INVISIBLE);
+	    					    		view.invalidate();
+	    					    		lv.setSelectionFromTop(oldTotal + 1, 0);
+	    					    	}
+	    		        		}.execute();
+	    		        	}
+	    		        }
+	    			}
+	    		});
+	    		
 	    	    lv.setOnItemClickListener(new OnItemClickListener() {
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long id) {
@@ -309,4 +375,17 @@ public class FragmentAllOrdersActivity extends Fragment implements SearchView.On
 	    }.execute();
 	}
 	
+
+	OnScrollListener emptyListener = new OnScrollListener() {
+		@Override
+		public void onScrollStateChanged(AbsListView view, int scrollState) {}
+		
+		@Override
+		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {}
+	};
+	
+	public void onDestroy() {
+	    super.onDestroy();
+	    
+	}
 }// END ACTIVITY

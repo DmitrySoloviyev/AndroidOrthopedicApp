@@ -57,6 +57,7 @@ public class FragmentExtenedSearchActivity extends Fragment {
 				String top_volume = edit_top_volume.getText().toString().trim();
 				String ankle_volume = edit_ankle_volume.getText().toString().trim();
 				String kv_volume = edit_kv_volume.getText().toString().trim();
+				String customer = edit_customer.getText().toString().trim();
 
 				if (order_number.length() != 0) {
 					WHERE += " OrderID='" + order_number + "' ";
@@ -557,6 +558,18 @@ public class FragmentExtenedSearchActivity extends Fragment {
 						} while (employeeCursor.moveToNext());
 					}
 					employeeCursor.close();
+				}
+				
+				/***************************************************************
+				 * ЗАКАЗЧИК
+				 * */
+
+				if (customer.length() != 0) {
+					if (WHERE.equals("")) {
+						WHERE += " o.CustomerSN='" + customer + "' OR o.CustomerFN='"+customer+"' OR o.CustomerP='"+customer+"' ";
+					} else {
+						WHERE += " OR o.CustomerSN='" + customer + "' OR o.CustomerFN='"+customer+"' OR o.CustomerP='"+customer+"' ";
+					}
 				}
 
 				db.cleanMaterialChecked();

@@ -29,16 +29,16 @@ public class MainActivity extends FragmentActivity implements OnExtendedSearchCl
 	DB db;
 	Intent intent;
 	SharedPreferences sp;
-	String version;
-	String WHERE = null;
+	static String version;
+	static String WHERE = null;
 	DrawerLayout mDrawerLayout;
 	PackageInfo packageInfo;
-    String mTitle;
+	static String mTitle;
 	ListView mDrawerList;
 	DialogFragment progressDialog;
 	final int REQUEST_ADD_MATERIAL = 1;
 	public static String quickSearchWhere = null;
-	String[] items = new String[] {"Новый заказ", "Расширенный поиск", "Все заказы", "Галерея", "Настройки", "Сохранение и восстановление"};
+	static String[] items = new String[] {"Новый заказ", "Расширенный поиск", "Все заказы", "Галерея", "Настройки", "Сохранение и восстановление"};
 	
 	private ActionBarDrawerToggle mDrawerToggle;
 	

@@ -11,7 +11,16 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:background="#90FFFFFF"
-        android:dividerHeight="5dp" >
-        
+        android:dividerHeight="5dp"
+        android:fastScrollEnabled="true" >
     </ListView>
+
+    <ProgressBar
+        android:id="@+id/loadingData"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="invisible" />
+
 </LinearLayout>

@@ -145,37 +145,37 @@ public class FragmentNewOrderActivity extends Fragment {
     				return;
     			}
 
-    			Matcher match_new_size = Pattern.compile("(^\\d\\d$)|(^\\d\\d \\d\\d$)").matcher(size);
+    			Matcher match_new_size = Pattern.compile("(^(([2-4][0-9])|15|16|17|18|19)$)|(^(([2-4][0-9])|15|16|17|18|19) (([2-4][0-9])|15|16|17|18|19)$)").matcher(size);
     			if(!match_new_size.find()){
     				new_size.setError("Размер(ы): данные введены некорректно!");
     				return;
     			}
     			
-    	        Matcher match_new_urk = Pattern.compile("(^\\d\\d\\d$)|(^\\d\\d\\d \\d\\d\\d$)").matcher(urk);
+    	        Matcher match_new_urk = Pattern.compile("(^([1-3]\\d\\d)|400$)|(^([1-3]\\d\\d)|400 ([1-3]\\d\\d)|400$)").matcher(urk);
     	        if(!match_new_urk.find()){
     				new_urk.setError("УРК: данные введены некорректно!");
     				return;
     			}
 
-    	        Matcher match_new_height = Pattern.compile("(^\\d\\d$)|(^\\d\\d \\d\\d$)").matcher(height);
+    	        Matcher match_new_height = Pattern.compile("(^(([1-3][0-9])|0|7|8|9|40)$)|(^(([1-3][0-9])|0|7|8|9|40) (([1-3][0-9])|0|7|8|9|40)$)").matcher(height);
     	        if(!match_new_height.find()){
     				new_height.setError("Высота: данные введены некорректно!");
     				return;
     			}
 
-    	        Matcher match_new_top_volume = Pattern.compile("(^\\d\\d(\\.\\d)?$)|(^\\d\\d(\\.\\d)?$)").matcher(top_volume);
+    	        Matcher match_new_top_volume = Pattern.compile("(^(([1-4][0-9])|50)(\\.[05])?$)|(^(([1-4][0-9])|50)(\\.[05])? (([1-4][0-9])|50)(\\.[05])?$)").matcher(top_volume);
     	        if(!match_new_top_volume.find()){
     				new_top_volume.setError("Объем верха: данные введены некорректно!");
     				return;
     			}
 
-    	        Matcher match_new_ankle_volume  = Pattern.compile("(^\\d\\d(\\.\\d)?$)|(^\\d\\d(\\.\\d)?$)").matcher(ankle_volume);
+    	        Matcher match_new_ankle_volume  = Pattern.compile("(^(([1-4][0-9])|50)(\\.[05])?$)|(^(([1-4][0-9])|50)(\\.[05])? (([1-4][0-9])|50)(\\.[05])?$)").matcher(ankle_volume);
     	        if(!match_new_ankle_volume.find()){
     				new_ankle_volume.setError("Объем лодыжки: данные введены некорректно!");
     				return;
     			}
     	        
-    	        Matcher match_new_kv_volume 	= Pattern.compile("(^\\d\\d(\\.\\d)?$)|(^\\d\\d(\\.\\d)?$)").matcher(kv_volume);
+    	        Matcher match_new_kv_volume 	= Pattern.compile("(^(([2-6][0-9])|15|16|17|18|19|70)(\\.[05])?$)|(^(([2-6][0-9])|15|16|17|18|19|70)(\\.[05])? (([2-6][0-9])|15|16|17|18|19|70)(\\.[05])?$)").matcher(kv_volume);
     	        if(!match_new_kv_volume.find()){
     				new_kv_volume.setError("Объем КВ: данные введены некорректно!");
     				return;
