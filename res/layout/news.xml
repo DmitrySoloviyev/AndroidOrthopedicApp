@@ -15,7 +15,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <!--
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -23,9 +22,7 @@
                 android:textSize="16sp"
 			    android:textStyle="bold"
                 android:text="\t1.0\t OrthopedicDB stable is released! Congratulations!!!" /> 
-                
-                УБРАТЬ ВСЕ ЛОГИ ИЗ ВСЕХ ФАЙЛОВ, УБРАТЬ Debuggable ИЗ МАНИФЕСТА, ПОДПИСАТЬ
-            -->
+
 			<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

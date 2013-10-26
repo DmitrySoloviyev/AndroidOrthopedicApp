@@ -80,9 +80,6 @@ public class StackViewFactoryAdapter implements RemoteViewsFactory{
 	public void onDestroy() {
 	}
 
-	
-	
-	
 	public boolean imgExists(String path){
 		File file = new File(path);
 		if(file.exists()){

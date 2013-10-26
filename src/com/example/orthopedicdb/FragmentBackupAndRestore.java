@@ -20,7 +20,6 @@ import android.widget.Toast;
 public class FragmentBackupAndRestore extends Fragment {
 
 	View view;
-	final String LOG_TAG = "myLogs";
 	DialogFragment alertDialog;
 
 	@Override
@@ -63,8 +62,7 @@ public class FragmentBackupAndRestore extends Fragment {
 					e1.printStackTrace();
 				}
 
-				String outFileName = Environment.getExternalStorageDirectory()
-						+ "/SHOES_BACKUP";
+				String outFileName = Environment.getExternalStorageDirectory() + "/SHOES_BACKUP";
 
 				// Open the empty db as the output stream
 				OutputStream output = null;

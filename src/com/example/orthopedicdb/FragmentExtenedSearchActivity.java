@@ -15,7 +15,6 @@ import android.widget.SimpleCursorAdapter;
 
 public class FragmentExtenedSearchActivity extends Fragment {
 
-	protected static final String LOG_TAG = "myLogs";
 	Button submit_search;
 	Button search_employee;
 	Button search_material;
